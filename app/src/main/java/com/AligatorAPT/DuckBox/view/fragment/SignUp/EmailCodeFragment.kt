@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.AligatorAPT.DuckBox.R
-import com.AligatorAPT.DuckBox.databinding.FragmentEmailBinding
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailCodeBinding
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 

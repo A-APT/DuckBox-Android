@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
-import com.AligatorAPT.DuckBox.databinding.ActivitySignUpBinding
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
 class MainActivity : AppCompatActivity() {

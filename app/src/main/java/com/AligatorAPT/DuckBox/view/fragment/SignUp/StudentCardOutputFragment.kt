@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.AligatorAPT.DuckBox.R
-import com.AligatorAPT.DuckBox.databinding.FragmentEmailBinding
 import com.AligatorAPT.DuckBox.databinding.FragmentStudentCardOutputBinding
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
