@@ -79,6 +79,18 @@ class EmailFragment : Fragment() {
                 setIsActivateBtn()
             }
 
+            //이용약관
+            termsOfUseBtn.setOnClickListener {
+                mActivity.isTermOfUse = true
+                mActivity.changeFragment(PolicyFragment())
+            }
+
+            //개인정보처리방침
+            privacyPolicyBtn.setOnClickListener {
+                mActivity.isTermOfUse = false
+                mActivity.changeFragment(PolicyFragment())
+            }
+
             //인증하기 버튼 클릭
             emailBtn.setOnClickListener {
                 if(isActivateBtn){

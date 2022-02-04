@@ -9,6 +9,7 @@ import com.AligatorAPT.DuckBox.view.fragment.SignUp.*
 
 class SignUpActivity : FragmentActivity() {
     lateinit var binding: ActivitySignUpBinding
+    var isTermOfUse = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
