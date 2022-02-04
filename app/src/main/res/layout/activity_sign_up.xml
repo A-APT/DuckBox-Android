@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,8 +7,21 @@
     tools:context=".view.activity.SignUpActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/screenTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="회원가입 화면" />
+        android:gravity="center"
+        android:paddingVertical="27dp"
+        android:background="@drawable/border_bottom"
+        android:text="이메일 인증하기"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <FrameLayout
+        android:id="@+id/signUpFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
 </LinearLayout>

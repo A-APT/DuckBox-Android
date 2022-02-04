@@ -1,10 +1,13 @@
 package com.AligatorAPT.DuckBox.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivitySignUpBinding
+import com.AligatorAPT.DuckBox.view.fragment.SignUp.*
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpActivity : FragmentActivity() {
     lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,7 +18,15 @@ class SignUpActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
+    private fun init() {
+        val transaction = supportFragmentManager.beginTransaction()
+            .add(R.id.signUpFrameLayout, EmailFragment())
+        transaction.commit()
+    }
 
+    fun changeFragment(fragment: Fragment) {
+        val transaction = supportFragmentManager.beginTransaction()
+            .replace(R.id.signUpFrameLayout, fragment)
+        transaction.commit()
     }
 }
