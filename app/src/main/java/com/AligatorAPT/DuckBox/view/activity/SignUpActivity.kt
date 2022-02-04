@@ -20,7 +20,7 @@ class SignUpActivity : FragmentActivity() {
 
     private fun init() {
         val transaction = supportFragmentManager.beginTransaction()
-            .add(R.id.signUpFrameLayout, EmailFragment())
+            .add(R.id.signUpFrameLayout, MoreInfoFragment())
         transaction.commit()
     }
 
