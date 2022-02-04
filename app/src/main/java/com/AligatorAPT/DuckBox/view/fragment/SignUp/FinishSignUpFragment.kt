@@ -45,5 +45,4 @@ class FinishSignUpFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }

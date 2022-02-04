@@ -69,5 +69,4 @@ class EmailCodeFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
 }
