@@ -28,7 +28,7 @@ class ExplainStudentCardFragment : Fragment() {
     private fun init(){
         val mActivity = activity as SignUpActivity
         binding.shootBtn.setOnClickListener {
-            mActivity.changeFragment(StudentCardOutputFragment())
+            mActivity.changeFragment(StudentCardOutputFragment(), "학생증 인증하기")
         }
     }
 }

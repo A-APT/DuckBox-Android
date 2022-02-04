@@ -25,9 +25,10 @@ class SignUpActivity : FragmentActivity() {
         transaction.commit()
     }
 
-    fun changeFragment(fragment: Fragment) {
+    fun changeFragment(fragment: Fragment, title:String) {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.signUpFrameLayout, fragment)
         transaction.commit()
+        binding.signUpTitle.text = title
     }
 }

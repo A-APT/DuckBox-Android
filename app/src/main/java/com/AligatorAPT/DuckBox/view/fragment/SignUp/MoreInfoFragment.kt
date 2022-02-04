@@ -101,7 +101,7 @@ class MoreInfoFragment : Fragment() {
             finishSignUp.setOnClickListener {
                 if(isActivateBtn){
                     if (checkPassword(setPassword.text.toString()) && checkRePassword(setPassword.text.toString(), setRePassword.text.toString())){
-                        mActivity.changeFragment(FinishSignUpFragment())
+                        mActivity.changeFragment(FinishSignUpFragment(), "회원가입 완료")
                     }
                 }
             }

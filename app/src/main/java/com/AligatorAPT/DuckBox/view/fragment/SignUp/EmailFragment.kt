@@ -82,19 +82,19 @@ class EmailFragment : Fragment() {
             //이용약관
             termsOfUseBtn.setOnClickListener {
                 mActivity.isTermOfUse = true
-                mActivity.changeFragment(PolicyFragment())
+                mActivity.changeFragment(PolicyFragment(), "이용약관")
             }
 
             //개인정보처리방침
             privacyPolicyBtn.setOnClickListener {
                 mActivity.isTermOfUse = false
-                mActivity.changeFragment(PolicyFragment())
+                mActivity.changeFragment(PolicyFragment(), "개인정보처리방침")
             }
 
             //인증하기 버튼 클릭
             emailBtn.setOnClickListener {
                 if(isActivateBtn){
-                    mActivity.changeFragment(EmailCodeFragment())
+                    mActivity.changeFragment(EmailCodeFragment(), "이메일 인증하기")
                 }
             }
         }

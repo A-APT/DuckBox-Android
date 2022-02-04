@@ -57,7 +57,7 @@ class EmailCodeFragment : Fragment() {
             emailCodeBtn.setOnClickListener {
                 if(setEmailCode.text.toString() == correctCode && isActivateBtn){
                     errorEmailCode.visibility = View.INVISIBLE
-                    mActivity.changeFragment(ExplainStudentCardFragment())
+                    mActivity.changeFragment(ExplainStudentCardFragment(), "학생증 인증하기")
                 }else{
                     isActivateBtn = false
                     errorEmailCode.visibility = View.VISIBLE

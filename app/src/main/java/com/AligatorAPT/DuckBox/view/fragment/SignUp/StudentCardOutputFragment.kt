@@ -38,7 +38,7 @@ class StudentCardOutputFragment : Fragment() {
             setStudentId.text = studentId
 
             studentCardOutputBtn.setOnClickListener {
-                mActivity.changeFragment(MoreInfoFragment())
+                mActivity.changeFragment(MoreInfoFragment(), "추가정보 입력하기")
             }
         }
     }
