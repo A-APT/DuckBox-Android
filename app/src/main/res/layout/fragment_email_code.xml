@@ -64,7 +64,6 @@
             android:id="@+id/setEmailCode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="38dp"
             android:background="@drawable/edit_text_box"
             android:ems="10"
             android:hint="인증코드를 입력해주세요"
@@ -74,6 +73,17 @@
             android:textColor="@color/black"
             android:textColorHint="@color/darkgray"
             android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/errorEmailCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="38dp"
+            android:gravity="end"
+            android:text="올바르지 않은 코드입니다."
+            android:textColor="@color/main2"
+            android:textSize="14sp"
+            android:visibility="invisible" />
 
         <LinearLayout
             android:layout_width="match_parent"
