@@ -5,18 +5,30 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.AligatorAPT.DuckBox.R
+import com.AligatorAPT.DuckBox.databinding.FragmentExplainStudentCardBinding
+import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
 class ExplainStudentCardFragment : Fragment() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private var _binding: FragmentExplainStudentCardBinding? = null
+    private val binding: FragmentExplainStudentCardBinding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_explain_student_card, container, false)
+        _binding = FragmentExplainStudentCardBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init(){
+        val mActivity = activity as SignUpActivity
+        binding.shootBtn.setOnClickListener {
+            mActivity.changeFragment(StudentCardOutputFragment())
+        }
     }
 }
