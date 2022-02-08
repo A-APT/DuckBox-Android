@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.fragment.SignUp.MoreInfoFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="30dp"
+        android:paddingTop="46dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="마지막 단계입니다"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="34dp"
+            android:text="추가 정보를 입력해주세요"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="비밀번호"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/setPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_box"
+            android:ems="10"
+            android:hint="입력해주세요."
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/darkgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/errorPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="end"
+            android:text="8자 이상/ 1개 이상의 숫자, 특수문자, 대소문자 필요"
+            android:textColor="@color/main2"
+            android:textSize="14sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="비밀번호 확인"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/setRePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_box"
+            android:ems="10"
+            android:hint="입력해주세요."
+            android:importantForAutofill="no"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/darkgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/errorCheckPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="end"
+            android:text="비밀번호가 일치하지 않습니다."
+            android:textColor="@color/main2"
+            android:textSize="14sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="닉네임"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/setNickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_box"
+            android:ems="10"
+            android:hint="입력해주세요."
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/darkgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/errorNickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="end"
+            android:text="중복된 닉네임입니다."
+            android:textColor="@color/main2"
+            android:textSize="14sp"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="학과"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/setDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_box"
+            android:ems="10"
+            android:hint="입력해주세요."
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:padding="16dp"
+            android:textColor="@color/black"
+            android:textColorHint="@color/darkgray"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/errorDepartment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="end"
+            android:text="정확한 학과명을 입력해주세요."
+            android:textColor="@color/main2"
+            android:textSize="14sp"
+            android:visibility="invisible" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/finishSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/darkgray"
+        android:gravity="center"
+        android:text="완료"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

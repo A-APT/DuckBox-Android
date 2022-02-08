@@ -1,0 +1,21 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="30dp"
+    android:orientation="vertical"
+    tools:context=".view.fragment.SignUp.PolicyFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gray_color_box"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/policyText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이용약관" />
+    </ScrollView>
+</LinearLayout>
