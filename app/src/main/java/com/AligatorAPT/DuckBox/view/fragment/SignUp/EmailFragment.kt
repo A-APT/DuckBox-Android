@@ -47,22 +47,18 @@ class EmailFragment : Fragment() {
     private fun init(){
         val mActivity = activity as SignUpActivity
         binding.apply {
+            //버튼 초기화
+            agree1.setImageResource(if(agree1Flag) R.drawable.press_check else R.drawable.check)
+            agree2.setImageResource(if(agree2Flag) R.drawable.press_check else R.drawable.check)
+
             //약관동의 클릭 이벤트
             agree1.setOnClickListener {
-                if(agree1Flag){
-                    agree1.setImageResource(R.drawable.check)
-                }else{
-                    agree1.setImageResource(R.drawable.press_check)
-                }
+                agree1.setImageResource(if(agree1Flag) R.drawable.check else R.drawable.press_check)
                 agree1Flag = !agree1Flag
                 setIsActivateBtn()
             }
             agree2.setOnClickListener {
-                if(agree2Flag){
-                    agree2.setImageResource(R.drawable.check)
-                }else{
-                    agree2.setImageResource(R.drawable.press_check)
-                }
+                agree2.setImageResource(if(agree2Flag) R.drawable.check else R.drawable.press_check)
                 agree2Flag = !agree2Flag
                 setIsActivateBtn()
             }
