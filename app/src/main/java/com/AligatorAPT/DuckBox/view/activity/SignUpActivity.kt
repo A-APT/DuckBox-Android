@@ -23,6 +23,10 @@ class SignUpActivity : FragmentActivity() {
         val transaction = supportFragmentManager.beginTransaction()
             .add(R.id.signUpFrameLayout, EmailFragment())
         transaction.commit()
+
+        binding.signUpBackBtn.setOnClickListener {
+            onBackPressed()
+        }
     }
 
     fun changeFragment(fragment: Fragment, title:String) {
