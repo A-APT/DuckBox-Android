@@ -17,7 +17,7 @@ class EmailCodeFragment : Fragment() {
 
     private var isActivateBtn = false
     private var correctCode = "123456"
-    private var userEmail = "duckBox@konkuk.ac.kr"
+    private var email = "duckBox@konkuk.ac.kr"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +45,7 @@ class EmailCodeFragment : Fragment() {
         val mActivity = activity as SignUpActivity
         binding.apply {
             //사용자 이메일 설정
-            userEmail.text = "$userEmail 으로 코드를 전송했습니다."
+            userEmail.text = "$email 으로 코드를 전송했습니다."
 
             //입력값 확인
             setEmailCode.doAfterTextChanged {
