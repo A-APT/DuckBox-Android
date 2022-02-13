@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_margin="30dp"
     android:orientation="vertical"
-    tools:context=".view.fragment.SignUp.PolicyFragment">
+    tools:context=".view.fragment.signup.PolicyFragment">
 
     <ScrollView
         android:layout_width="match_parent"

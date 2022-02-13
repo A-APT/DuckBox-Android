@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingHorizontal="30dp"
     android:paddingTop="46dp"
-    tools:context=".view.fragment.SignUp.ExplainStudentCardFragment">
+    tools:context=".view.fragment.signup.ExplainStudentCardFragment">
 
     <ImageView
         android:layout_width="100dp"

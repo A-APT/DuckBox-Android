@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivitySignUpBinding
-import com.AligatorAPT.DuckBox.view.fragment.SignUp.*
+import com.AligatorAPT.DuckBox.view.fragment.signup.*
 
 class SignUpActivity : FragmentActivity() {
     lateinit var binding: ActivitySignUpBinding
