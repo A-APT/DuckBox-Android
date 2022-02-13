@@ -10,14 +10,20 @@
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/main_color_box.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/sub__color_box.xml" value="0.12685185185185185" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_navigation.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_alarm.xml" value="0.1" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_community.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email_code.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_explain_student_card.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_finish_sign_up.xml" value="0.16" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_more_info.xml" value="0.16" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_my.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_policy.xml" value="0.23868312757201646" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_student_card_output.xml" value="0.1" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/menu/navigation_menu.xml" value="0.275" />
         <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/activity_main.xml" value="0.25104166666666666" />
       </map>
     </option>

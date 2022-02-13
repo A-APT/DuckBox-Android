@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
+import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
 class MainActivity : AppCompatActivity() {
@@ -17,11 +18,18 @@ class MainActivity : AppCompatActivity() {
         init()
     }
 
-    private fun init(){
-        //회원가입 화면 전환
-        binding.signUpButton.setOnClickListener {
-            val intent = Intent(this, SignUpActivity::class.java)
-            startActivity(intent)
+    private fun init() {
+        binding.apply {
+            //회원가입 화면 전환
+            signUpButton.setOnClickListener {
+                val intent = Intent(this@MainActivity, SignUpActivity::class.java)
+                startActivity(intent)
+            }
+            //네비게이션 화면 전환
+            navigationButton.setOnClickListener {
+                val intent = Intent(this@MainActivity, NavigationActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
