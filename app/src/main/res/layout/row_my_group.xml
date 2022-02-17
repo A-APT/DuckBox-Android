@@ -23,8 +23,11 @@
         android:id="@+id/myGroupName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="6dp"
         android:layout_marginTop="7dp"
+        android:ellipsize="end"
         android:gravity="center"
+        android:maxLines="1"
         android:text="KU총학생회"
         android:textColor="@color/black"
         android:textSize="12sp" />

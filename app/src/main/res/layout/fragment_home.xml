@@ -34,16 +34,15 @@
 
             <TextView
                 android:id="@+id/searchHolder"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="갤럭시 서포터즈와 함께하는 봉사활동은?"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="갤럭시 서포터즈와 함께하는 설문조사 지금바로 시작합니다다다다다?"
                 android:textColor="@color/darkgray"
                 android:textSize="14sp" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
 
             <ImageView
                 android:layout_width="14dp"
