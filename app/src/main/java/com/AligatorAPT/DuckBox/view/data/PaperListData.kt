@@ -1,12 +1,13 @@
 package com.AligatorAPT.DuckBox.view.data
 
-data class VoteAndPollListData(
+data class PaperListData(
     var image:Int,
     var title:String,
-    var groupName:String,
+    var writer:String,
     var isVote:Boolean,
     var canParticipate:Boolean,
     var time:String,
-    var ratio:String,
-    var numOfPeople:String){
+    var totalMember:Int,
+    var joinMember:Int,
+    ){
 }
