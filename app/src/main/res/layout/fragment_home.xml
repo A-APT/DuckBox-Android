@@ -49,6 +49,7 @@
                 android:layout_width="14dp"
                 android:layout_height="14dp"
                 android:contentDescription="search"
+                android:scaleType="fitXY"
                 android:src="@drawable/search" />
         </LinearLayout>
     </LinearLayout>
@@ -151,12 +152,12 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerVoteAndPollList"
+        android:id="@+id/recyclerPaperList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/row_voting_and_polls"
+        tools:listitem="@layout/row_paper"
         />
 
 </LinearLayout>
