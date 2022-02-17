@@ -14,7 +14,7 @@
         android:layout_height="100dp"
         android:layout_marginBottom="18dp"
         android:contentDescription="duck"
-        tools:src="@drawable/gray_color_box" />
+        tools:src="@drawable/gray_color_box_5dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -59,7 +59,7 @@
         android:id="@+id/startHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/main_color_box"
+        android:background="@drawable/main_color_box_30dp"
         android:gravity="center"
         android:paddingVertical="14dp"
         android:text="시작하기"

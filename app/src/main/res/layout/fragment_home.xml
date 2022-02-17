@@ -27,7 +27,7 @@
             android:id="@+id/homeSearchBtn"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gray_color_box"
+            android:background="@drawable/gray_color_box_5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="12dp">
@@ -84,7 +84,7 @@
                 android:id="@+id/createGroupBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/main_color_box"
+                android:background="@drawable/main_color_box_30dp"
                 android:orientation="horizontal"
                 android:paddingHorizontal="18dp"
                 android:paddingVertical="7dp">
