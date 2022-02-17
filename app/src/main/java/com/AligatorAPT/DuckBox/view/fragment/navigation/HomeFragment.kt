@@ -11,9 +11,9 @@ import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentHomeBinding
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
-import com.AligatorAPT.DuckBox.view.adapter.VoteAndPollListAdapter
+import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.MyGroupData
-import com.AligatorAPT.DuckBox.view.data.VoteAndPollListData
+import com.AligatorAPT.DuckBox.view.data.PaperListData
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -22,8 +22,8 @@ class HomeFragment : Fragment() {
     private lateinit var myGroupAdapter: MyGroupAdapter
     private var myGroupArray = ArrayList<MyGroupData>()
 
-    private lateinit var voteListAdapter: VoteAndPollListAdapter
-    private var voteListArray = ArrayList<VoteAndPollListData>()
+    private lateinit var paperListAdapter: PaperListAdapter
+    private var paperListArray = ArrayList<PaperListData>()
 
     private var isParticipation = true
 
@@ -61,17 +61,17 @@ class HomeFragment : Fragment() {
             }
             recyclerMyGroup.adapter = myGroupAdapter
 
-            //voteAndPoll list 관리하는 메니저 등록
-            voteListAdapter = VoteAndPollListAdapter(voteListArray)
-            voteListAdapter.itemClickListener = object :VoteAndPollListAdapter.OnItemClickListener{
+            //paper list 관리하는 메니저 등록
+            paperListAdapter = PaperListAdapter(paperListArray)
+            paperListAdapter.itemClickListener = object :PaperListAdapter.OnItemClickListener{
                 override fun OnItemClick(
-                    holder: VoteAndPollListAdapter.MyViewHolder,
+                    holder: PaperListAdapter.MyViewHolder,
                     view: View,
-                    data: VoteAndPollListData,
+                    data: PaperListData,
                     position: Int
                 ) {
                     // 투표 및 설문 상세로 화면 전환
-                    if(voteListArray[position].isVote){
+                    if(paperListArray[position].isVote){
                         val intent = Intent(activity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     }else{
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
-            recyclerVoteAndPollList.adapter = voteListAdapter
+            recyclerPaperList.adapter = paperListAdapter
 
             val mActivity = activity as NavigationActivity
             binding.apply {
@@ -117,24 +117,24 @@ class HomeFragment : Fragment() {
         myGroupArray.add(MyGroupData(R.drawable.community, "연합봉사동아리"))
         myGroupArray.add(MyGroupData(R.drawable.community, "오리박스"))
 
-        voteListArray.add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-        voteListArray.add(VoteAndPollListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-        voteListArray.add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-        voteListArray.add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
+        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
+        paperListArray.add(PaperListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", 150, 80))
+        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 78, 78))
+        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 10, 1))
     }
 
     private fun voteListArrayInitialization(){
-        voteListAdapter.clearData()
+        paperListAdapter.clearData()
         if(isParticipation){
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.notifyChanged()
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.notifyChanged()
         }else{
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제46회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.getData().add(VoteAndPollListData(R.drawable.press_check, "건국대학교 제45회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", "20.36% ", "(851명)"))
-            voteListAdapter.notifyChanged()
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제46회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제45회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50))
+            paperListAdapter.notifyChanged()
         }
     }
 }
