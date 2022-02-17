@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.fragment.SignUp
+package com.AligatorAPT.DuckBox.view.fragment.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

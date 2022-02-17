@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".view.fragment.SignUp.ExplainStudentCardFragment">
+    tools:context=".view.fragment.signup.ExplainStudentCardFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="32dp"
                 android:layout_weight="1"
-                android:background="@drawable/sub__color_box"
+                android:background="@drawable/sub1_color_box_10dp"
                 android:gravity="center"
                 android:text="재촬영하기"
                 android:textColor="@color/main"

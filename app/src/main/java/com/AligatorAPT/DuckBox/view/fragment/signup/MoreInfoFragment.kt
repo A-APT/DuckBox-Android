@@ -1,7 +1,6 @@
-package com.AligatorAPT.DuckBox.view.fragment.SignUp
+package com.AligatorAPT.DuckBox.view.fragment.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
