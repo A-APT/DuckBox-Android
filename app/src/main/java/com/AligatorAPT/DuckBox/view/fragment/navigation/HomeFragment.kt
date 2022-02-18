@@ -20,10 +20,7 @@ class HomeFragment : Fragment() {
     private val binding: FragmentHomeBinding get() = _binding!!
 
     private lateinit var myGroupAdapter: MyGroupAdapter
-    private var myGroupArray = ArrayList<MyGroupData>()
-
     private lateinit var paperListAdapter: PaperListAdapter
-    private var paperListArray = ArrayList<PaperListData>()
 
     private var isParticipation = true
 
@@ -42,11 +39,8 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         binding.apply {
-            //myGroup&voteList array data 초기화
-            arrayInitialization()
-
             //MyGroup list 관리하는 메니저 등록
-            myGroupAdapter = MyGroupAdapter(myGroupArray)
+            myGroupAdapter = MyGroupAdapter(setGroupList())
             myGroupAdapter.itemClickListener = object :MyGroupAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: MyGroupAdapter.MyViewHolder,
@@ -62,7 +56,7 @@ class HomeFragment : Fragment() {
             recyclerMyGroup.adapter = myGroupAdapter
 
             //paper list 관리하는 메니저 등록
-            paperListAdapter = PaperListAdapter(paperListArray)
+            paperListAdapter = PaperListAdapter(setPaperList())
             paperListAdapter.itemClickListener = object :PaperListAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: PaperListAdapter.MyViewHolder,
@@ -71,7 +65,7 @@ class HomeFragment : Fragment() {
                     position: Int
                 ) {
                     // 투표 및 설문 상세로 화면 전환
-                    if(paperListArray[position].isVote){
+                    if(data.isVote){
                         val intent = Intent(activity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     }else{
@@ -92,7 +86,7 @@ class HomeFragment : Fragment() {
                         toggleParticipationPossible.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
                         toggleParticipationPossible.setBackgroundResource(R.drawable.white_color_box_50dp)
                         isParticipation = !isParticipation
-                        voteListArrayInitialization()
+                        paperListAdapter.setData(setPaperList())
                     }
                 }
                 //참여 완료 버튼 누를 경우
@@ -103,38 +97,35 @@ class HomeFragment : Fragment() {
                         toggleParticipationCompleted.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
                         toggleParticipationCompleted.setBackgroundResource(R.drawable.white_color_box_50dp)
                         isParticipation = !isParticipation
-                        voteListArrayInitialization()
+                        paperListAdapter.setData(setParticipationPaperList())
                     }
                 }
             }
         }
     }
 
-    private fun arrayInitialization(){
-        myGroupArray.add(MyGroupData(R.drawable.community, "KU 총학생회"))
-        myGroupArray.add(MyGroupData(R. drawable.community, "악어아파트"))
-        myGroupArray.add(MyGroupData(R.drawable.community, "SecurityFact"))
-        myGroupArray.add(MyGroupData(R.drawable.community, "연합봉사동아리"))
-        myGroupArray.add(MyGroupData(R.drawable.community, "오리박스"))
-
-        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
-        paperListArray.add(PaperListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", 150, 80))
-        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 78, 78))
-        paperListArray.add(PaperListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 10, 1))
+    private fun setGroupList(): ArrayList<MyGroupData>{
+        return arrayListOf<MyGroupData>(
+            MyGroupData(R.drawable.community, "KU 총학생회"),
+            MyGroupData(R. drawable.community, "악어아파트"),
+            MyGroupData(R.drawable.community, "SecurityFact"),
+            MyGroupData(R.drawable.community, "연합봉사동아리"),
+            MyGroupData(R.drawable.community, "오리박스"),
+        )
     }
 
-    private fun voteListArrayInitialization(){
-        paperListAdapter.clearData()
-        if(isParticipation){
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "유기견 보호소 정기 봉사 날짜 선정 설문조사", "연합봉사동아리", false, true, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 인문대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제47회 예술대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.notifyChanged()
-        }else{
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제46회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.getData().add(PaperListData(R.drawable.press_check, "건국대학교 제45회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50))
-            paperListAdapter.notifyChanged()
-        }
+    private fun setPaperList(): ArrayList<PaperListData>{
+        return arrayListOf<PaperListData>(
+            PaperListData(R.drawable.sub4_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
+            PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
+            PaperListData(R.drawable.sub2_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
+            PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
+        )
+    }
+    private fun setParticipationPaperList(): ArrayList<PaperListData>{
+        return arrayListOf<PaperListData>(
+            PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
+            PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
+        )
     }
 }

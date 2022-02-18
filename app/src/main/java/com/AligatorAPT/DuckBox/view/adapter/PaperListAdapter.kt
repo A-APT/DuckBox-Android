@@ -25,19 +25,6 @@ class PaperListAdapter(var items: ArrayList<PaperListData>) :
         }
     }
 
-    fun notifyChanged() {
-        notifyDataSetChanged()
-    }
-
-    fun clearData() {
-        items.clear()
-        notifyDataSetChanged()
-    }
-
-    fun getData(): ArrayList<PaperListData> {
-        return items
-    }
-
     fun setData(newData:ArrayList<PaperListData>){
         items.clear()
         items.addAll(newData)
