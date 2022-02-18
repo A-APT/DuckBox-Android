@@ -38,6 +38,12 @@ class PaperListAdapter(var items: ArrayList<PaperListData>) :
         return items
     }
 
+    fun setData(newData:ArrayList<PaperListData>){
+        items.clear()
+        items.addAll(newData)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RowPaperBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
