@@ -19,8 +19,4 @@ class CreateVotePagerAdapter (fragmentActivity : FragmentActivity) : FragmentSta
             else -> CreateVoteFirstFragment()
         }
     }
-
-    fun setPosition(position : Int){
-        createFragment(position)
-    }
 }
