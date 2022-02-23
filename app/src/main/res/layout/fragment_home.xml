@@ -34,7 +34,10 @@
 
             <TextView
                 android:id="@+id/searchHolder"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="20"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:layout_height="wrap_content"
                 android:text="갤럭시 서포터즈와 함께하는 봉사활동은?"
                 android:textColor="@color/darkgray"
@@ -46,8 +49,9 @@
                 android:layout_weight="1" />
 
             <ImageView
-                android:layout_width="14dp"
+                android:layout_width="0dp"
                 android:layout_height="14dp"
+                android:layout_weight="1"
                 android:contentDescription="search"
                 android:scaleType="fitXY"
                 android:src="@drawable/search" />
