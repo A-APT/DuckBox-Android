@@ -25,17 +25,10 @@ class PaperListAdapter(var items: ArrayList<PaperListData>) :
         }
     }
 
-    fun notifyChanged() {
-        notifyDataSetChanged()
-    }
-
-    fun clearData() {
+    fun setData(newData:ArrayList<PaperListData>){
         items.clear()
+        items.addAll(newData)
         notifyDataSetChanged()
-    }
-
-    fun getData(): ArrayList<PaperListData> {
-        return items
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
