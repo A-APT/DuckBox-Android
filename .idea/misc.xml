@@ -27,9 +27,12 @@
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.12310030395136778" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_navigation.xml" value="0.35294117647058826" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_poll_create.xml" value="0.128125" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_poll_detail.xml" value="0.1484375" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_vote_create.xml" value="0.128125" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_vote_detail.xml" value="0.1" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/dialog_write.xml" value="0.536" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_alarm.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_community.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email.xml" value="0.1" />

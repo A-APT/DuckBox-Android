@@ -9,11 +9,11 @@ import android.view.ViewGroup
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCommunityBinding
-import com.AligatorAPT.DuckBox.view.activity.PollDetailActivity
-import com.AligatorAPT.DuckBox.view.activity.VoteDetailActivity
+import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 
 class CommunityFragment : Fragment() {
     private var _binding: FragmentCommunityBinding? = null
@@ -96,6 +96,12 @@ class CommunityFragment : Fragment() {
                     communityAdapter.setData(setParticipationCommunicationList())
                 }
             }
+            val mActivity = activity as NavigationActivity
+
+            //다이얼로그
+            fab.setOnClickListener {
+                WriteDialog().show(mActivity.supportFragmentManager, "WriteDialog")
+            }
         }
     }
 
@@ -116,5 +122,10 @@ class CommunityFragment : Fragment() {
             PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
             PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
