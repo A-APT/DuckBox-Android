@@ -17,7 +17,9 @@ class GroupDetailActivity : AppCompatActivity() {
 
     private var _groupDescription = "2022 건국대학교 총학생회입니다."
     private var _groupMembers = 2752
-    private var isGroupMember = true
+    private var isGroupMember = false
+
+    lateinit var groupData:MyGroupData
 
     private lateinit var paperListAdapter: PaperListAdapter
 
@@ -30,7 +32,7 @@ class GroupDetailActivity : AppCompatActivity() {
     }
 
     private fun init(){
-        val groupData = intent.getSerializableExtra("groupData") as MyGroupData
+        groupData = intent.getSerializableExtra("groupData") as MyGroupData
         val decimal = DecimalFormat("###,###,###")
         binding.apply {
             //그룹 정보 추가 (나중에 서버에서 받아올 정보는 추후 수정)
@@ -50,6 +52,13 @@ class GroupDetailActivity : AppCompatActivity() {
             //버튼 이벤트
             backBtn.setOnClickListener {
                 onBackPressed()
+            }
+
+            groupSetting.setOnClickListener {
+                //그룹 설정로 화면 전환
+                val intent = Intent(this@GroupDetailActivity, GroupSettingActivity::class.java)
+                intent.putExtra("groupData", groupData)
+                startActivity(intent)
             }
 
             //pager list 매니저 등록

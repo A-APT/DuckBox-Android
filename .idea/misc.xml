@@ -52,7 +52,9 @@
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/border_bottom.xml" value="0.1175" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/main_border_bottom_2dp.xml" value="0.1175" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/main_color_box_10dp.xml" value="0.1" />
-        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.264" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.152" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_setting.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_update.xml" value="0.264" />
         <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/activity_main.xml" value="0.25104166666666666" />
       </map>
     </option>
