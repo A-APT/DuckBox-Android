@@ -84,8 +84,6 @@ class GroupSettingActivity : AppCompatActivity() {
             backBtn.setOnClickListener {
                 onBackPressed()
             }
-
         }
-
     }
 }
