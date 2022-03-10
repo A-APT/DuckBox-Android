@@ -40,12 +40,19 @@ class CreateVoteThirdFragment: Fragment()  {
             val folder_black = getDrawable(requireContext(), R.drawable.folder_black)!!.constantState
             val bell_black = getDrawable(requireContext(), R.drawable.bell_black)!!.constantState
             val gray_box = getDrawable(requireContext(), R.drawable.gray_color_box_5dp)!!.constantState
+            val reward_black = getDrawable(requireContext(), R.drawable.reward_black)!!.constantState
 
-            cvThirdListRb.setOnClickListener {
+            cvThirdListTv.setOnClickListener {
                 if(cvThirdListIv.drawable.constantState!! == folder_black){
                     cvThirdListIv.setImageResource(R.drawable.folder_blue)
                     cvThirdListTitleTv.visibility = View.VISIBLE
-                    cvThirdListRb.setTextColor(resources.getColor(R.color.black,null))
+                    cvThirdListTv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
+                    cvThirdListTv.setTextColor(resources.getColor(R.color.main,null))
+                }else{
+                    cvThirdListIv.setImageResource(R.drawable.folder_black)
+                    cvThirdListTitleTv.visibility = View.GONE
+                    cvThirdListTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
+                    cvThirdListTv.setTextColor(resources.getColor(R.color.black,null))
                 }
             }
             cvThirdAlarmTv.setOnClickListener {
@@ -60,10 +67,12 @@ class CreateVoteThirdFragment: Fragment()  {
                 }
             }
             cvThirdRewardTv.setOnClickListener {
-                if(cvThirdRewardTv.background.constantState == gray_box) {
+                if(cvThirdRewardIv.drawable.constantState == reward_black) {
+                    cvThirdRewardIv.setImageResource(R.drawable.reward_blue)
                     cvThirdRewardTv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
                     cvThirdRewardTv.setTextColor(resources.getColor(R.color.main,null))
                 }else{
+                    cvThirdRewardIv.setImageResource(R.drawable.reward_black)
                     cvThirdRewardTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
                     cvThirdRewardTv.setTextColor(resources.getColor(R.color.black,null))
                 }

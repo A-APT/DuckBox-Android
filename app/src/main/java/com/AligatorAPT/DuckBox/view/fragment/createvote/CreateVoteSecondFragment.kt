@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,10 +29,30 @@ class CreateVoteSecondFragment: Fragment()  {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        initButton()
+
         val mActivity = activity as CreateVoteActivity
 
 
 
+    }
+
+    private fun initButton() {
+        binding.apply {
+
+            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
+                if(cvSecondTypeRb1.isChecked){
+                    Log.e("RB111","여긴 RB1입니다")
+                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+                }
+                if(cvSecondTypeRb2.isChecked){
+                    Log.e("RB22222","여긴 RB2입니다")
+                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+                }
+            }
+        }
     }
 
 
