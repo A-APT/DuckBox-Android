@@ -1,24 +1,13 @@
 package com.AligatorAPT.DuckBox.view.activity
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.fragment.app.FragmentActivity
-import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.databinding.ActivityCreateVoteBinding
-import com.AligatorAPT.DuckBox.databinding.ActivitySignUpBinding
-import com.AligatorAPT.DuckBox.view.adapter.CreateVotePagerAdapter
+import com.AligatorAPT.DuckBox.view.adapter.createvote.CreateVotePagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.ViewGroup
-import android.view.ViewGroup.MarginLayoutParams
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import com.AligatorAPT.DuckBox.R
-import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFirstFragment
-import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteSecondFragment
-import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteThirdFragment
 
 
 class CreateVoteActivity : FragmentActivity() {

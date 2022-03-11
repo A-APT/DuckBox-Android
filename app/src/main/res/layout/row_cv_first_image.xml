@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_first_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/image_remove_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/remove"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@id/image_rv_iv"
+        app:layout_constraintTop_toTopOf="@id/image_rv_iv" />
+
+    <ImageView
+        android:id="@+id/image_rv_iv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        android:background="@drawable/sub1_color_box_10dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/image_plus_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/plus"
+        app:layout_constraintTop_toTopOf="@id/image_rv_iv"
+        app:layout_constraintStart_toStartOf="@id/image_rv_iv"
+        app:layout_constraintEnd_toEndOf="@id/image_rv_iv"
+        app:layout_constraintBottom_toBottomOf="@id/image_rv_iv"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

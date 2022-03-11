@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.adapter
+package com.AligatorAPT.DuckBox.view.adapter.createvote
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
