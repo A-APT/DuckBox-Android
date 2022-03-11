@@ -26,6 +26,10 @@ import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
 import com.AligatorAPT.DuckBox.view.fragment.signup.FinishSignUpFragment
 import java.util.*
+import android.view.MotionEvent
+
+
+
 
 class CreateVoteFirstFragment: Fragment()  {
     private var _binding : FragmentCreateVoteFirstBinding? = null
@@ -48,8 +52,10 @@ class CreateVoteFirstFragment: Fragment()  {
         super.onViewCreated(view, savedInstanceState)
         initDatePicker()
         initImage()
+
         check()
     }
+
 
     private fun initImage() {
         firstImageRVAdapter = FirstImageRVAdapter(list, requireContext())
@@ -151,16 +157,12 @@ class CreateVoteFirstFragment: Fragment()  {
                 checkValidation[1] = cvFirstContentEt.text.toString() != ""
                 setIsActivateBtn()
             }
-            cvFirstKeywordTv.doAfterTextChanged {
-                checkValidation[1] = cvFirstKeywordTv.text.toString() != "선택"
-                setIsActivateBtn()
-            }
             cvFirstStartdateCheck.doAfterTextChanged {
-                checkValidation[2] = cvFirstKeywordTv.text.toString() != "선택"
+                checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택"
                 setIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
-                checkValidation[3] = cvFirstKeywordTv.text.toString() != "선태그"
+                checkValidation[3] = cvFirstStartdateCheck.text.toString() != "선택"
                 setIsActivateBtn()
             }
 
