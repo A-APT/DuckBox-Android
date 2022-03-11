@@ -97,16 +97,13 @@ class CreateVoteFirstFragment: Fragment()  {
             //사진 여러개 선택한 경우
             if(data?.clipData != null){
                 val count = data.clipData!!.itemCount
-                if(count+list.size-1 > 10){
-                    Toast.makeText(requireContext(),"사진은 10장까지 선택 가능합니다.",Toast.LENGTH_SHORT).show()
-                }
                 for(i in 0 until count){
                     val imageUri = data.clipData!!.getItemAt(i).uri
                     list.add(imageUri)
                 }
             }else{
                 data?.data?.let{
-                    val imageUri : Uri? = data?.data
+                    val imageUri : Uri? = data.data
                     if(imageUri != null){
                         list.add(imageUri)
                     }

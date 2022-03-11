@@ -6,7 +6,6 @@
     android:overScrollMode="never"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -170,26 +169,37 @@
             app:layout_constraintTop_toBottomOf="@id/cv_first_lastdate_check"/>
 
 
-        <HorizontalScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:overScrollMode="never"
-            android:scrollbars="none"
-            android:fillViewport="true"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cv_first_image_tv">
 
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cv_first_image_rv"
+            <HorizontalScrollView
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_marginTop="8dp"
-                tools:listitem="@layout/row_cv_first_image"/>
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                android:scrollbars="none"
+                android:fillViewport="true">
 
-        </HorizontalScrollView>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/cv_first_image_rv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="8dp"
+                        tools:listitem="@layout/row_cv_first_image" />
+                </RelativeLayout>
+
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
