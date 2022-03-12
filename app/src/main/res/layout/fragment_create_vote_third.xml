@@ -126,8 +126,8 @@
 
         <ImageView
             android:id="@+id/cv_third_reward_iv"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
             android:src="@drawable/reward_black"
             android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="@id/cv_third_reward_tv"

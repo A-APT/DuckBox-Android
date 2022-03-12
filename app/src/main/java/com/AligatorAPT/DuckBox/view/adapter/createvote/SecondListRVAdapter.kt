@@ -17,13 +17,6 @@ class SecondListRVAdapter(private var items: ArrayList<String?>, val context : C
     var mList: ArrayList<String?> = arrayListOf()
     val myCustomEditTextListener = MyCustomEditTextListener()
 
-    interface OnItemClickListener{
-//        fun OnTextClick(holder: ViewHolder, view: View, data:String?, position: Int)
-//        fun OnAddClick(holder: ViewHolder, view: View, position: Int
-    }
-
-    var itemClickListener: OnItemClickListener ?= null
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -35,7 +28,6 @@ class SecondListRVAdapter(private var items: ArrayList<String?>, val context : C
     override fun onBindViewHolder(holder: SecondListRVAdapter.ViewHolder, position: Int) {
             holder.binding.textRvEt.setText("")
             myCustomEditTextListener.updatePosition(holder.adapterPosition)
-            Log.e("onBIndViewHolder",mList.toString())
     }
 
     override fun getItemCount(): Int = mList.size
@@ -60,8 +52,6 @@ class SecondListRVAdapter(private var items: ArrayList<String?>, val context : C
 
         override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             mList[position]=p0.toString()
-            notifyData()
-            Log.e("ONTEXTCHANGE",mList.toString())
         }
 
         override fun afterTextChanged(p0: Editable?) {
@@ -92,7 +82,4 @@ class SecondListRVAdapter(private var items: ArrayList<String?>, val context : C
         notifyItemInserted(mList.size-1)
     }
 
-    fun notifyData(){
-        notifyDataSetChanged()
-    }
 }

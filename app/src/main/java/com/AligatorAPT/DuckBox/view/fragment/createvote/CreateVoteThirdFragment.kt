@@ -23,7 +23,7 @@ class CreateVoteThirdFragment: Fragment()  {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCreateVoteThirdBinding.inflate(inflater,container,false)
         return binding.root
 
