@@ -1,10 +1,7 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
-import android.app.Activity
-import android.app.DatePickerDialog
+import android.annotation.SuppressLint
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -12,32 +9,32 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteFirstBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
-import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
-import com.AligatorAPT.DuckBox.view.fragment.signup.FinishSignUpFragment
 import java.util.*
-import android.view.MotionEvent
-
-
-
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class CreateVoteFirstFragment: Fragment()  {
     private var _binding : FragmentCreateVoteFirstBinding? = null
     private val binding : FragmentCreateVoteFirstBinding get() = _binding!!
-    private var checkValidation = booleanArrayOf(false, false, false, false, false, false)
+    private var checkValidation = booleanArrayOf(false, false, false, false, false)
     private var isActivateBtn = false
     private lateinit var firstImageRVAdapter: FirstImageRVAdapter
     private var list: ArrayList<Uri> = arrayListOf(Uri.parse("LAST"))
+    private var startDate = ""
+    private var lastDate = ""
+
+    companion object{
+        var isFirst = true
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,9 +47,14 @@ class CreateVoteFirstFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Time & Date Picker
         initDatePicker()
+
+        //Main Image
         initImage()
 
+        //Check Validation
         check()
     }
 
@@ -73,7 +75,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     data: Uri,
                     position: Int
                 ) {
-                    firstImageRVAdapter.delete(position)
+                    firstImageRVAdapter.remove(position)
                 }
 
                 override fun OnAddClick(
@@ -120,37 +122,43 @@ class CreateVoteFirstFragment: Fragment()  {
         }
     }
 
+    @SuppressLint("ResourceAsColor")
     private fun initDatePicker() {
 
-        lateinit var mDateSetListener : DatePickerDialog.OnDateSetListener
+        binding.apply {
+            cvFirstStartdateCheck.setOnClickListener {
+                isFirst = true
+                val datePickerDialog = DatePickerFragment.newInstance()
+                datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
+                    override fun onDatePicked(date: String) {
+                        startDate = date
+                        cvFirstStartdateCheck.setText(date)
+                    }
+                })
+                datePickerDialog.setStyle(BottomSheetDialogFragment.STYLE_NORMAL,R.style.CustomBottomSheetDialog)
+                datePickerDialog.show(childFragmentManager, datePickerDialog.tag)
+            }
 
-        binding.cvFirstStartdateCheck.setOnClickListener {
-            val cal = Calendar.getInstance()
-            val year = cal.get(Calendar.YEAR)
-            val month = cal.get(Calendar.MONTH)
-            val day = cal.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerdlg  = DatePickerDialog(
-                requireContext(),
-                android.R.style.Widget_Holo_DatePicker,
-                mDateSetListener,
-                year, month, day)
-            datePickerdlg.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            datePickerdlg.show()
-        }
-
-        mDateSetListener = DatePickerDialog.OnDateSetListener { datePicker: DatePicker?, year: Int, month: Int, day: Int ->
-
+            cvFirstLastdateCheck.setOnClickListener {
+                isFirst = false
+                val datePickerDialog = DatePickerFragment.newInstance()
+                datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
+                    override fun onDatePicked(date: String) {
+                        lastDate = date
+                        cvFirstLastdateCheck.setText(date)
+                    }
+                })
+                datePickerDialog.setStyle(BottomSheetDialogFragment.STYLE_NORMAL,R.style.CustomBottomSheetDialog)
+                datePickerDialog.show(childFragmentManager, datePickerDialog.tag)
+            }
         }
     }
 
     private fun check() {
 
         binding.apply {
-            //입력값 빈칸 확인d
             cvFirstTitleEt.doAfterTextChanged {
                 checkValidation[0] = cvFirstTitleEt.text.toString() != ""
-                Log.e("chekcValidation",checkValidation[0].toString())
                 setIsActivateBtn()
             }
             cvFirstContentEt.doAfterTextChanged {
@@ -158,21 +166,78 @@ class CreateVoteFirstFragment: Fragment()  {
                 setIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
+                Log.e("여기여기","들어왔나ㅏㅏㅏㅏ")
                 checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택"
+                checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
-                checkValidation[3] = cvFirstStartdateCheck.text.toString() != "선택"
+                checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택"
+                checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
-
         }
     }
 
-    private fun setIsActivateBtn(){
+    private fun checkTime(): Boolean {
+
+        Log.e("DATE여기여기","시작:"+startDate+"\n"+"끝:"+lastDate)
+        if (startDate != "" && lastDate != "") {
+            val start_arr = startDate.split(":", ".", " ")
+            val fin_arr = lastDate.split(":", ".", " ")
+
+            val start_year = start_arr[0].toInt()
+            val start_month = start_arr[1].toInt()
+            val start_day = start_arr[2].toInt()
+            val start_hour = start_arr[3].toInt()
+            val start_min = start_arr[4].toInt()
+            val start_ampm = start_arr[5]
+            val finish_year = fin_arr[0].toInt()
+            val finish_month = fin_arr[1].toInt()
+            val finish_day = fin_arr[2].toInt()
+            val finish_hour = fin_arr[3].toInt()
+            val finish_min = fin_arr[4].toInt()
+            val finish_ampm = fin_arr[5]
+
+
+            if (finish_year >= start_year) {
+                if (finish_month >= start_month) {
+                    if (finish_day >= start_day) {
+                        if (checkAMPM(
+                                finish_ampm, start_ampm,
+                                finish_hour, start_hour,
+                                finish_day, start_day,
+                                finish_min, start_min
+                            )
+                        ) {
+                            return true
+                        }
+                    }
+                }
+            }
+            Toast.makeText(context, "시간 설정을 확인해주세요.", Toast.LENGTH_SHORT).show()
+        }
+        return false
+    }
+
+    private fun checkAMPM(fin : String, start : String,
+                      fin_hour : Int, start_hour : Int,
+                      fin_day : Int, start_day : Int,
+                      fin_min : Int, start_min : Int) : Boolean{
+        if(fin=="AM" && start =="PM"){
+            return fin_day != start_day
+        }else if(fin == "PM" && start == "AM") return true
+        else if(fin == start){
+            return if(fin_hour>start_hour) true
+            else fin_hour==start_hour && fin_min>start_min
+        }
+        return true
+    }
+
+    fun setIsActivateBtn(){
         val mActivity = activity as CreateVoteActivity
         binding.apply {
-            if(checkValidation[0] && checkValidation[1] ){
+            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4]){
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
                 mActivity.binding.createVoteNextTv.isEnabled = true
                 isActivateBtn = true

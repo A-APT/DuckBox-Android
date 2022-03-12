@@ -31,11 +31,10 @@ class CreateVoteThirdFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
-
+        initButton()
     }
 
-    private fun init() {
+    private fun initButton() {
         binding.apply {
             val folder_black = getDrawable(requireContext(), R.drawable.folder_black)!!.constantState
             val bell_black = getDrawable(requireContext(), R.drawable.bell_black)!!.constantState
