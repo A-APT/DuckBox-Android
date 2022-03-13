@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -20,16 +21,18 @@ import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
 import java.util.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class CreateVoteFirstFragment: Fragment()  {
     private var _binding : FragmentCreateVoteFirstBinding? = null
     private val binding : FragmentCreateVoteFirstBinding get() = _binding!!
     private var checkValidation = booleanArrayOf(false, false, false, false, false)
-    private var isActivateBtn = false
     private lateinit var firstImageRVAdapter: FirstImageRVAdapter
     private var list: ArrayList<Uri> = arrayListOf(Uri.parse("LAST"))
     private var startDate = ""
     private var lastDate = ""
+    private val IMAGE_REQUEST_CODE = 100
 
     companion object{
         var isFirst = true
@@ -88,7 +91,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
                     intent.action = Intent.ACTION_GET_CONTENT
 
-                    startActivityForResult(intent, 200)
+                    startActivityForResult(intent, IMAGE_REQUEST_CODE)
 
                 }
 
@@ -99,7 +102,7 @@ class CreateVoteFirstFragment: Fragment()  {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if(requestCode == 200){
+        if(requestCode == IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             list.removeAt(list.size-1)
 
             //사진 여러개 선택한 경우
@@ -166,53 +169,49 @@ class CreateVoteFirstFragment: Fragment()  {
                 setIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
-                Log.e("여기여기","들어왔나ㅏㅏㅏㅏ")
-                checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택"
+                checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택" && checkNow(startDate)
                 checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
-                checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택"
+                checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택" && checkNow(lastDate)
                 checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
         }
     }
 
+    private fun checkNow(date : String) : Boolean{
+        val now = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy,MM,dd,hh,mm,a").withLocale(Locale.forLanguageTag("en"))
+        val nowDate = formatter.format(now)
+
+        val datearr = date.split(":","."," ")
+        val nowarr = nowDate.split(",")
+
+        for(i in 0..2){
+            if(datearr[i] < nowarr[i]) break
+            else if(datearr[i] > nowarr[i])return true
+            else if(i==2) {
+                if(checkAMPM(datearr, nowarr,true))return true
+            }
+        }
+        Toast.makeText(context, "현재 시간 이후로 설정해주세요.", Toast.LENGTH_SHORT).show()
+        return false
+    }
+
     private fun checkTime(): Boolean {
 
-        Log.e("DATE여기여기","시작:"+startDate+"\n"+"끝:"+lastDate)
         if (startDate != "" && lastDate != "") {
-            val start_arr = startDate.split(":", ".", " ")
-            val fin_arr = lastDate.split(":", ".", " ")
 
-            val start_year = start_arr[0].toInt()
-            val start_month = start_arr[1].toInt()
-            val start_day = start_arr[2].toInt()
-            val start_hour = start_arr[3].toInt()
-            val start_min = start_arr[4].toInt()
-            val start_ampm = start_arr[5]
-            val finish_year = fin_arr[0].toInt()
-            val finish_month = fin_arr[1].toInt()
-            val finish_day = fin_arr[2].toInt()
-            val finish_hour = fin_arr[3].toInt()
-            val finish_min = fin_arr[4].toInt()
-            val finish_ampm = fin_arr[5]
+            val startarr = startDate.split(":", ".", " ")
+            val finarr = lastDate.split(":", ".", " ")
 
-
-            if (finish_year >= start_year) {
-                if (finish_month >= start_month) {
-                    if (finish_day >= start_day) {
-                        if (checkAMPM(
-                                finish_ampm, start_ampm,
-                                finish_hour, start_hour,
-                                finish_day, start_day,
-                                finish_min, start_min
-                            )
-                        ) {
-                            return true
-                        }
-                    }
+            for(i in 0..2){
+                if(finarr[i] < startarr[i])break
+                else if(finarr[i] > startarr[i])return true
+                else if(i==2){
+                     if(checkAMPM(finarr, startarr,false))return true
                 }
             }
             Toast.makeText(context, "시간 설정을 확인해주세요.", Toast.LENGTH_SHORT).show()
@@ -220,32 +219,45 @@ class CreateVoteFirstFragment: Fragment()  {
         return false
     }
 
-    private fun checkAMPM(fin : String, start : String,
-                      fin_hour : Int, start_hour : Int,
-                      fin_day : Int, start_day : Int,
-                      fin_min : Int, start_min : Int) : Boolean{
-        if(fin=="AM" && start =="PM"){
-            return fin_day != start_day
-        }else if(fin == "PM" && start == "AM") return true
-        else if(fin == start){
-            return if(fin_hour>start_hour) true
-            else fin_hour==start_hour && fin_min>start_min
-        }
-        return true
+    private fun checkAMPM(datearr : List<String>, nowarr : List<String>, isNow : Boolean) : Boolean{
+        val finampm = datearr[5]
+        val startampm = nowarr[5]
+        val finday = datearr[2].toInt()
+        val startday = nowarr[2].toInt()
+        val finhour = datearr[3].toInt()
+        val starthour = nowarr[3].toInt()
+        val finmin = datearr[4].toInt()
+        val startmin = nowarr[4].toInt()
+
+        if(finampm == "AM" && startampm =="PM") return finday != startday
+        else if(finampm == "PM" && startampm == "AM") return true
+        else if(finampm == startampm)
+            if(finhour > starthour) return true
+            else if(finhour==starthour) {
+                return if(isNow) finmin>=startmin
+                else finmin>startmin
+            }
+        return false
     }
 
     fun setIsActivateBtn(){
         val mActivity = activity as CreateVoteActivity
+        mActivity.
         binding.apply {
             if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4]){
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
                 mActivity.binding.createVoteNextTv.isEnabled = true
-                isActivateBtn = true
+                mActivity.checkValidation[0] = true
             }else{
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
                 mActivity.binding.createVoteNextTv.isEnabled = false
-                isActivateBtn = false
+                mActivity.checkValidation[0] = false
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

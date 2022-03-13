@@ -17,6 +17,7 @@ import java.util.*
 class DatePickerFragment : BottomSheetDialogFragment() {
     lateinit var binding: DialogTimedatepickerBinding
     var arr : List<String> = listOf()
+    val calendar = GregorianCalendar.getInstance()
 
     companion object {
         fun newInstance() : DatePickerFragment{
@@ -50,7 +51,6 @@ class DatePickerFragment : BottomSheetDialogFragment() {
     }
 
     fun initDatePickerYear(){
-        val calendar = GregorianCalendar.getInstance()
         calendar.time = Date()
         calendar.add(Calendar.YEAR,0)
         binding.dialogYearNp.minValue = calendar.get(Calendar.YEAR)
@@ -122,10 +122,10 @@ class DatePickerFragment : BottomSheetDialogFragment() {
         year.value = calendar.get(Calendar.YEAR)
         month.value = calendar.get(Calendar.MONTH) + 1
         day.value = calendar.get(Calendar.DAY_OF_MONTH)
-        val cal_hour= calendar.get(Calendar.HOUR)
-        if(cal_hour == 0){
-            hour.value = 12
-        }
+        val calhour= calendar.get(Calendar.HOUR)
+        if(calhour == 0) hour.value = 12
+        else hour.value = calhour
+
         min.value = calendar.get(Calendar.MINUTE)
         ampm.value = calendar.get(Calendar.AM_PM)
 
