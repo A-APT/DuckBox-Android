@@ -1,12 +1,12 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
-import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -15,21 +15,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteSecondBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
-import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
 import com.AligatorAPT.DuckBox.view.adapter.createvote.SecondListRVAdapter
-import java.util.ArrayList
-import android.R.string.no
-import android.widget.Toast
 import androidx.core.view.get
-import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
+import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CreateVoteSecondFragment: Fragment()  {
     private var _binding : FragmentCreateVoteSecondBinding? = null
     private val binding : FragmentCreateVoteSecondBinding get() = _binding!!
-    private var checkValidation = booleanArrayOf(true)
-    private var isActivateBtn = false
-    private var list: ArrayList<String?> = arrayListOf()
+    private val viewModel : CVSecondListViewModel by viewModels()
+    var checkValidation = booleanArrayOf(false)
+    private var list : ArrayList<String> = arrayListOf()
     private lateinit var secondListRVAdapter : SecondListRVAdapter
 
     override fun onCreateView(
@@ -58,7 +58,8 @@ class CreateVoteSecondFragment: Fragment()  {
             cvSecondListRv.adapter = secondListRVAdapter
 
             cvSecondAddTv.setOnClickListener {
-                secondListRVAdapter.addData()
+                list.add("")
+                viewModel.addTask(list)
             }
         }
 
@@ -72,13 +73,12 @@ class CreateVoteSecondFragment: Fragment()  {
             ): Boolean {
                 val fromPos: Int = from.adapterPosition
                 val toPos: Int = to.adapterPosition
-                secondListRVAdapter.swapData(fromPos, toPos)
+                viewModel.swapTask(fromPos, toPos)
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                secondListRVAdapter.clearText(viewHolder.layoutPosition)
-                secondListRVAdapter.removeData(viewHolder.layoutPosition)
+                viewModel.deleteTask(viewHolder.layoutPosition)
                 binding.cvSecondListRv.get(viewHolder.layoutPosition).clearFocus()
             }
         }
@@ -104,34 +104,39 @@ class CreateVoteSecondFragment: Fragment()  {
     }
 
     private fun check() {
-
         binding.apply {
+            viewModel.data.observe(viewLifecycleOwner,{
+                secondListRVAdapter.setData(it!!)
 
-            val list = secondListRVAdapter.getList()
+                val handler = Handler()
+                val r = Runnable { secondListRVAdapter.notifyDataSetChanged() }
+                handler.post(r)
 
-            var final_list : ArrayList<String> = arrayListOf()
-
-            for(i in 0 until list.size-1){
-                if(list[i]!="") final_list.add(list[i]!!)
-            }
-
-//            checkValidation[0] = final_list.size >= 2
-//            setIsActivateBtn()
-
+                Log.e("OBSERVER",it.size.toString()+"내용:"+it.toString())
+                checkValidation[0] = it.size>=2
+                setIsActivateBtn()
+            })
         }
     }
 
 
-    private fun setIsActivateBtn(){
+    fun setIsActivateBtn(){
         val mActivity = activity as CreateVoteActivity
         binding.apply {
             if(checkValidation[0]){
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
-                isActivateBtn = true
+                mActivity.binding.createVoteNextTv.isEnabled = true
+                mActivity.checkValidation[1] = true
             }else{
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
-                isActivateBtn = false
+                mActivity.binding.createVoteNextTv.isEnabled = false
+                mActivity.checkValidation[1] = false
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
