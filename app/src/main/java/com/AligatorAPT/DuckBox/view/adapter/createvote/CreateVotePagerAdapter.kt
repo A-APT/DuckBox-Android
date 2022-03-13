@@ -10,14 +10,13 @@ import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteThirdFragment
 
 class CreateVotePagerAdapter (fragmentActivity : FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItemCount(): Int = 4
+    override fun getItemCount(): Int = 3
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> CreateVoteFirstFragment()
             1 -> CreateVoteSecondFragment()
             2 -> CreateVoteThirdFragment()
-            3 -> CreateVoteFinalFragment()
             else -> CreateVoteFirstFragment()
         }
     }

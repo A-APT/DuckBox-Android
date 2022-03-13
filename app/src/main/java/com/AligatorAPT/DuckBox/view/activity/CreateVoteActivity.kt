@@ -10,11 +10,15 @@ import com.AligatorAPT.DuckBox.view.adapter.createvote.CreateVotePagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
+import com.AligatorAPT.DuckBox.R
+import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 
 
 class CreateVoteActivity : FragmentActivity() {
     lateinit var binding: ActivityCreateVoteBinding
     lateinit var viewPager : ViewPager2
+    var checkValidation = booleanArrayOf(false,false,true)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,16 +26,31 @@ class CreateVoteActivity : FragmentActivity() {
         setContentView(binding.root)
 
         initViewPager()
-        
 
         binding.createVoteNextTv.setOnClickListener {
+
+            if(viewPager.currentItem == 2) {
+                binding.createVoteFr.visibility = View.VISIBLE
+                binding.createVoteVp.visibility = View.GONE
+                binding.createVoteNextTv.visibility = View.GONE
+                binding.createVoteTl.visibility = View.GONE
+                binding.createVoteTitle.text = "투표 생성 완료"
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
+                    .commit()
+            }
+
             viewPager.currentItem = viewPager.currentItem+1
             if(viewPager.currentItem == 2) binding.createVoteNextTv.text = "완료"
-            else if(viewPager.currentItem == 3){
-                binding.createVoteTitle.text = "투표 생성 완료"
-                binding.createVoteNextTv.visibility = View.GONE
-            }
             else binding.createVoteNextTv.text = "다음"
+
+            if(checkValidation[viewPager.currentItem]){
+                binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
+                binding.createVoteNextTv.isEnabled = true
+            }else{
+                binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
+                binding.createVoteNextTv.isEnabled = false
+            }
         }
 
         binding.createVoteCloseIv.setOnClickListener {
@@ -47,9 +66,6 @@ class CreateVoteActivity : FragmentActivity() {
 
         val tablayout = binding.createVoteTl
         TabLayoutMediator(tablayout, viewPager){ tab, position ->
-            if(position==3){
-                binding.createVoteTl.visibility = View.GONE
-            }
         }.attach()
 
         val tabs = tablayout.getChildAt(0) as ViewGroup
@@ -67,12 +83,19 @@ class CreateVoteActivity : FragmentActivity() {
 
     override fun onBackPressed() {
         val currentItem: Int = viewPager.currentItem
-        if(currentItem == 3) finish()
-        else if (currentItem != 0) {
+        if (currentItem != 0) {
+            if(viewPager.visibility == View.GONE)finish()
+
             viewPager.setCurrentItem(currentItem - 1, true)
             if(viewPager.currentItem != 2) binding.createVoteNextTv.text = "다음"
+            if(checkValidation[viewPager.currentItem]){
+                binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
+                binding.createVoteNextTv.isEnabled = true
+            }else{
+                binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
+                binding.createVoteNextTv.isEnabled = false
+            }
         } else{
-            Log.e("HERE",currentItem.toString())
             super.onBackPressed()
         }
     }
