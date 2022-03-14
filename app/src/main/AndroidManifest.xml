@@ -39,6 +39,9 @@
             android:name=".view.activity.SignUpActivity"
             android:exported="false" />
         <activity
+            android:name=".view.activity.CreateVoteActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

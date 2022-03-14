@@ -18,4 +18,10 @@
         android:layout_height="wrap_content"
         android:text="navigationButton" />
 
+    <Button
+        android:id="@+id/createVoteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="createVoteButton" />
+
 </LinearLayout>

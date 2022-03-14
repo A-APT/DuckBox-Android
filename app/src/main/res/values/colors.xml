@@ -20,6 +20,7 @@
     <color name="sub3">#FFD2EADE</color>
     <color name="sub4">#FFEAE3FF</color>
     <color name="sub5">#FFFFDDDD</color>
+    <color name="transparent">#0000ffff</color>
 
 
 </resources>
