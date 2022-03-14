@@ -13,6 +13,8 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
 
 
 class CreateVoteActivity : FragmentActivity() {
@@ -78,6 +80,7 @@ class CreateVoteActivity : FragmentActivity() {
             layoutParams.width = 62
             tab.layoutParams = layoutParams
             tablayout.requestLayout()
+            tab.setOnTouchListener( { v, event -> true })
         }
     }
 
