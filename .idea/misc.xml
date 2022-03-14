@@ -27,16 +27,19 @@
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.12310030395136778" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_navigation.xml" value="0.35294117647058826" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_poll_create.xml" value="0.128125" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_poll_detail.xml" value="0.1484375" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_sign_up.xml" value="0.264" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_vote_create.xml" value="0.128125" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_vote_detail.xml" value="0.1" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/dialog_write.xml" value="0.536" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_alarm.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_community.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email_code.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_explain_student_card.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_finish_sign_up.xml" value="0.16" />
-        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_home.xml" value="0.15087719298245614" />
+        <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_more_info.xml" value="0.16" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_my.xml" value="0.1" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_policy.xml" value="0.23868312757201646" />
@@ -46,26 +49,13 @@
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_paper.xml" value="0.2" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_voting_and_polls.xml" value="0.264" />
         <entry key="..\:/Users/82106/AndroidStudioProjects/DuckBox-Android/app/src/main/res/menu/navigation_menu.xml" value="0.275" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/create_vote_check_selector.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/create_vote_selector.xml" value="0.2630769230769231" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/create_vote_textview_selector.xml" value="0.2630769230769231" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/create_vote_type_selector.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/create_vote_type_text_selector.xml" value="0.2630769230769231" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/edit_text_box.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/main_stoke_white_solid_box_5d0.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/main_stoke_white_solid_box_5dp.xml" value="0.2630769230769231" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/main_stroke_sub1_solid_box_5dp.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/white_color_box_10dp.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/drawable/white_color_box_50dp.xml" value="0.2671875" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/activity_create_vote.xml" value="0.25104166666666666" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/border_bottom.xml" value="0.1175" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/main_border_bottom_2dp.xml" value="0.1175" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/main_color_box_10dp.xml" value="0.1" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.2" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_setting.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_update.xml" value="0.264" />
         <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/activity_main.xml" value="0.25104166666666666" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/fragment_create_vote_final.xml" value="0.25104166666666666" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/fragment_create_vote_first.xml" value="0.264" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/fragment_create_vote_second.xml" value="0.4" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/fragment_create_vote_third.xml" value="0.264" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/fragment_more_info.xml" value="0.24717948717948718" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/row_cv_second_image.xml" value="0.4" />
-        <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/row_cv_second_text.xml" value="0.25104166666666666" />
       </map>
     </option>
   </component>

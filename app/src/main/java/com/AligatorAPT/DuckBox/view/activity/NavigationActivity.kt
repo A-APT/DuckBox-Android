@@ -2,6 +2,7 @@ package com.AligatorAPT.DuckBox.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityNavigationBinding
@@ -28,16 +29,16 @@ class NavigationActivity : AppCompatActivity() {
                 setOnItemSelectedListener {
                     when (it.itemId) {
                         R.id.tab_home -> {
-                            changeFragment(HomeFragment())
+                            changeFragment(HomeFragment(), "오리상자")
                         }
                         R.id.tab_community -> {
-                            changeFragment(CommunityFragment())
+                            changeFragment(CommunityFragment(), "커뮤니티")
                         }
                         R.id.tab_alarm -> {
-                            changeFragment(AlarmFragment())
+                            changeFragment(AlarmFragment(), "알림")
                         }
                         R.id.tab_my -> {
-                            changeFragment(MyFragment())
+                            changeFragment(MyFragment(), "MY")
                         }
                     }
                     true
@@ -48,9 +49,17 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeFragment(fragment: Fragment) {
+    private fun changeFragment(fragment: Fragment, title: String) {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.navigationFrameLayout, fragment)
         transaction.commit()
+        binding.apply {
+            navigationTitle.text = title
+            if (title == "오리상자" || title == "커뮤니티") {
+                searchBtn.visibility = View.VISIBLE
+            } else {
+                searchBtn.visibility = View.INVISIBLE
+            }
+        }
     }
 }

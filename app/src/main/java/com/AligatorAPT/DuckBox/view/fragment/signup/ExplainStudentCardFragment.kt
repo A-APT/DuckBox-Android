@@ -31,4 +31,9 @@ class ExplainStudentCardFragment : Fragment() {
             mActivity.changeFragment(StudentCardOutputFragment(), "학생증 인증하기")
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

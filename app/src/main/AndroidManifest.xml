@@ -12,6 +12,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuckBox">
         <activity
+            android:name=".view.activity.GroupUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.GroupSettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.PollCreateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.VoteCreateActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.PollDetailActivity"
             android:exported="false" />
         <activity
