@@ -14,7 +14,7 @@ import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
-class SecondListRVAdapter(private var items: ArrayList<String>, val context: Context)
+class SecondListRVAdapter(val context: Context)
     : RecyclerView.Adapter<SecondListRVAdapter.ViewHolder>(){
 
     var mList : ArrayList<String> = arrayListOf()
@@ -43,7 +43,7 @@ class SecondListRVAdapter(private var items: ArrayList<String>, val context: Con
 
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                         mList.set(adapterPosition, p0.toString())
-                        Log.e("ONTEXT", "position:$adapterPosition  $items")
+                        Log.e("ONTEXT", "position:$adapterPosition  $mList")
                     }
                     override fun afterTextChanged(p0: Editable?) {
 
@@ -55,5 +55,6 @@ class SecondListRVAdapter(private var items: ArrayList<String>, val context: Con
 
     fun setData(newData: ArrayList<String>){
         mList = newData
+        notifyDataSetChanged()
     }
 }

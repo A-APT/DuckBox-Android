@@ -39,6 +39,16 @@
         app:layout_constraintTop_toBottomOf="@id/create_vote_title"
         app:layout_constraintStart_toStartOf="@id/create_vote_title"/>
 
+    <FrameLayout
+        android:id="@+id/create_vote_fr"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/create_vote_next_tv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/create_vote_tl"/>
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/create_vote_vp"
         android:layout_width="match_parent"

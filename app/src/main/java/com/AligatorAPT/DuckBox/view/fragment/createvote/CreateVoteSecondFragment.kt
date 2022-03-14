@@ -50,7 +50,7 @@ class CreateVoteSecondFragment: Fragment()  {
 
 
     private fun initList() {
-        secondListRVAdapter = SecondListRVAdapter(list,requireContext())
+        secondListRVAdapter = SecondListRVAdapter(requireContext())
         binding.apply {
             val layoutManager = LinearLayoutManager(requireContext())
             layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -107,11 +107,6 @@ class CreateVoteSecondFragment: Fragment()  {
         binding.apply {
             viewModel.data.observe(viewLifecycleOwner,{
                 secondListRVAdapter.setData(it!!)
-
-                val handler = Handler()
-                val r = Runnable { secondListRVAdapter.notifyDataSetChanged() }
-                handler.post(r)
-
                 Log.e("OBSERVER",it.size.toString()+"내용:"+it.toString())
                 checkValidation[0] = it.size>=2
                 setIsActivateBtn()
