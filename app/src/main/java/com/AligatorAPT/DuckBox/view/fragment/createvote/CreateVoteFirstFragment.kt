@@ -87,10 +87,8 @@ class CreateVoteFirstFragment: Fragment()  {
                     position: Int
                 ) {
                     val intent = Intent(Intent.ACTION_PICK)
-                    intent.data = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    intent.type = MediaStore.Images.Media.CONTENT_TYPE
                     intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-                    intent.action = Intent.ACTION_GET_CONTENT
-
                     startActivityForResult(intent, IMAGE_REQUEST_CODE)
 
                 }
