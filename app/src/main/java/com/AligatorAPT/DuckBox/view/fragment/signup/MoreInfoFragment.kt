@@ -16,7 +16,7 @@ class MoreInfoFragment : Fragment() {
     private var _binding: FragmentMoreInfoBinding? = null
     private val binding: FragmentMoreInfoBinding get() = _binding!!
 
-    private var checkValidation = booleanArrayOf(false, false, false, false)
+    private var checkValidation = booleanArrayOf(false, false, false, false, false, false)
     private var isActivateBtn = false
 
     override fun onCreateView(
@@ -64,7 +64,7 @@ class MoreInfoFragment : Fragment() {
     private fun setIsActivateBtn(){
         val mActivity = activity as SignUpActivity
         binding.apply {
-            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3]){
+            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4] && checkValidation[5]){
                 binding.finishSignUp.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
                 isActivateBtn = true
             }else{
@@ -78,7 +78,15 @@ class MoreInfoFragment : Fragment() {
         val mActivity = activity as SignUpActivity
 
         binding.apply {
-            //입력값 빈칸 확인d
+            //입력값 빈칸 확인
+            setName.doAfterTextChanged {
+                checkValidation[4] = setName.text.toString() != ""
+                setIsActivateBtn()
+            }
+            setStudentId.doAfterTextChanged {
+                checkValidation[5] = setStudentId.text.toString() != ""
+                setIsActivateBtn()
+            }
             setPassword.doAfterTextChanged {
                 checkValidation[0] = setPassword.text.toString() != ""
                 setIsActivateBtn()
