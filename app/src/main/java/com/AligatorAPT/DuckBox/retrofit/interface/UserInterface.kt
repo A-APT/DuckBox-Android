@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.controller
+package com.AligatorAPT.DuckBox.retrofit.`interface`
 
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
 import com.AligatorAPT.DuckBox.dto.user.LoginResponseDto
@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface UserController {
+interface UserInterface {
     @POST("/api/v1/user/login")
     fun login(
         @Body loginRequestDto: LoginRequestDto

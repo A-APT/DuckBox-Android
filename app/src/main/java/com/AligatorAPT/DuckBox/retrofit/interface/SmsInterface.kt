@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.controller
+package com.AligatorAPT.DuckBox.retrofit.`interface`
 
 import com.AligatorAPT.DuckBox.dto.user.SMSTokenDto
 import okhttp3.ResponseBody
@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-interface SmsContoller {
+interface SmsInterface {
     @POST("/api/v1/user/sms")
     fun generateSMSAuth(
         @Body targetNumber:String

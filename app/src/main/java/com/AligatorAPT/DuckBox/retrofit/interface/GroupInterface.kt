@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.controller
+package com.AligatorAPT.DuckBox.retrofit.`interface`
 
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -8,7 +8,7 @@ import retrofit2.http.Query
 import java.io.File
 import java.util.*
 
-interface GroupController {
+interface GroupInterface {
     @POST("/api/v1/group/register")
     fun register(
         @Query("description") description: String,
