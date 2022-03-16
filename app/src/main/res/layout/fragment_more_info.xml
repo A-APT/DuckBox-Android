@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -48,15 +49,15 @@
                 android:id="@+id/setName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/edit_text_box"
-                android:ems="10"
                 android:hint="입력해주세요."
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                android:maxLength="10"
                 android:padding="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgray"
-                android:layout_marginBottom="40dp"
                 android:textSize="16sp" />
 
             <TextView
@@ -71,15 +72,15 @@
                 android:id="@+id/setStudentId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/edit_text_box"
-                android:ems="10"
-                android:hint="입력해주세요."
+                android:hint="입력해주세요. (30자 이내)"
                 android:importantForAutofill="no"
                 android:inputType="number"
+                android:maxLength="30"
                 android:padding="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgray"
-                android:layout_marginBottom="40dp"
                 android:textSize="16sp" />
 
             <TextView
@@ -90,19 +91,27 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/setPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_box"
-                android:ems="10"
-                android:hint="입력해주세요."
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:padding="16dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgray"
-                android:textSize="16sp" />
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/setPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_box"
+                    android:hint="입력해주세요. (30자 이내)"
+                    android:importantForAutofill="no"
+                    android:inputType="textPassword"
+                    android:maxLength="30"
+                    android:padding="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgray"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/errorPassword"
@@ -123,19 +132,27 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <EditText
-                android:id="@+id/setRePassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edit_text_box"
-                android:ems="10"
-                android:hint="입력해주세요."
-                android:importantForAutofill="no"
-                android:inputType="textPassword"
-                android:padding="16dp"
-                android:textColor="@color/black"
-                android:textColorHint="@color/darkgray"
-                android:textSize="16sp" />
+                app:boxBackgroundMode="none"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <EditText
+                    android:id="@+id/setRePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/edit_text_box"
+                    android:hint="입력해주세요. (30자 이내)"
+                    android:importantForAutofill="no"
+                    android:inputType="textPassword"
+                    android:maxLength="30"
+                    android:padding="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/darkgray"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/errorCheckPassword"
@@ -161,10 +178,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_box"
-                android:ems="10"
-                android:hint="입력해주세요."
+                android:hint="입력해주세요. (30자 이내)"
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                android:maxLength="30"
                 android:padding="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgray"
@@ -194,10 +211,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_box"
-                android:ems="10"
-                android:hint="입력해주세요."
+                android:hint="ex)컴퓨터공학부,전기전자공학부."
                 android:importantForAutofill="no"
                 android:inputType="textPersonName"
+                android:maxLength="30"
                 android:padding="16dp"
                 android:textColor="@color/black"
                 android:textColorHint="@color/darkgray"

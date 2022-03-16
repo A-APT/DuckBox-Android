@@ -1,14 +1,20 @@
 package com.AligatorAPT.DuckBox.view.fragment.signup
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentMoreInfoBinding
+import com.AligatorAPT.DuckBox.dto.user.RegisterDto
+import com.AligatorAPT.DuckBox.model.UserModel
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import java.util.regex.Pattern
 
@@ -18,6 +24,9 @@ class MoreInfoFragment : Fragment() {
 
     private var checkValidation = booleanArrayOf(false, false, false, false, false, false)
     private var isActivateBtn = false
+    private var email = ""
+
+    private val userModel: UserModel = UserModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +38,13 @@ class MoreInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //이메일 받기
+        setFragmentResultListener("toMoreInfo"){key, bundle->
+            email = bundle.getString("email").toString()
+            Log.d("RESULT", email)
+        }
+
         init()
     }
 
@@ -108,7 +124,31 @@ class MoreInfoFragment : Fragment() {
             finishSignUp.setOnClickListener {
                 if(isActivateBtn){
                     if (checkPassword(setPassword.text.toString()) && checkRePassword(setPassword.text.toString(), setRePassword.text.toString())){
+                        //학과 정보 리스트로 만들기
+                        val token = setDepartment.text.toString().split(',')
+                        val departmentList = ArrayList<String>()
+                        for( item in token){
+                            departmentList.add(item.replace(" ", ""))
+                        }
+
+                        userModel.register(
+                            RegisterDto(
+                                setStudentId.text.toString().toInt(),
+                                setName.text.toString(),
+                                setPassword.text.toString(),
+                                email,
+                                "010-1234-1234",
+                                setNickname.text.toString(),
+                                "건국대학교",
+                                departmentList
+                            )
+                        )
+
+                        //프래그먼트에 닉네임 전달
+                        setFragmentResult("toFinishSignUp", bundleOf("nickname" to setNickname.text.toString()))
+
                         mActivity.changeFragment(FinishSignUpFragment(), "회원가입 완료")
+
                     }
                 }
             }
