@@ -1,6 +1,6 @@
 package com.AligatorAPT.DuckBox.retrofit
 
-import com.AligatorAPT.DuckBox.controller.*
+import com.AligatorAPT.DuckBox.retrofit.`interface`.*
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,19 +13,19 @@ object RetrofitClient {
             .addConverterFactory(GsonConverterFactory.create())
     }
 
-    val EMAIL_CONTROLLER_SERVICE: EmailController by lazy{
-        retrofit.build().create(EmailController::class.java)
+    val EMAIL_INTERFACE_SERVICE: EmailInterface by lazy{
+        retrofit.build().create(EmailInterface::class.java)
     }
 
-    val GROUP_CONTROLLER_SERVICE: GroupController by lazy{
-        retrofit.build().create(GroupController::class.java)
+    val GROUP_INTERFACE_SERVICE: GroupInterface by lazy{
+        retrofit.build().create(GroupInterface::class.java)
     }
 
-    val SMS_CONTOLLER_SERVICE: SmsContoller by lazy{
-        retrofit.build().create(SmsContoller::class.java)
+    val SMS_INTERFACE_SERVICE: SmsInterface by lazy{
+        retrofit.build().create(SmsInterface::class.java)
     }
 
-    val USER_CONTROLLER_SERVICE: UserController by lazy{
-        retrofit.build().create(UserController::class.java)
+    val USER_INTERFACE_SERVICE: UserInterface by lazy{
+        retrofit.build().create(UserInterface::class.java)
     }
 }

@@ -23,7 +23,7 @@ class EmailCodeFragment : Fragment() {
     private val binding: FragmentEmailCodeBinding get() = _binding!!
 
     private var isActivateBtn = false
-    private var email = ""
+    private var _email = ""
 
     private val emailModel: EmailModel = EmailModel()
 
@@ -40,8 +40,8 @@ class EmailCodeFragment : Fragment() {
 
         //이메일 받기
         setFragmentResultListener("toEmailCode"){key, bundle->
-            email = bundle.getString("email").toString()
-            Log.d("RESULT", email)
+            _email = bundle.getString("email").toString()
+            Log.d("RESULT", _email)
         }
 
         init()
@@ -60,7 +60,7 @@ class EmailCodeFragment : Fragment() {
         val mActivity = activity as SignUpActivity
         binding.apply {
             //사용자 이메일 설정
-            userEmail.text = "$email 으로 코드를 전송했습니다."
+            userEmail.text = "$_email 으로 코드를 전송했습니다."
 
             //입력값 확인
             setEmailCode.doAfterTextChanged {
@@ -70,14 +70,14 @@ class EmailCodeFragment : Fragment() {
 
             //다시보내기 버튼 이벤트
             reSendCodeBtn.setOnClickListener {
-                emailModel.generateEmailAuth(email)
-                Toast.makeText(mActivity, "$email 으로 이메일을 다시 전송했습니다.", Toast.LENGTH_LONG).show()
+                emailModel.generateEmailAuth(_email)
+                Toast.makeText(mActivity, "$_email 으로 이메일을 다시 전송했습니다.", Toast.LENGTH_LONG).show()
             }
 
             //제출 버튼 클릭 이벤트
             emailCodeBtn.setOnClickListener {
                 //이메일 코드 확인
-                var isVerified = emailModel.verifyEmailToken(EmailTokenDto(email, setEmailCode.text.toString()))
+                var isVerified = emailModel.verifyEmailToken(EmailTokenDto(email = _email, token = setEmailCode.text.toString()))
 
                 //이메일 코드 임시로 true 설정 (이메일 서버 작동 확인시 지울 예정)
                 isVerified = true
@@ -86,7 +86,7 @@ class EmailCodeFragment : Fragment() {
                     errorEmailCode.visibility = View.INVISIBLE
 
                     //프래그먼트에 이메일 주소 전달
-                    setFragmentResult("toMoreInfo", bundleOf("email" to email))
+                    setFragmentResult("toMoreInfo", bundleOf("email" to _email))
 
                     mActivity.changeFragment(MoreInfoFragment(), "정보 입력하기")
                 }else{

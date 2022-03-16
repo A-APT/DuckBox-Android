@@ -11,7 +11,7 @@ import retrofit2.Response
 class UserModel{
     fun register( _userInfo: RegisterDto){
         Log.d("USER", _userInfo.toString())
-        RetrofitClient.USER_CONTROLLER_SERVICE.register(
+        RetrofitClient.USER_INTERFACE_SERVICE.register(
             _userInfo
         ).enqueue(object:
             Callback<ResponseBody> {

@@ -24,7 +24,7 @@ class MoreInfoFragment : Fragment() {
 
     private var checkValidation = booleanArrayOf(false, false, false, false, false, false)
     private var isActivateBtn = false
-    private var email = ""
+    private var _email = ""
 
     private val userModel: UserModel = UserModel()
 
@@ -41,8 +41,8 @@ class MoreInfoFragment : Fragment() {
 
         //이메일 받기
         setFragmentResultListener("toMoreInfo"){key, bundle->
-            email = bundle.getString("email").toString()
-            Log.d("RESULT", email)
+            _email = bundle.getString("email").toString()
+            Log.d("RESULT", _email)
         }
 
         init()
@@ -133,14 +133,14 @@ class MoreInfoFragment : Fragment() {
 
                         userModel.register(
                             RegisterDto(
-                                setStudentId.text.toString().toInt(),
-                                setName.text.toString(),
-                                setPassword.text.toString(),
-                                email,
-                                "010-1234-1234",
-                                setNickname.text.toString(),
-                                "건국대학교",
-                                departmentList
+                                studentId = setStudentId.text.toString().toInt(),
+                                name = setName.text.toString(),
+                                password = setPassword.text.toString(),
+                                email = _email,
+                                phoneNumber = "010-1234-1234",
+                                nickname = setNickname.text.toString(),
+                                college = "건국대학교",
+                                department = departmentList
                             )
                         )
 

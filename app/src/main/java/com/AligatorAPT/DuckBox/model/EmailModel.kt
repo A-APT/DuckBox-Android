@@ -10,7 +10,7 @@ import retrofit2.Response
 
 class EmailModel {
     fun generateEmailAuth(_email: String){
-        RetrofitClient.EMAIL_CONTROLLER_SERVICE.generateEmailAuth(_email).enqueue(object:
+        RetrofitClient.EMAIL_INTERFACE_SERVICE.generateEmailAuth(_email).enqueue(object:
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
@@ -29,7 +29,7 @@ class EmailModel {
     fun verifyEmailToken(_emailTokenDto: EmailTokenDto): Boolean{
         var isVerified = false
 
-        RetrofitClient.EMAIL_CONTROLLER_SERVICE.verifyEmailToken(_emailTokenDto).enqueue(object:
+        RetrofitClient.EMAIL_INTERFACE_SERVICE.verifyEmailToken(_emailTokenDto).enqueue(object:
             Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
