@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
@@ -22,7 +23,7 @@ class MoreInfoFragment : Fragment() {
     private var _binding: FragmentMoreInfoBinding? = null
     private val binding: FragmentMoreInfoBinding get() = _binding!!
 
-    private var checkValidation = booleanArrayOf(false, false, false, false, false, false)
+    private var checkValidation = booleanArrayOf(false, false, false, false, false)
     private var isActivateBtn = false
     private var _email = ""
 
@@ -80,7 +81,7 @@ class MoreInfoFragment : Fragment() {
     private fun setIsActivateBtn(){
         val mActivity = activity as SignUpActivity
         binding.apply {
-            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4] && checkValidation[5]){
+            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4]){
                 binding.finishSignUp.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
                 isActivateBtn = true
             }else{
@@ -94,29 +95,34 @@ class MoreInfoFragment : Fragment() {
         val mActivity = activity as SignUpActivity
 
         binding.apply {
+            //스피너 연결
+            setDepartment.adapter = ArrayAdapter.createFromResource(
+                mActivity, R.array.department, android.R.layout.simple_spinner_item
+            )
+
+            setDepartment2.adapter = ArrayAdapter.createFromResource(
+                mActivity, R.array.department, android.R.layout.simple_spinner_item
+            )
+
             //입력값 빈칸 확인
             setName.doAfterTextChanged {
-                checkValidation[4] = setName.text.toString() != ""
+                checkValidation[0] = setName.text.toString() != ""
                 setIsActivateBtn()
             }
             setStudentId.doAfterTextChanged {
-                checkValidation[5] = setStudentId.text.toString() != ""
+                checkValidation[1] = setStudentId.text.toString() != ""
                 setIsActivateBtn()
             }
             setPassword.doAfterTextChanged {
-                checkValidation[0] = setPassword.text.toString() != ""
+                checkValidation[2] = setPassword.text.toString() != ""
                 setIsActivateBtn()
             }
             setRePassword.doAfterTextChanged {
-                checkValidation[1] = setRePassword.text.toString() != ""
+                checkValidation[3] = setRePassword.text.toString() != ""
                 setIsActivateBtn()
             }
             setNickname.doAfterTextChanged {
-                checkValidation[2] = setNickname.text.toString() != ""
-                setIsActivateBtn()
-            }
-            setDepartment.doAfterTextChanged {
-                checkValidation[3] = setDepartment.text.toString() != ""
+                checkValidation[4] = setNickname.text.toString() != ""
                 setIsActivateBtn()
             }
 
@@ -125,11 +131,11 @@ class MoreInfoFragment : Fragment() {
                 if(isActivateBtn){
                     if (checkPassword(setPassword.text.toString()) && checkRePassword(setPassword.text.toString(), setRePassword.text.toString())){
                         //학과 정보 리스트로 만들기
-                        val token = setDepartment.text.toString().split(',')
                         val departmentList = ArrayList<String>()
-                        for( item in token){
-                            departmentList.add(item.replace(" ", ""))
-                        }
+                        if(setDepartment.selectedItemPosition != 0)
+                            departmentList.add(setDepartment.selectedItem.toString())
+                        if(setDepartment2.selectedItemPosition != 0)
+                            departmentList.add(setDepartment2.selectedItem.toString())
 
                         userModel.register(
                             RegisterDto(

@@ -202,34 +202,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="학과"
+                android:text="주전공"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
-            <EditText
+            <Spinner
                 android:id="@+id/setDepartment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:background="@drawable/edit_text_box"
-                android:hint="ex)컴퓨터공학부,전기전자공학부."
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:maxLength="30"
                 android:padding="16dp"
                 android:textColor="@color/black"
-                android:textColorHint="@color/darkgray"
-                android:textSize="16sp" />
-
-            <TextView
-                android:id="@+id/errorDepartment"
+                android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:gravity="end"
-                android:text="정확한 학과명을 입력해주세요."
-                android:textColor="@color/main2"
-                android:textSize="14sp"
-                android:visibility="invisible" />
+                android:layout_marginBottom="30dp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="복수전공"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/setDepartment2"
+                android:background="@drawable/edit_text_box"
+                android:padding="16dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                />
 
         </LinearLayout>
     </ScrollView>
