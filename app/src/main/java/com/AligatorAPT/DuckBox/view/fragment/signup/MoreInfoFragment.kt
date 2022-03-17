@@ -143,7 +143,7 @@ class MoreInfoFragment : Fragment() {
                                 name = setName.text.toString(),
                                 password = setPassword.text.toString(),
                                 email = _email,
-                                phoneNumber = "010-1234-1234",
+                                phoneNumber = "",
                                 nickname = setNickname.text.toString(),
                                 college = "건국대학교",
                                 department = departmentList
