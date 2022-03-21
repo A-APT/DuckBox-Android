@@ -14,6 +14,7 @@ import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.MyGroupData
 import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -23,6 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var paperListAdapter: PaperListAdapter
 
     private var isParticipation = true
+    private var isVerification = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,11 +40,32 @@ class HomeFragment : Fragment() {
     }
 
     private fun init(){
+        val mActivity = activity as NavigationActivity
+
         binding.apply {
-            //그룹 만들기 액티비티 이동
             createGroupBtn.setOnClickListener {
-                val intent = Intent(activity, CreateGroupActivity::class.java)
-                startActivity(intent)
+                if(isVerification){
+                    //그룹 만들기 액티비티 이동
+                    val intent = Intent(activity, CreateGroupActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    //다이얼로그
+                    val bundle = Bundle()
+                    bundle.putString("message", "모든 인증을 완료하고\n" +
+                            "그룹을 만들어주세요.")
+                    val modalDialog = ModalDialog()
+                    modalDialog.arguments = bundle
+                    modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                        override fun OnPositiveClick() {
+                            modalDialog.dismiss()
+                        }
+
+                        override fun OnNegativeClick() {
+                            modalDialog.dismiss()
+                        }
+                    }
+                    modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+                }
             }
 
             //MyGroup list 관리하는 메니저 등록
@@ -83,7 +106,6 @@ class HomeFragment : Fragment() {
             }
             recyclerPaperList.adapter = paperListAdapter
 
-            val mActivity = activity as NavigationActivity
             binding.apply {
                 //참여 가능 버튼 누를 경우
                 toggleParticipationPossible.setOnClickListener {
