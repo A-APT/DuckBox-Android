@@ -6,9 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.setFragmentResult
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailBinding
+import com.AligatorAPT.DuckBox.model.EmailModel
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
 class EmailFragment : Fragment() {
@@ -19,6 +22,8 @@ class EmailFragment : Fragment() {
     private var agree2Flag = false
     private var checkEmail = false
     private var isActivateBtn = false
+
+    private val emailModel: EmailModel = EmailModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -90,6 +95,12 @@ class EmailFragment : Fragment() {
             //인증하기 버튼 클릭
             emailBtn.setOnClickListener {
                 if(isActivateBtn){
+                    //이메일 전송
+                    emailModel.generateEmailAuth(textEmail.text.toString())
+
+                    //프래그먼트에 이메일 주소 전달
+                    setFragmentResult("toEmailCode", bundleOf("email" to textEmail.text.toString()))
+
                     mActivity.changeFragment(EmailCodeFragment(), "이메일 인증하기")
                 }
             }
