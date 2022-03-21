@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 
+def Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdk 31
 
@@ -14,6 +17,11 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // local properties
+        buildConfigField("String", "ETH_NETWORK_LOCAL", properties.getProperty("ethereum.network-local"))
+        buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
+        buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
     }
 
     buildTypes {
@@ -66,4 +74,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     //gson
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    
+    // Ethereum
+    implementation("org.web3j:core:4.5.11")
 }
