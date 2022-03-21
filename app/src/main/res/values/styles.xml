@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="CustomBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+    </style>
+    <style name="CustomBottomSheet"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/timedatepicker_box</item>
+    </style>
+
+    <style name="NumberPickerStyle">
+        <item name="colorControlNormal">@color/sub1</item>
+    </style>
+
+</resources>

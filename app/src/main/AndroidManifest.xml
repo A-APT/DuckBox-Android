@@ -14,6 +14,12 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.DuckBox">
         <activity
+            android:name=".view.activity.GroupUpdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.GroupSettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.PollCreateActivity"
             android:exported="false" />
         <activity
@@ -33,6 +39,9 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CreateVoteActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
