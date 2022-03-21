@@ -39,6 +39,12 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         binding.apply {
+            //그룹 만들기 액티비티 이동
+            createGroupBtn.setOnClickListener {
+                val intent = Intent(activity, CreateGroupActivity::class.java)
+                startActivity(intent)
+            }
+
             //MyGroup list 관리하는 메니저 등록
             myGroupAdapter = MyGroupAdapter(setGroupList())
             myGroupAdapter.itemClickListener = object :MyGroupAdapter.OnItemClickListener{
