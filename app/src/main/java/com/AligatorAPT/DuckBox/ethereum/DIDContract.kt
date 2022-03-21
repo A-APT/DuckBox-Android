@@ -21,7 +21,7 @@ object DIDContract {
 
     fun registerDid(did: String): Boolean? {
         val inputParams = listOf<Type<*>>(Utf8String(did))
-        val outputParams = listOf<TypeReference<*>>(object: TypeReference<Bool>() {})
+        val outputParams = listOf<TypeReference<*>>()
         return ethereumManagement.ethSend(clientAddress, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
