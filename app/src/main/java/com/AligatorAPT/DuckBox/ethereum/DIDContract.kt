@@ -16,30 +16,27 @@ object DIDContract {
     private const val UNREGISTER = "removeId"
     private const val GET = "getId"
 
-    // temp (local)
-    private val clientAddress = "0x0B0dC674b3ab2e55B61e7A7b72a23416968882a6"
-
     fun registerDid(did: String): Boolean? {
         val inputParams = listOf<Type<*>>(Utf8String(did))
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(clientAddress, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
     fun removeDid(did: String) {
         val inputParams = listOf<Type<*>>(Utf8String(did))
         val outputParams = listOf<TypeReference<*>>()
-        ethereumManagement.ethSend(clientAddress, contractAddress, UNREGISTER, inputParams, outputParams)
+        ethereumManagement.ethSendRaw(contractAddress, UNREGISTER, inputParams, outputParams)
     }
 
     fun getDid(did: String): String? {
         val inputParams = listOf<Type<*>>(Utf8String(did))
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Utf8String>() {})
-        return ethereumManagement.ethCall(clientAddress, contractAddress, GET, inputParams, outputParams) as String?
+        return ethereumManagement.ethCall(contractAddress, GET, inputParams, outputParams) as String?
     }
 
     fun getOwner(): String? {
         val inputParams = listOf<Type<*>>()
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Address>() {})
-        return ethereumManagement.ethCall(clientAddress, contractAddress, "owner", inputParams, outputParams) as String?
+        return ethereumManagement.ethCall(contractAddress, "owner", inputParams, outputParams) as String?
     }
 }
