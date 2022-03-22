@@ -21,9 +21,6 @@
             android:name=".view.activity.PollCreateActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.VoteCreateActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activity.PollDetailActivity"
             android:exported="false" />
         <activity
