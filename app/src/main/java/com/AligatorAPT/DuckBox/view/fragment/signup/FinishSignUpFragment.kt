@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.setFragmentResultListener
 import com.AligatorAPT.DuckBox.MainActivity
 import com.AligatorAPT.DuckBox.databinding.FragmentFinishSignUpBinding
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
@@ -31,7 +32,9 @@ class FinishSignUpFragment : Fragment() {
         val mActivity = activity as SignUpActivity
         binding.apply {
             //유저 닉네임 설정
-            finishUserName.text = "노랑오리"
+            setFragmentResultListener("toFinishSignUp"){key, bundle->
+                finishUserName.text = bundle.getString("nickname").toString()
+            }
 
             //시작하기 버튼 이벤트
             startHome.setOnClickListener {
