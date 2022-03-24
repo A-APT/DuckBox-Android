@@ -58,6 +58,8 @@ class HomeFragment : Fragment() {
                     modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                         override fun OnPositiveClick() {
                             modalDialog.dismiss()
+                            //내정보로 이동
+                            mActivity.selectedBottomNavigationItem(R.id.tab_my)
                         }
 
                         override fun OnNegativeClick() {
