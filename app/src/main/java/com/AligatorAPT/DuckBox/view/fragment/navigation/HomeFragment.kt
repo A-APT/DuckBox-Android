@@ -24,7 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var paperListAdapter: PaperListAdapter
 
     private var isParticipation = true
-    private var isVerification = false
+    private var isVerification = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

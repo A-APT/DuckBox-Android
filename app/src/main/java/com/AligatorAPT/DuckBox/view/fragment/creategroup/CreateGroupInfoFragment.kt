@@ -7,15 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
+import androidx.fragment.app.activityViewModels
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateGroupInfoBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateGroupActivity
+import com.AligatorAPT.DuckBox.viewmodel.createvote.CreateGroupViewModel
 
 class CreateGroupInfoFragment : Fragment() {
     private var _binding: FragmentCreateGroupInfoBinding? = null
     private val binding: FragmentCreateGroupInfoBinding get() = _binding!!
     private var checkValidation = booleanArrayOf(false, false)
     private var isActivateBtn = false
+
+    private val model: CreateGroupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -73,6 +77,8 @@ class CreateGroupInfoFragment : Fragment() {
             nextBtn.setOnClickListener {
                 if(isActivateBtn){
                     if(!checkDuplicateGroupName()){
+                        model.setLeaderDid("groupLeaderDid")
+                        model.setGroupInfo(setGroupName.text.toString(), setIntroduce.text.toString())
                         mActivity.changeFragment(CreateGroupImageFragment(), "이미지 추가하기")
                     }
                 }
