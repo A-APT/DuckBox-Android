@@ -43,7 +43,7 @@ class CreateVoteSecondFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initButton()
+//        initButton()
         initList()
         check()
     }
@@ -87,21 +87,21 @@ class CreateVoteSecondFragment: Fragment()  {
 
     }
 
-    private fun initButton() {
-        binding.apply {
-
-            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
-                if(cvSecondTypeRb1.isChecked){
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-                if(cvSecondTypeRb2.isChecked){
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-            }
-        }
-    }
+//    private fun initButton() {
+//        binding.apply {
+//
+//            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
+//                if(cvSecondTypeRb1.isChecked){
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//                if(cvSecondTypeRb2.isChecked){
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//            }
+//        }
+//    }
 
     private fun check() {
         binding.apply {
