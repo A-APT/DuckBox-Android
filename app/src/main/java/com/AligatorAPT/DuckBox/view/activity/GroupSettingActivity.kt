@@ -16,8 +16,8 @@ class GroupSettingActivity : AppCompatActivity() {
     private var _groupMembers = 2752
     private var _groupValid = true
 
-    private var isGroupMember = false
-    private var isGroupMaster = true
+    private var isGroupMember = true
+    private var isGroupMaster = false
     lateinit var groupData: MyGroupData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,9 +70,11 @@ class GroupSettingActivity : AppCompatActivity() {
                 intent.putExtra("groupData", groupData)
                 startActivity(intent)
             }
+
             membersBtn.setOnClickListener {
 
             }
+
             deleteGroup.setOnClickListener {
                 if(isGroupMaster){
                     //다이얼로그
@@ -96,6 +98,7 @@ class GroupSettingActivity : AppCompatActivity() {
                     modalDialog.show(this@GroupSettingActivity.supportFragmentManager, "ModalDialog")
                 }
             }
+
             outGroup.setOnClickListener {
                 if(isGroupMember){
                     //다이얼로그
@@ -119,9 +122,12 @@ class GroupSettingActivity : AppCompatActivity() {
                     modalDialog.show(this@GroupSettingActivity.supportFragmentManager, "ModalDialog")
                 }
             }
-            reportGroup.setOnClickListener {
 
+            reportGroup.setOnClickListener {
+                val intent = Intent(this@GroupSettingActivity, ReportActivity::class.java)
+                startActivity(intent)
             }
+
             backBtn.setOnClickListener {
                 onBackPressed()
             }

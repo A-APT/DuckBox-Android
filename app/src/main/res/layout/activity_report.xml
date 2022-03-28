@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.ReportActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_bottom"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/reportBackBtn"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="30dp"
+            android:contentDescription="backBtn"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:gravity="center"
+            android:paddingVertical="24dp"
+            android:text="신고하기"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="30dp"
+            android:paddingTop="46dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="신고 내역을"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="34dp"
+                android:text="작성해주세요."
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="신고 유형"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:id="@+id/reportType1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:drawableEnd="@drawable/check_blue"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="영리목적/홍보성"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="음란성/선정성"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/reportType2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="욕설/인신공격"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="개인정보노출"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/reportType3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="그룹 사칭"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/reportTypeBtn6"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="15dp"
+                    android:background="@drawable/create_vote_type_selector"
+                    android:button="@null"
+                    android:drawablePadding="20dp"
+                    android:padding="15dp"
+                    android:text="기타"
+                    android:textColor="@drawable/create_vote_type_text_selector" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="8dp"
+                android:text="신고 사유"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <EditText
+                android:importantForAutofill = "no"
+                android:id="@+id/reportReason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@drawable/edit_text_box"
+                android:gravity="top|start"
+                android:hint="입력해주세요."
+                android:inputType="textMultiLine"
+                android:lines="7"
+                android:padding="15dp"
+                android:scrollHorizontally="false"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkgray"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/reportBtn"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/darkgray"
+        android:gravity="center"
+        android:text="신고하기"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
