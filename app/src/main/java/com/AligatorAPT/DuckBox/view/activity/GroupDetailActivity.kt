@@ -18,7 +18,7 @@ class GroupDetailActivity : AppCompatActivity() {
 
     private var _groupDescription = "2022 건국대학교 총학생회입니다."
     private var _groupMembers = 2752
-    private var isGroupMember = false
+    private var isGroupMember = true
 
     lateinit var groupData:MyGroupData
 
@@ -51,6 +51,15 @@ class GroupDetailActivity : AppCompatActivity() {
             }
 
             //버튼 이벤트
+            mutualAuthentication.setOnClickListener {
+                if(isGroupMember){
+                    val intent = Intent(this@GroupDetailActivity, MutualAuthActivity::class.java)
+                    intent.putExtra("groupName", groupData.title)
+                    intent.putExtra("groupDescription", _groupDescription)
+                    startActivity(intent)
+                }
+            }
+
             joinGroup.setOnClickListener {
                 if(!isGroupMember){
                     //다이얼로그

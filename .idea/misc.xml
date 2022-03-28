@@ -59,6 +59,7 @@
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.2" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_setting.xml" value="0.176" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_update.xml" value="0.264" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_mutual_authentication.xml" value="0.2" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_result.xml" value="0.176" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_vote_detail.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/dialog_modal.xml" value="0.264" />
@@ -69,6 +70,11 @@
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email_code.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_finish_create_group.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_banner.xml" value="0.1" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_cv_first_image.xml" value="0.1" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_cv_second_text.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_mutual_authentication.xml" value="0.264" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_my_group.xml" value="0.1" />
         <entry key="..\:/Users/kms10/AndroidStudioProjects/DuckBox/app/src/main/res/layout/activity_main.xml" value="0.25104166666666666" />
       </map>
     </option>

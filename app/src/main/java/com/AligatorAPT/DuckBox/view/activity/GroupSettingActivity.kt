@@ -16,8 +16,8 @@ class GroupSettingActivity : AppCompatActivity() {
     private var _groupMembers = 2752
     private var _groupValid = true
 
-    private var isGroupMember = true
-    private var isGroupMaster = false
+    private var isGroupMember = false
+    private var isGroupMaster = true
     lateinit var groupData: MyGroupData
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +74,27 @@ class GroupSettingActivity : AppCompatActivity() {
 
             }
             deleteGroup.setOnClickListener {
+                if(isGroupMaster){
+                    //다이얼로그
+                    val bundle = Bundle()
+                    bundle.putString("message", "그룹을 삭제하시겠습니까?\n그룹 삭제 시 게시글과 참여 내역은\n자동으로 삭제되지 않습니다.")
+                    val modalDialog = ModalDialog()
+                    modalDialog.arguments = bundle
+                    modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                        override fun OnPositiveClick() {
+                            modalDialog.dismiss()
+                            //그룹 삭제 완료로 화면 전환
+                            val intent = Intent(this@GroupSettingActivity, ResultActivity::class.java)
+                            intent.putExtra("isType", 2)
+                            startActivity(intent)
+                        }
 
+                        override fun OnNegativeClick() {
+                            modalDialog.dismiss()
+                        }
+                    }
+                    modalDialog.show(this@GroupSettingActivity.supportFragmentManager, "ModalDialog")
+                }
             }
             outGroup.setOnClickListener {
                 if(isGroupMember){
