@@ -51,6 +51,31 @@ class GroupDetailActivity : AppCompatActivity() {
             }
 
             //버튼 이벤트
+            joinGroup.setOnClickListener {
+                if(!isGroupMember){
+                    //다이얼로그
+                    val bundle = Bundle()
+                    bundle.putString("message", "그룹에 가입하시겠습니까?")
+                    val modalDialog = ModalDialog()
+                    modalDialog.arguments = bundle
+                    modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                        override fun OnPositiveClick() {
+                            modalDialog.dismiss()
+                            //그룹 가입 요청 완료로 화면 전환
+                            val intent = Intent(this@GroupDetailActivity, ResultActivity::class.java)
+                            intent.putExtra("isType", 0)
+                            intent.putExtra("groupName", groupData.title)
+                            startActivity(intent)
+                        }
+
+                        override fun OnNegativeClick() {
+                            modalDialog.dismiss()
+                        }
+                    }
+                    modalDialog.show(this@GroupDetailActivity.supportFragmentManager, "ModalDialog")
+                }
+            }
+
             backBtn.setOnClickListener {
                 onBackPressed()
             }
