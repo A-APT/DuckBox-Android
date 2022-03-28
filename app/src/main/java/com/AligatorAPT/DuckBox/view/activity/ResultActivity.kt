@@ -1,10 +1,9 @@
 package com.AligatorAPT.DuckBox.view.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.AligatorAPT.DuckBox.R
-import com.AligatorAPT.DuckBox.databinding.ActivityGroupDetailBinding
 import com.AligatorAPT.DuckBox.databinding.ActivityResultBinding
 
 class ResultActivity : AppCompatActivity() {
@@ -72,6 +71,12 @@ class ResultActivity : AppCompatActivity() {
             //버튼 이벤트
             resultBackBtn.setOnClickListener {
                 onBackPressed()
+            }
+
+            resultBtn.setOnClickListener {
+                val intent = Intent(this@ResultActivity, NavigationActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) //홈으로 이동하므로 스택 비우기
+                startActivity(intent)
             }
         }
     }
