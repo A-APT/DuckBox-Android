@@ -9,6 +9,7 @@ import com.AligatorAPT.DuckBox.databinding.ActivityGroupDetailBinding
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.MyGroupData
 import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.google.android.material.tabs.TabLayout
 import java.text.DecimalFormat
 
@@ -70,13 +71,32 @@ class GroupDetailActivity : AppCompatActivity() {
                     data: PaperListData,
                     position: Int
                 ) {
-                    // 투표 및 설문 상세로 화면 전환
-                    if(data.isVote){
-                        val intent = Intent(this@GroupDetailActivity, VoteDetailActivity::class.java)
-                        startActivity(intent)
+                    if(isGroupMember){
+                        // 투표 및 설문 상세로 화면 전환
+                        if(data.isVote){
+                            val intent = Intent(this@GroupDetailActivity, VoteDetailActivity::class.java)
+                            startActivity(intent)
+                        }else{
+                            val intent = Intent(this@GroupDetailActivity, PollDetailActivity::class.java)
+                            startActivity(intent)
+                        }
                     }else{
-                        val intent = Intent(this@GroupDetailActivity, PollDetailActivity::class.java)
-                        startActivity(intent)
+                        //다이얼로그
+                        val bundle = Bundle()
+                        bundle.putString("message", "그룹원만 열람할 수 있습니다.\n" +
+                                "그룹에 가입해주세요.")
+                        val modalDialog = ModalDialog()
+                        modalDialog.arguments = bundle
+                        modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                            override fun OnPositiveClick() {
+                                modalDialog.dismiss()
+                            }
+
+                            override fun OnNegativeClick() {
+                                modalDialog.dismiss()
+                            }
+                        }
+                        modalDialog.show(this@GroupDetailActivity.supportFragmentManager, "ModalDialog")
                     }
                 }
             }
