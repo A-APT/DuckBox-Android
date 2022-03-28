@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/setMessage"
-        android:paddingHorizontal="70dp"
+        android:paddingHorizontal="60dp"
         android:paddingBottom="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
