@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
+import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 
@@ -34,6 +35,11 @@ class MainActivity : AppCompatActivity() {
 
             createVoteButton.setOnClickListener {
                 val intent = Intent(this@MainActivity, CreateVoteActivity::class.java)
+                startActivity(intent)
+            }
+
+            LoginButton.setOnClickListener {
+                val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
