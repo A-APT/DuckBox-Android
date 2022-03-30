@@ -8,24 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailCodeBinding
 import com.AligatorAPT.DuckBox.dto.user.EmailTokenDto
-import com.AligatorAPT.DuckBox.model.EmailModel
+import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
 class EmailCodeFragment : Fragment() {
     private var _binding: FragmentEmailCodeBinding? = null
     private val binding: FragmentEmailCodeBinding get() = _binding!!
 
     private var isActivateBtn = false
-    private var _email = ""
 
-    private val emailModel: EmailModel = EmailModel()
+    private val model: RegisterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,60 +37,72 @@ class EmailCodeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //이메일 받기
-        setFragmentResultListener("toEmailCode"){key, bundle->
-            _email = bundle.getString("email").toString()
-            Log.d("RESULT", _email)
-        }
-
         init()
     }
 
-    private fun setIsActivateBtn(){
+    private fun setIsActivateBtn() {
         val mActivity = activity as SignUpActivity
-        if(isActivateBtn){
+        if (isActivateBtn) {
             binding.emailCodeBtn.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
-        }else{
-            binding.emailCodeBtn.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+        } else {
+            binding.emailCodeBtn.setBackgroundColor(
+                ContextCompat.getColor(
+                    mActivity,
+                    R.color.darkgray
+                )
+            )
         }
     }
 
-    private fun init(){
+    private fun init() {
         val mActivity = activity as SignUpActivity
         binding.apply {
             //사용자 이메일 설정
-            userEmail.text = "$_email 으로 코드를 전송했습니다."
+            //이메일 받기
+            model.email.observe(viewLifecycleOwner, Observer {
+                userEmail.text = "$it 으로 코드를 전송했습니다."
+            })
 
             //입력값 확인
             setEmailCode.doAfterTextChanged {
+                errorEmailCode.visibility = View.INVISIBLE
                 isActivateBtn = setEmailCode.text.toString() != ""
                 setIsActivateBtn()
             }
 
             //다시보내기 버튼 이벤트
             reSendCodeBtn.setOnClickListener {
-                emailModel.generateEmailAuth(_email)
-                Toast.makeText(mActivity, "$_email 으로 이메일을 다시 전송했습니다.", Toast.LENGTH_LONG).show()
+                model.email.observe(viewLifecycleOwner, Observer {
+                    model.generateEmailAuth(it, object: ApiCallback{
+                        override fun apiCallback(flag: Boolean) {
+                            Toast.makeText(mActivity, "$it 으로 이메일을 다시 전송했습니다.", Toast.LENGTH_LONG).show()
+                        }
+                    })
+                })
             }
 
             //제출 버튼 클릭 이벤트
             emailCodeBtn.setOnClickListener {
                 //이메일 코드 확인
-                var isVerified = emailModel.verifyEmailToken(EmailTokenDto(email = _email, token = setEmailCode.text.toString()))
-
-                //이메일 코드 임시로 true 설정 (이메일 서버 작동 확인시 지울 예정)
-                isVerified = true
-
-                if(isVerified && isActivateBtn){
+                if (isActivateBtn) {
                     errorEmailCode.visibility = View.INVISIBLE
-
-                    //프래그먼트에 이메일 주소 전달
-                    setFragmentResult("toMoreInfo", bundleOf("email" to _email))
-
-                    mActivity.changeFragment(MoreInfoFragment(), "정보 입력하기")
-                }else{
-                    isActivateBtn = false
-                    errorEmailCode.visibility = View.VISIBLE
+                    model.email.observe(viewLifecycleOwner, Observer {
+                        model.verifyEmailToken(
+                            EmailTokenDto(
+                                email = it,
+                                token = setEmailCode.text.toString()
+                            ),
+                            object : ApiCallback {
+                                override fun apiCallback(flag: Boolean) {
+                                    if (flag) {
+                                        mActivity.changeFragment(MoreInfoFragment(), "정보 입력하기")
+                                    } else {
+                                        isActivateBtn = false
+                                        errorEmailCode.visibility = View.VISIBLE
+                                    }
+                                }
+                            })
+                    })
                 }
             }
         }
