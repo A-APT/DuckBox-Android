@@ -17,6 +17,15 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.activity.LoginActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".view.activity.ReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.MutualAuthActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ResultActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.CreateGroupActivity"
