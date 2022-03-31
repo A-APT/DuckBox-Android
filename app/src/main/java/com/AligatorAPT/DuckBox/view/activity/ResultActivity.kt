@@ -80,4 +80,16 @@ class ResultActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+        when(isType){
+            0 -> super.onBackPressed()
+            1, 2, 3 -> {
+                val intent = Intent(this@ResultActivity, NavigationActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+            else -> super.onBackPressed()
+        }
+    }
 }
