@@ -197,7 +197,8 @@
                     android:orientation="vertical"
                     android:background="@color/lightblue"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/vd_line">
+                    app:layout_constraintTop_toBottomOf="@id/vd_line"
+                    app:layout_constraintEnd_toEndOf="parent">
 
                     <TextView
                         android:id="@+id/vd_list_tv"
@@ -211,7 +212,10 @@
                         android:id="@+id/vd_list_rv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:overScrollMode="never"
                         android:layout_marginTop="20dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         tools:listitem="@layout/row_vd_list"/>
 
                 </LinearLayout>

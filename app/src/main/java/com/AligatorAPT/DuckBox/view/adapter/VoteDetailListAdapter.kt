@@ -1,16 +1,31 @@
 package com.AligatorAPT.DuckBox.view.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowVdListBinding
+import kotlinx.coroutines.selects.select
+import kotlin.properties.Delegates
 
 class VoteDetailListAdapter(private var items: ArrayList<String>)
     : RecyclerView.Adapter<VoteDetailListAdapter.ViewHolder>(){
 
-    var isChecked: Int = 0
+    var item: List<String> = items
+    set(value) {
+        field = value
+        notifyDataSetChanged()
+    }
+
+    var selectedPosition by Delegates.observable(-1) { property, oldPos, newPos ->
+        if(newPos in items.indices){
+            notifyItemChanged(oldPos)
+            notifyItemChanged(newPos)
+        }
+    }
 
     interface OnItemClickListener{
         fun onTouch(holder: ViewHolder, view: View, position: Int)
@@ -27,23 +42,29 @@ class VoteDetailListAdapter(private var items: ArrayList<String>)
     }
 
     override fun onBindViewHolder(holder: VoteDetailListAdapter.ViewHolder, position: Int) {
+        if(position in item.indices){
+            holder.bind(items[position], position == selectedPosition)
+            holder.binding.vdTextTv.setOnClickListener { selectedPosition = position }
+        }
     }
 
     override fun getItemCount(): Int = items.size
 
     inner class ViewHolder(val binding : RowVdListBinding): RecyclerView.ViewHolder(binding.root) {
-        init{
-            binding.apply {
-                vdTextTv.text = items[adapterPosition]
 
-                vdTextTv.setOnClickListener {
-                    itemClickListener?.onTouch(this@ViewHolder,it,adapterPosition)
+        fun bind(item: String, selected: Boolean){
+            binding.apply {
+                vdTextTv.text = item
+                if(selected) {
+                    vdCheckIv.visibility = View.VISIBLE
+                    vdTextCv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
                 }
+                else {
+                    vdCheckIv.visibility = View.GONE
+                    vdTextCv.setBackgroundResource(R.drawable.white_color_box_5dp)
+                }
+
             }
         }
-    }
-
-    fun Check(position : Int){
-
     }
 }
