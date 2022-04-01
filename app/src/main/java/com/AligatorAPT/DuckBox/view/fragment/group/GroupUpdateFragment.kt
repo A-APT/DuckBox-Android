@@ -15,14 +15,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupUpdateBinding
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
-import com.AligatorAPT.DuckBox.viewmodel.GroupDetailViewModel
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import java.lang.Exception
 
 class GroupUpdateFragment : Fragment() {
     private var _binding: FragmentGroupUpdateBinding? = null
     private val binding: FragmentGroupUpdateBinding get() = _binding!!
 
-    private val model: GroupDetailViewModel by activityViewModels()
+    private val model: GroupViewModel by activityViewModels()
 
     private val BACKGROUND_IMAGE = 100
     private val CIRCLE_IMAGE = 101

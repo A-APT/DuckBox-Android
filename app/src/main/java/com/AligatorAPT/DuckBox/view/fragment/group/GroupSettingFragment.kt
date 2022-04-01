@@ -9,17 +9,18 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupSettingBinding
+import com.AligatorAPT.DuckBox.dto.group.GroupStatus
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.activity.ReportActivity
 import com.AligatorAPT.DuckBox.view.activity.ResultActivity
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
-import com.AligatorAPT.DuckBox.viewmodel.GroupDetailViewModel
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 
 class GroupSettingFragment : Fragment() {
     private var _binding: FragmentGroupSettingBinding? = null
     private val binding: FragmentGroupSettingBinding get() = _binding!!
 
-    private val model: GroupDetailViewModel by activityViewModels()
+    private val model: GroupViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +49,7 @@ class GroupSettingFragment : Fragment() {
             })
 
             model.status.observe(viewLifecycleOwner, Observer {
-                if(it == "PENDING")
+                if(it == GroupStatus.PENDING)
                     groupValid.text = "대기중"
                 else
                     groupValid.text = "완료"
@@ -58,13 +59,13 @@ class GroupSettingFragment : Fragment() {
 
             //그룹장, 그룹원 여부
             model.authority.observe(viewLifecycleOwner, Observer {
-                if(it == GroupDetailViewModel.Authority.MASTER){
+                if(it == GroupViewModel.Authority.MASTER){
                     updateGroup.visibility = View.VISIBLE
                     deleteGroup.visibility = View.VISIBLE
                     membersBtn.visibility = View.VISIBLE
                     outGroup.visibility = View.GONE
                     reportGroup.visibility = View.GONE
-                }else if(it == GroupDetailViewModel.Authority.MEMBER){
+                }else if(it == GroupViewModel.Authority.MEMBER){
                     updateGroup.visibility = View.GONE
                     deleteGroup.visibility = View.GONE
                     membersBtn.visibility = View.VISIBLE
@@ -90,7 +91,7 @@ class GroupSettingFragment : Fragment() {
 
             deleteGroup.setOnClickListener {
                 model.authority.observe(viewLifecycleOwner, Observer {
-                    if(it == GroupDetailViewModel.Authority.MASTER){
+                    if(it == GroupViewModel.Authority.MASTER){
                         //다이얼로그
                         val bundle = Bundle()
                         bundle.putString("message", "그룹을 삭제하시겠습니까?\n그룹 삭제 시 게시글과 참여 내역은\n자동으로 삭제되지 않습니다.")
@@ -116,7 +117,7 @@ class GroupSettingFragment : Fragment() {
 
             outGroup.setOnClickListener {
                 model.authority.observe(viewLifecycleOwner, Observer {
-                    if (it == GroupDetailViewModel.Authority.MEMBER) {
+                    if (it == GroupViewModel.Authority.MEMBER) {
                         //다이얼로그
                         val bundle = Bundle()
                         bundle.putString("message", "그룹에서 탈퇴하시겠습니까?\n탈퇴 시 작성된 게시글과 참여내역은\n자동으로 삭제되지 않습니다.")

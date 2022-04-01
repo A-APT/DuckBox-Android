@@ -11,13 +11,13 @@ import com.AligatorAPT.DuckBox.databinding.FragmentMutualAuthBinding
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
 import com.AligatorAPT.DuckBox.view.data.MutualAuthData
-import com.AligatorAPT.DuckBox.viewmodel.GroupDetailViewModel
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 
 class MutualAuthFragment : Fragment() {
     private var _binding: FragmentMutualAuthBinding? = null
     private val binding: FragmentMutualAuthBinding get() = _binding!!
 
-    private val model: GroupDetailViewModel by activityViewModels()
+    private val model: GroupViewModel by activityViewModels()
 
     private lateinit var mutualAuthAdapter : MutualAuthAdapter
 

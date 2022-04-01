@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
 import com.AligatorAPT.DuckBox.model.UserModel
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

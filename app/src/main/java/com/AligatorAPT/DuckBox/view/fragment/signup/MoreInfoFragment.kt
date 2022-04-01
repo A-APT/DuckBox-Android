@@ -1,7 +1,6 @@
 package com.AligatorAPT.DuckBox.view.fragment.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentMoreInfoBinding
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 import java.util.regex.Pattern

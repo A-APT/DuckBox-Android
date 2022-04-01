@@ -10,7 +10,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailBinding
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
@@ -96,7 +96,7 @@ class EmailFragment : Fragment() {
             emailBtn.setOnClickListener {
                 if(isActivateBtn){
                     //이메일 전송
-                    model.generateEmailAuth(textEmail.text.toString(), object: ApiCallback{
+                    model.generateEmailAuth(textEmail.text.toString(), object: ApiCallback {
                         override fun apiCallback(flag: Boolean) {
                             if(flag){
                                 //이메일 뷰모델에 저장

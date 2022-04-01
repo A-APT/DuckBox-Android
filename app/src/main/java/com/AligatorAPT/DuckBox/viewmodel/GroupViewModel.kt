@@ -2,8 +2,9 @@ package com.AligatorAPT.DuckBox.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.AligatorAPT.DuckBox.dto.group.GroupStatus
 
-class GroupDetailViewModel: ViewModel() {
+class GroupViewModel: ViewModel() {
     enum class Authority{
         MASTER,
         MEMBER,
@@ -14,12 +15,12 @@ class GroupDetailViewModel: ViewModel() {
     val name = MutableLiveData<String>()
     var leader = MutableLiveData<String>()
     var description = MutableLiveData<String>()
-    var profile = MutableLiveData<String>()
-    var header = MutableLiveData<String>()
+    var profile = MutableLiveData<ByteArray?>()
+    var header = MutableLiveData<ByteArray?>()
 
     //그룹 기본 정보
     var id = MutableLiveData<String>()
-    var status = MutableLiveData<String>() // 그룹 인증
+    var status = MutableLiveData<GroupStatus>() // 그룹 인증
 
     //그룹 권한
     var authority = MutableLiveData<Authority>()
@@ -28,10 +29,10 @@ class GroupDetailViewModel: ViewModel() {
         _name:String,
         _leader:String,
         _description:String,
-        _profile:String,
-        _header:String,
+        _profile:ByteArray?,
+        _header:ByteArray?,
         _id:String,
-        _status:String){
+        _status:GroupStatus){
 
         name.value = _name
         leader.value = _leader
@@ -45,5 +46,4 @@ class GroupDetailViewModel: ViewModel() {
     fun setAuthority(_authority: Authority){
         authority.value = _authority
     }
-
 }

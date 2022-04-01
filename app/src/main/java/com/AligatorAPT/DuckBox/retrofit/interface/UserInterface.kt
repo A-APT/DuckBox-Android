@@ -22,5 +22,5 @@ interface UserInterface {
     @POST("/api/v1/user/register")
     fun register(
         @Body registerDto: RegisterDto
-    ): Call<ResponseBody>
+    ): Call<String>
 }

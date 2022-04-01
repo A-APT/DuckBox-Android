@@ -14,14 +14,14 @@ import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
-import com.AligatorAPT.DuckBox.viewmodel.GroupDetailViewModel
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.google.android.material.tabs.TabLayout
 
 class GroupDetailFragment : Fragment() {
     private var _binding: FragmentGroupDetailBinding? = null
     private val binding: FragmentGroupDetailBinding get() = _binding!!
 
-    private val model: GroupDetailViewModel by activityViewModels()
+    private val model: GroupViewModel by activityViewModels()
 
     private lateinit var paperListAdapter: PaperListAdapter
 
@@ -41,19 +41,8 @@ class GroupDetailFragment : Fragment() {
 
     private fun init(){
         val mActivity = activity as GroupActivity
-
-        //그룹 정보 초기화
-        model.setGroupInfo(
-            _name = "KU총학생회",
-            _description = "2022 건국대학교 총학생회입니다.",
-            _header = "",
-            _id = "1",
-            _leader = "jiwoo",
-            _profile = "",
-            _status = "PENDING"
-        )
         //그룹 권한 초기화
-        model.setAuthority(GroupDetailViewModel.Authority.OTHER)
+        model.setAuthority(GroupViewModel.Authority.OTHER)
 
         binding.apply {
             //그룹 정보 추가
@@ -68,7 +57,7 @@ class GroupDetailFragment : Fragment() {
 
             //그룹 가입 여부
             model.authority.observe(viewLifecycleOwner, Observer {
-                if (it == GroupDetailViewModel.Authority.MEMBER || it == GroupDetailViewModel.Authority.MASTER) {
+                if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
                     joinGroup.visibility = View.GONE
                     mutualAuthentication.visibility = View.VISIBLE
                 }else{
@@ -80,7 +69,7 @@ class GroupDetailFragment : Fragment() {
             //버튼 이벤트
             mutualAuthentication.setOnClickListener {
                 model.authority.observe(viewLifecycleOwner, Observer {
-                    if (it == GroupDetailViewModel.Authority.MEMBER || it == GroupDetailViewModel.Authority.MASTER) {
+                    if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
                         mActivity.changeFragment(MutualAuthFragment())
                     }
                 })
@@ -88,7 +77,7 @@ class GroupDetailFragment : Fragment() {
 
             joinGroup.setOnClickListener {
                 model.authority.observe(viewLifecycleOwner, Observer {
-                    if (it == GroupDetailViewModel.Authority.OTHER) {
+                    if (it == GroupViewModel.Authority.OTHER) {
                         //다이얼로그
                         val bundle = Bundle()
                         bundle.putString("message", "그룹에 가입하시겠습니까?")
@@ -134,7 +123,7 @@ class GroupDetailFragment : Fragment() {
                     position: Int
                 ) {
                     model.authority.observe(viewLifecycleOwner, Observer {
-                        if (it == GroupDetailViewModel.Authority.OTHER) {
+                        if (it == GroupViewModel.Authority.OTHER) {
                             //다이얼로그
                             val bundle = Bundle()
                             bundle.putString("message", "그룹원만 열람할 수 있습니다.\n" +

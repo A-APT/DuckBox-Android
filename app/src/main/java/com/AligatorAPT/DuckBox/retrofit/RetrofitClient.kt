@@ -1,15 +1,19 @@
 package com.AligatorAPT.DuckBox.retrofit
 
 import com.AligatorAPT.DuckBox.retrofit.`interface`.*
+import com.google.gson.GsonBuilder
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
     private const val BASE_URL:String = "http://192.168.219.104:8080"
 
+    var gson = GsonBuilder().setLenient().create()
+
     private val retrofit:Retrofit.Builder by lazy{
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(GsonConverterFactory.create())
     }
 

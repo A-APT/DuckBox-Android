@@ -1,17 +1,19 @@
 package com.AligatorAPT.DuckBox.view.adapter
 
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowMyGroupBinding
-import com.AligatorAPT.DuckBox.view.data.MyGroupData
+import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 
-class MyGroupAdapter (var items:ArrayList<MyGroupData>)
+class MyGroupAdapter (var items:ArrayList<GroupDetailDto>)
     : RecyclerView.Adapter<MyGroupAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(holder: MyViewHolder, view: View, data: MyGroupData, position: Int)
+        fun OnItemClick(holder: MyViewHolder, view: View, data: GroupDetailDto, position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null
@@ -34,7 +36,14 @@ class MyGroupAdapter (var items:ArrayList<MyGroupData>)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.myGroupImage.setImageResource(items[position].image)
-        holder.binding.myGroupName.text = items[position].title
+        if(items[position].profile != null){
+            val bmp = BitmapFactory.decodeByteArray(items[position].profile, 0, items[position].profile!!.size)
+            holder.binding.myGroupImage.setImageBitmap(bmp)
+        }else{
+            //기본 이미지 설정
+            holder.binding.myGroupImage.setImageResource(R.drawable.sub1_color_box_5dp)
+        }
+
+        holder.binding.myGroupName.text = items[position].name
     }
 }
