@@ -16,25 +16,19 @@
         android:theme="@style/Theme.DuckBox"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.activity.LoginActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".view.activity.ReportActivity"
+            android:name=".view.activity.GroupActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.MutualAuthActivity"
+            android:name=".view.activity.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ReportActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.ResultActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.CreateGroupActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.GroupUpdateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.GroupSettingActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.PollCreateActivity"
@@ -47,9 +41,6 @@
             android:exported="false" />
         <activity
             android:name=".view.activity.VoteDetailActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.GroupDetailActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.NavigationActivity"

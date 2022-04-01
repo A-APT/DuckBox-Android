@@ -1,44 +1,60 @@
-package com.AligatorAPT.DuckBox.view.activity
+package com.AligatorAPT.DuckBox.view.fragment.group
 
 import android.content.Intent
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.AligatorAPT.DuckBox.databinding.ActivityGroupUpdateBinding
-import com.AligatorAPT.DuckBox.view.data.MyGroupData
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.databinding.FragmentGroupUpdateBinding
+import com.AligatorAPT.DuckBox.view.activity.GroupActivity
+import com.AligatorAPT.DuckBox.viewmodel.GroupDetailViewModel
 import java.lang.Exception
 
-class GroupUpdateActivity : AppCompatActivity() {
-    lateinit var binding: ActivityGroupUpdateBinding
+class GroupUpdateFragment : Fragment() {
+    private var _binding: FragmentGroupUpdateBinding? = null
+    private val binding: FragmentGroupUpdateBinding get() = _binding!!
 
-    private var _groupDescription = "2022 건국대학교 총학생회입니다."
-    lateinit var groupData: MyGroupData
+    private val model: GroupDetailViewModel by activityViewModels()
 
     private val BACKGROUND_IMAGE = 100
     private val CIRCLE_IMAGE = 101
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityGroupUpdateBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentGroupUpdateBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
     }
 
     private fun init(){
-        groupData = intent.getSerializableExtra("groupData") as MyGroupData
+        val mActivity = activity as GroupActivity
 
         binding.apply {
             //그룹 정보 추가 (추후 서버 연동에 따라 변경 가능)
-            groupDescriptionEditText.setText(_groupDescription)
-            groupImage.setImageResource(groupData.image)
+            model.description.observe(viewLifecycleOwner, Observer {
+                groupDescriptionEditText.setText(it)
+            })
+
+            //이미지
 
             //버튼 이벤트
             backBtn.setOnClickListener {
-                onBackPressed()
+                mActivity.onBackPressed()
             }
             groupBackgroundBtn.setOnClickListener {
                 val intent = Intent(Intent.ACTION_PICK)
@@ -58,14 +74,16 @@ class GroupUpdateActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        val mActivity = activity as GroupActivity
+
         if (requestCode == BACKGROUND_IMAGE || requestCode == CIRCLE_IMAGE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == AppCompatActivity.RESULT_OK) {
                 val currentImageUri = data?.data
                 try{
                     currentImageUri?.let {
                         if(Build.VERSION.SDK_INT < 28) {
                             val bitmap = MediaStore.Images.Media.getBitmap(
-                                this.contentResolver,
+                                mActivity.contentResolver,
                                 currentImageUri
                             )
                             if(requestCode == BACKGROUND_IMAGE)
@@ -73,7 +91,7 @@ class GroupUpdateActivity : AppCompatActivity() {
                             else if (requestCode == CIRCLE_IMAGE)
                                 binding.groupImage.setImageBitmap(bitmap)
                         } else {
-                            val source = ImageDecoder.createSource(this.contentResolver, currentImageUri)
+                            val source = ImageDecoder.createSource(mActivity.contentResolver, currentImageUri)
                             val bitmap = ImageDecoder.decodeBitmap(source)
                             if(requestCode == BACKGROUND_IMAGE)
                                 binding.groupBackground.setImageBitmap(bitmap)
@@ -85,10 +103,15 @@ class GroupUpdateActivity : AppCompatActivity() {
                 {
                     e.printStackTrace()
                 }
-            }else if(resultCode == RESULT_CANCELED)
+            }else if(resultCode == AppCompatActivity.RESULT_CANCELED)
             {
-                Toast.makeText(this, "사진 선택 취소", Toast.LENGTH_LONG).show()
+                Toast.makeText(mActivity, "사진 선택 취소", Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

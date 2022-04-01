@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
                     position: Int
                 ) {
                     //그룹 상세로 화면 전환
-                    val intent = Intent(activity, GroupDetailActivity::class.java)
+                    val intent = Intent(activity, GroupActivity::class.java)
                     intent.putExtra("groupData", data)
                     startActivity(intent)
                 }
