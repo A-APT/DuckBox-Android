@@ -1,7 +1,6 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.AligatorAPT.DuckBox.view.adapter.createvote.SecondListRVAdapter
 import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
+import com.AligatorAPT.DuckBox.viewmodel.CVSecondListViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
