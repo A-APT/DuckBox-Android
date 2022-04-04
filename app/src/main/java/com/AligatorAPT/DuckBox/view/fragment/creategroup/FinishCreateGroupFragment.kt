@@ -8,10 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentFinishCreateGroupBinding
-import com.AligatorAPT.DuckBox.view.activity.GroupActivity
-import com.AligatorAPT.DuckBox.view.data.MyGroupData
+import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.viewmodel.createvote.CreateGroupViewModel
 
 class FinishCreateGroupFragment : Fragment() {
@@ -44,9 +42,8 @@ class FinishCreateGroupFragment : Fragment() {
 
             //버튼 이벤트
             startGroupDetail.setOnClickListener {
-                //그룹 상세화면으로 이등 (api 연결 후 수정 예정)
-                val intent = Intent(activity, GroupActivity::class.java)
-                intent.putExtra("groupData", MyGroupData(image = R.drawable.banner1, title = groupTitle))
+                //홈으로 이등
+                val intent = Intent(activity, NavigationActivity::class.java)
                 startActivity(intent)
             }
         }

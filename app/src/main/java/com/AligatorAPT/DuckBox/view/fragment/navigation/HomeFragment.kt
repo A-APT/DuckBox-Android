@@ -17,7 +17,6 @@ import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.MyGroupData
 import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.viewmodel.HomeViewModel

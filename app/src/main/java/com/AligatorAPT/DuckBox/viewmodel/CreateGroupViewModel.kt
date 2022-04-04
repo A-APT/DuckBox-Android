@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.viewmodel.createvote
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,8 +22,8 @@ class CreateGroupViewModel: ViewModel() {
     val name = MutableLiveData<String>()
     val description = MutableLiveData<String>()
     val leader = MutableLiveData<String>()
-    val profile = MutableLiveData<Bitmap>()
-    val header = MutableLiveData<Bitmap>()
+    val profile = MutableLiveData<Bitmap?>()
+    val header = MutableLiveData<Bitmap?>()
 
     fun setGroupInfo(_name:String, _description:String){
         name.value = _name
@@ -42,11 +43,13 @@ class CreateGroupViewModel: ViewModel() {
     }
 
     fun register(callback: ApiCallback){
+        Log.d("IMAGE", profile.value.toString())
         val profileByteArray: OutputStream? = ByteArrayOutputStream()
-        profile.value?.compress(Bitmap.CompressFormat.JPEG, 100, profileByteArray)
+        profile.value?.compress(Bitmap.CompressFormat.JPEG, 2, profileByteArray)
+        Log.d("IMAGEBITMAP", profileByteArray.toString().toByteArray().toString())
 
         val headerByteArray: OutputStream? = ByteArrayOutputStream()
-        header.value?.compress(Bitmap.CompressFormat.JPEG, 100, headerByteArray)
+        header.value?.compress(Bitmap.CompressFormat.JPEG, 2, headerByteArray)
 
         viewModelScope.launch {
             withContext(dispatcher){
@@ -55,8 +58,8 @@ class CreateGroupViewModel: ViewModel() {
                         name = name.value!!,
                         leader = MyApplication.prefs.getString("did", "notExist"),
                         description = description.value!!,
-                        profile = "".toByteArray(),
-                        header = "".toByteArray(),
+                        profile = profile.toString().toByteArray(),
+                        header = headerByteArray.toString().toByteArray(),
                     ),
                     callback
                 )

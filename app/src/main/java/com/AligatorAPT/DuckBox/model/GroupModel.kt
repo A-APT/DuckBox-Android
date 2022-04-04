@@ -20,6 +20,8 @@ object GroupModel {
 
         headers["Authorization"] = "Bearer $userToken"
 
+        Log.d("REGISTERDTO", _groupRegisterDto.toString())
+
         RetrofitClient.GROUP_INTERFACE_SERVICE.register(
             httpHeaders = headers,
             groupRegisterDto = _groupRegisterDto
