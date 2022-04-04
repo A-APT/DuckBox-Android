@@ -2,9 +2,18 @@ package com.AligatorAPT.DuckBox.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.model.UserModel
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class GroupViewModel: ViewModel() {
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
+
     enum class Authority{
         MASTER,
         MEMBER,
@@ -45,5 +54,16 @@ class GroupViewModel: ViewModel() {
 
     fun setAuthority(_authority: Authority){
         authority.value = _authority
+    }
+
+    fun joinGroup(_callback: ApiCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                UserModel.joinGroup(
+                    _groupId = id.value!!,
+                    callback = _callback,
+                )
+            }
+        }
     }
 }

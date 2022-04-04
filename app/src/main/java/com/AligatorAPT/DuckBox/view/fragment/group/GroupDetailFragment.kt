@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
@@ -86,13 +87,19 @@ class GroupDetailFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
-                                //그룹 가입 요청 완료로 화면 전환
-                                val intent = Intent(mActivity, ResultActivity::class.java)
-                                intent.putExtra("isType", 0)
-                                model.name.observe(viewLifecycleOwner, Observer {
-                                    intent.putExtra("groupName", it)
+                                model.joinGroup(object: ApiCallback{
+                                    override fun apiCallback(flag: Boolean) {
+                                        if(flag){
+                                            //그룹 가입 요청 완료로 화면 전환
+                                            val intent = Intent(mActivity, ResultActivity::class.java)
+                                            intent.putExtra("isType", 0)
+                                            model.name.observe(viewLifecycleOwner, Observer {
+                                                intent.putExtra("groupName", it)
+                                            })
+                                            startActivity(intent)
+                                        }
+                                    }
                                 })
-                                startActivity(intent)
                             }
 
                             override fun OnNegativeClick() {
