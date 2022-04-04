@@ -1,11 +1,12 @@
 package com.AligatorAPT.DuckBox.view.fragment.group
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
@@ -43,7 +44,7 @@ class GroupDetailFragment : Fragment() {
     private fun init(){
         val mActivity = activity as GroupActivity
         //그룹 권한 초기화
-        model.setAuthority(GroupViewModel.Authority.OTHER)
+        model.setAuthority(GroupViewModel.Authority.MASTER)
 
         binding.apply {
             //그룹 정보 추가
@@ -55,6 +56,12 @@ class GroupDetailFragment : Fragment() {
             })
 
             //이미지
+            model.profile.observe(viewLifecycleOwner, Observer {
+                if(it != null){
+                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupBackgroundImg.setImageBitmap(bmp)
+                }
+            })
 
             //그룹 가입 여부
             model.authority.observe(viewLifecycleOwner, Observer {

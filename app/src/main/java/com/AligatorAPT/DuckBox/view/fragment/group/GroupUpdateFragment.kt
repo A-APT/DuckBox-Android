@@ -1,10 +1,13 @@
 package com.AligatorAPT.DuckBox.view.fragment.group
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +17,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupUpdateBinding
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 import java.lang.Exception
 
 class GroupUpdateFragment : Fragment() {
@@ -26,6 +32,13 @@ class GroupUpdateFragment : Fragment() {
 
     private val BACKGROUND_IMAGE = 100
     private val CIRCLE_IMAGE = 101
+
+    private var oldDescription = ""
+    private var oldProfile: ByteArray? = null
+    private var oldHeader: ByteArray? = null
+
+    private var newProfile: Bitmap? = null
+    private var newHeader: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,13 +60,35 @@ class GroupUpdateFragment : Fragment() {
         binding.apply {
             //그룹 정보 추가 (추후 서버 연동에 따라 변경 가능)
             model.description.observe(viewLifecycleOwner, Observer {
+                oldDescription = it
                 groupDescriptionEditText.setText(it)
             })
 
             //이미지
+            model.profile.observe(viewLifecycleOwner, Observer {
+                if(it != null){
+                    oldProfile = it
+                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupImage.setImageBitmap(bmp)
+                }
+            })
+
+            model.header.observe(viewLifecycleOwner, Observer {
+                if(it != null){
+                    oldHeader = it
+                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupBackground.setImageBitmap(bmp)
+                }
+            })
 
             //버튼 이벤트
             backBtn.setOnClickListener {
+                //뒤로갈 때 (업데이트를 안할 때, 원래 정보로 돌려두기)
+                model.updateGroupInfo(
+                    _description = oldDescription,
+                    _header = oldHeader,
+                    _profile = oldProfile
+                )
                 mActivity.onBackPressed()
             }
             groupBackgroundBtn.setOnClickListener {
@@ -67,7 +102,34 @@ class GroupUpdateFragment : Fragment() {
                 startActivityForResult(intent, CIRCLE_IMAGE)
             }
             submitBtn.setOnClickListener {
+                val profileByteArray: OutputStream? = ByteArrayOutputStream()
+                newProfile?.compress(Bitmap.CompressFormat.JPEG, 2, profileByteArray)
+                Log.d("IMAGEBITMAP", profileByteArray.toString().toByteArray().toString())
 
+                val headerByteArray: OutputStream? = ByteArrayOutputStream()
+                newHeader?.compress(Bitmap.CompressFormat.JPEG, 2, headerByteArray)
+
+                model.updateGroupInfo(
+                    _description = groupDescriptionEditText.text.toString(),
+                    _profile = profileByteArray.toString().toByteArray(),
+                    _header = headerByteArray.toString().toByteArray(),
+                )
+
+                model.updateGroup(object :ApiCallback{
+                    override fun apiCallback(flag: Boolean) {
+                        if(flag){
+                            mActivity.changeFragment(GroupSettingFragment())
+                        }else{
+                            //업데이트를 안할 때, 원래 정보로 돌려두기
+                            model.updateGroupInfo(
+                                _description = oldDescription,
+                                _header = oldHeader,
+                                _profile = oldProfile
+                            )
+                            Toast.makeText(mActivity, "그룹 정보 업데이트를 다시 시도해주세요.", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                })
             }
         }
     }
@@ -86,17 +148,23 @@ class GroupUpdateFragment : Fragment() {
                                 mActivity.contentResolver,
                                 currentImageUri
                             )
-                            if(requestCode == BACKGROUND_IMAGE)
+                            if(requestCode == BACKGROUND_IMAGE){
                                 binding.groupBackground.setImageBitmap(bitmap)
-                            else if (requestCode == CIRCLE_IMAGE)
+                                newHeader = bitmap
+                            }else if (requestCode == CIRCLE_IMAGE){
                                 binding.groupImage.setImageBitmap(bitmap)
+                                newProfile = bitmap
+                            }
                         } else {
                             val source = ImageDecoder.createSource(mActivity.contentResolver, currentImageUri)
                             val bitmap = ImageDecoder.decodeBitmap(source)
-                            if(requestCode == BACKGROUND_IMAGE)
+                            if(requestCode == BACKGROUND_IMAGE){
                                 binding.groupBackground.setImageBitmap(bitmap)
-                            else if (requestCode == CIRCLE_IMAGE)
+                                newHeader = bitmap
+                            }else if (requestCode == CIRCLE_IMAGE){
                                 binding.groupImage.setImageBitmap(bitmap)
+                                newProfile = bitmap
+                            }
                         }
                     }
                 }catch(e: Exception)

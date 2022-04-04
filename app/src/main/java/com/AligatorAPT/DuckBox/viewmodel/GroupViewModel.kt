@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
+import com.AligatorAPT.DuckBox.model.GroupModel
 import com.AligatorAPT.DuckBox.model.UserModel
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import kotlinx.coroutines.CoroutineDispatcher
@@ -56,11 +58,37 @@ class GroupViewModel: ViewModel() {
         authority.value = _authority
     }
 
+    fun updateGroupInfo(
+        _description: String,
+        _profile: ByteArray?,
+        _header: ByteArray?
+    ){
+        description.value = _description
+        profile.value = _profile
+        header.value = _header
+    }
+
     fun joinGroup(_callback: ApiCallback){
         viewModelScope.launch {
             withContext(dispatcher){
                 UserModel.joinGroup(
                     _groupId = id.value!!,
+                    callback = _callback,
+                )
+            }
+        }
+    }
+
+    fun updateGroup(_callback: ApiCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                GroupModel.updateGroup(
+                    _groupUpdateDto = GroupUpdateDto(
+                        description = description.value,
+                        header = header.value,
+                        id = id.value!!,
+                        profile = profile.value
+                    ),
                     callback = _callback,
                 )
             }

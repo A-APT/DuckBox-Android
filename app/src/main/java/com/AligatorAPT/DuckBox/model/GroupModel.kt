@@ -3,6 +3,7 @@ package com.AligatorAPT.DuckBox.model
 import android.util.Log
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
+import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
@@ -78,6 +79,35 @@ object GroupModel {
             }
 
         })
-
     }
+
+    fun updateGroup(_groupUpdateDto: GroupUpdateDto, callback: ApiCallback){
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+        Log.d("UserToken", userToken)
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.updateGroup(
+            groupUpdateDto = _groupUpdateDto,
+            httpHeaders = headers
+        ).enqueue(object: Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful){
+                    Log.d("Response:: ", response.body().toString())
+                    callback.apiCallback(true)
+                }else{
+                    callback.apiCallback(false)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                callback.apiCallback(false)
+                Log.d(
+                    "onFailure::", "Failed API call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+        })
+    }
+
 }
