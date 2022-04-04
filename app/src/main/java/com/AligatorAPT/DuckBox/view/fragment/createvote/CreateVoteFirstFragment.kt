@@ -187,6 +187,9 @@ class CreateVoteFirstFragment: Fragment()  {
         val datearr = date.split(":","."," ")
         val nowarr = nowDate.split(",")
 
+        Log.e("NOWDATE",nowarr.toString())
+        Log.e("CHOSENDATE",datearr.toString())
+
         for(i in 0..2){
             if(datearr[i] < nowarr[i]) break
             else if(datearr[i] > nowarr[i])return true
@@ -194,7 +197,7 @@ class CreateVoteFirstFragment: Fragment()  {
                 if(checkAMPM(datearr, nowarr,true))return true
             }
         }
-        Toast.makeText(context, "현재 시간 이후로 설정해주세요.", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "현재 시간 1시간 이후로 설정해주세요.", Toast.LENGTH_SHORT).show()
         return false
     }
 
@@ -230,8 +233,8 @@ class CreateVoteFirstFragment: Fragment()  {
         if(finampm == "AM" && startampm =="PM") return finday != startday
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
-            if(finhour > starthour) return true
-            else if(finhour==starthour) {
+            if(finhour > starthour + 1) return true
+            else if(finhour == (starthour+1)) {
                 return if(isNow) finmin>=startmin
                 else finmin>startmin
             }

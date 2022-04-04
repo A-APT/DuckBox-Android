@@ -185,7 +185,7 @@ class CreateVoteThirdFragment: Fragment()  {
                         1 -> studentId = contents
                     }
                 }
-                excelList.add(ExcelData(name,studentId))
+                excelList.add(ExcelData(studentId))
             }
             Log.d("끝", excelList.toString())
         } catch (e: IOException) {

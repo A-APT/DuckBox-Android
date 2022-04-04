@@ -5,17 +5,17 @@ import android.net.Uri
 data class CreatVoteData (
     var title : String,
     var content : String,
-    var StartDate : String,
-    var LastDate : String,
-    var Image : ArrayList<Uri>,
-    var type : String,
-    var list : ArrayList<String>,
-    var excelList : ArrayList<ExcelData>,
-    var alarm : Boolean,
-    var reward : Boolean
+    var isGroup : Boolean,
+    var owner: String,
+    var startTime : String,
+    var finishTime : String,
+    var images : ArrayList<Uri>,
+    var candidates : ArrayList<String>,
+    var voters : ArrayList<ExcelData>,
+    var reward : Boolean,
+    var notice : Boolean,
 )
 
 data class ExcelData(
-    var name: String,
     var studentID: String
 )
