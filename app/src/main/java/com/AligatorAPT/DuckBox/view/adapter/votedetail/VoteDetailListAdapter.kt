@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.adapter
+package com.AligatorAPT.DuckBox.view.adapter.votedetail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +15,7 @@ class VoteDetailListAdapter(
 )
     : RecyclerView.Adapter<VoteDetailListAdapter.ViewHolder>(){
 
+    var isClickable : Boolean = true
     var item: List<String> = items
     set(value) {
         field = value
@@ -22,28 +23,22 @@ class VoteDetailListAdapter(
     }
 
     var selectedPosition by Delegates.observable(-1) { property, oldPos, newPos ->
-        if(newPos in items.indices){
+        if(isClickable && newPos in items.indices){
             notifyItemChanged(oldPos)
             notifyItemChanged(newPos)
         }
     }
 
-//    interface OnItemClickListener{
-//        fun onTouch(holder: ViewHolder, view: View, position: Int)
-//    }
-
-//    var itemClickListener: OnItemClickListener ?= null
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): VoteDetailListAdapter.ViewHolder {
+    ): ViewHolder {
         val view = RowVdListBinding.inflate(LayoutInflater.from(parent.context))
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: VoteDetailListAdapter.ViewHolder, position: Int) {
-        if(position in item.indices){
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if(isClickable && position in item.indices){
             holder.bind(items[position], position == selectedPosition)
             holder.binding.vdTextTv.setOnClickListener { selectedPosition = position }
         }

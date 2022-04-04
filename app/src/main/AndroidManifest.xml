@@ -32,6 +32,8 @@
         <activity
             android:name=".view.activity.VoteDetailActivity"
             android:exported="false" />
+        <activity android:name=".view.activity.VoteDetailImageInfoActivity"
+            android:exported="false"/>
         <activity
             android:name=".view.activity.GroupDetailActivity"
             android:exported="false" />
