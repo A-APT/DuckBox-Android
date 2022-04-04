@@ -3,12 +3,13 @@ package com.AligatorAPT.DuckBox.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVotedetailImageinfoBinding
-import com.AligatorAPT.DuckBox.view.adapter.votedetail.VoteDetailImageAdapter
+import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 
 class VoteDetailImageInfoActivity : AppCompatActivity() {
     lateinit var binding: ActivityVotedetailImageinfoBinding
@@ -27,9 +28,14 @@ class VoteDetailImageInfoActivity : AppCompatActivity() {
             val img_arr = intent.getSerializableExtra("img_arr") as ArrayList<Int>
             val position = intent.getIntExtra("position",0)
             vdImageCloseIv.setOnClickListener { finish() }
-            val imageAdapter = VoteDetailImageAdapter(img_arr)
-            imageAdapter.itemClickListener = object: VoteDetailImageAdapter.OnItemClickListener{
-                override fun OnClick(position: Int) {
+            val imageAdapter = BannerAdapter(img_arr)
+            imageAdapter.itemClickListener = object: BannerAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: BannerAdapter.MyViewHolder,
+                    view: View,
+                    data: Int,
+                    position: Int
+                ) {
                 }
             }
             vdImageVp.adapter = imageAdapter

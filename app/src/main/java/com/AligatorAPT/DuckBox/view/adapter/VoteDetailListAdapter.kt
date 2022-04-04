@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.adapter.votedetail
+package com.AligatorAPT.DuckBox.view.adapter
 
 import android.view.LayoutInflater
 import android.view.View

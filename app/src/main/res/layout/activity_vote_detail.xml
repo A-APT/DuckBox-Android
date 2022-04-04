@@ -56,8 +56,8 @@
                         android:textColor="@color/white"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="1dp"
-                        android:layout_marginBottom="25dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginBottom="40dp"
+                        android:layout_marginEnd="25dp"
                         android:background="@drawable/darkgray_color_box_50dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"/>
@@ -75,7 +75,7 @@
             android:clipToPadding="false"
             android:fillViewport="true"
             android:overScrollMode="never"
-            android:layout_marginTop="-15dp"
+            android:layout_marginTop="-30dp"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.constraintlayout.widget.ConstraintLayout

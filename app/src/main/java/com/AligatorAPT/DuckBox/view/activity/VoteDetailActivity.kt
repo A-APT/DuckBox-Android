@@ -8,14 +8,12 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVoteDetailBinding
-import com.AligatorAPT.DuckBox.view.adapter.votedetail.VoteDetailImageAdapter
-import com.AligatorAPT.DuckBox.view.adapter.votedetail.VoteDetailListAdapter
+import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
+import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
 import com.AligatorAPT.DuckBox.viewmodel.VoteDetailViewModel
 import java.util.*
 
@@ -71,9 +69,14 @@ class VoteDetailActivity : AppCompatActivity() {
     }
 
     private fun initImageRV() {
-        val imageAdapter = VoteDetailImageAdapter(img_arr)
-        imageAdapter.itemClickListener = object: VoteDetailImageAdapter.OnItemClickListener{
-            override fun OnClick(position: Int) {
+        val imageAdapter = BannerAdapter(img_arr)
+        imageAdapter.itemClickListener = object: BannerAdapter.OnItemClickListener{
+            override fun OnItemClick(
+                holder: BannerAdapter.MyViewHolder,
+                view: View,
+                data: Int,
+                position: Int
+            ) {
                 val intent = Intent(applicationContext, VoteDetailImageInfoActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 intent.putExtra("img_arr",img_arr)
