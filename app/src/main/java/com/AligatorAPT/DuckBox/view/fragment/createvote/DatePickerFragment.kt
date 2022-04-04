@@ -122,8 +122,8 @@ class DatePickerFragment : BottomSheetDialogFragment() {
         year.value = calendar.get(Calendar.YEAR)
         month.value = calendar.get(Calendar.MONTH) + 1
         day.value = calendar.get(Calendar.DAY_OF_MONTH)
-        val calhour= calendar.get(Calendar.HOUR)
-        if(calhour == 0) hour.value = 12
+        val calhour= calendar.get(Calendar.HOUR)+1
+        if(calhour == 13) hour.value = 12
         else hour.value = calhour
 
         min.value = calendar.get(Calendar.MINUTE)
