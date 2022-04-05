@@ -6,8 +6,8 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.AligatorAPT.DuckBox.databinding.DialogWriteBinding
 import com.AligatorAPT.DuckBox.view.activity.PollCreateActivity
-import com.AligatorAPT.DuckBox.view.activity.VoteCreateActivity
 import android.util.DisplayMetrics
+import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 
 class WriteDialog: DialogFragment() {
     private var _binding: DialogWriteBinding? = null
@@ -32,7 +32,7 @@ class WriteDialog: DialogFragment() {
 
         binding.apply {
             voteBtn.setOnClickListener {
-                val intent = Intent(requireActivity(), VoteCreateActivity::class.java)
+                val intent = Intent(requireActivity(), CreateVoteActivity::class.java)
                 startActivity(intent)
             }
             pollBtn.setOnClickListener {

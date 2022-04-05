@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.viewmodel.createvote
+package com.AligatorAPT.DuckBox.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.LiveData

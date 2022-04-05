@@ -6,12 +6,8 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.databinding.RowCvSecondTextBinding
-import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteSecondFragment
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
-import java.util.*
 import kotlin.collections.ArrayList
 
 class SecondListRVAdapter(val context: Context)

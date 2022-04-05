@@ -15,9 +15,7 @@ import android.app.Activity
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
-import androidx.fragment.app.viewModels
 import com.AligatorAPT.DuckBox.view.data.ExcelData
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import jxl.Sheet

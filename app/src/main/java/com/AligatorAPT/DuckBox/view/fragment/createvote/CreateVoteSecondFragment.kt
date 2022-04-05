@@ -1,7 +1,6 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +18,7 @@ import com.AligatorAPT.DuckBox.view.adapter.createvote.SecondListRVAdapter
 import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
+import com.AligatorAPT.DuckBox.viewmodel.CVSecondListViewModel
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -43,7 +42,7 @@ class CreateVoteSecondFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initButton()
+//        initButton()
         initList()
         check()
     }
@@ -87,21 +86,21 @@ class CreateVoteSecondFragment: Fragment()  {
 
     }
 
-    private fun initButton() {
-        binding.apply {
-
-            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
-                if(cvSecondTypeRb1.isChecked){
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-                if(cvSecondTypeRb2.isChecked){
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-            }
-        }
-    }
+//    private fun initButton() {
+//        binding.apply {
+//
+//            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
+//                if(cvSecondTypeRb1.isChecked){
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//                if(cvSecondTypeRb2.isChecked){
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//            }
+//        }
+//    }
 
     private fun check() {
         binding.apply {
