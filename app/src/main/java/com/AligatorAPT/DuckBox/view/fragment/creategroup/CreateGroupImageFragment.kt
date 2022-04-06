@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateGroupImageBinding
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.CreateGroupActivity
 import com.AligatorAPT.DuckBox.viewmodel.createvote.CreateGroupViewModel
 import java.lang.Exception
@@ -42,33 +43,13 @@ class CreateGroupImageFragment : Fragment() {
         //뒤로가기 했을 때, 이미지 설정
         model.header.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (Build.VERSION.SDK_INT < 28) {
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        mActivity.contentResolver,
-                        it
-                    )
-                    binding.groupBackground.setImageBitmap(bitmap)
-                }else{
-                    val source = ImageDecoder.createSource(mActivity.contentResolver, it)
-                    val bitmap = ImageDecoder.decodeBitmap(source)
-                    binding.groupBackground.setImageBitmap(bitmap)
-                }
+                binding.groupBackground.setImageBitmap(it)
             }
         })
 
         model.profile.observe(viewLifecycleOwner, Observer {
             if (it != null) {
-                if (Build.VERSION.SDK_INT < 28) {
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        mActivity.contentResolver,
-                        it
-                    )
-                    binding.groupImage.setImageBitmap(bitmap)
-                }else{
-                    val source = ImageDecoder.createSource(mActivity.contentResolver, it)
-                    val bitmap = ImageDecoder.decodeBitmap(source)
-                    binding.groupImage.setImageBitmap(bitmap)
-                }
+                binding.groupImage.setImageBitmap(it)
             }
         })
 
@@ -93,7 +74,16 @@ class CreateGroupImageFragment : Fragment() {
             }
 
             nextBtn.setOnClickListener {
-                mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료")
+                model.register(
+                   object : ApiCallback {
+                        override fun apiCallback(flag: Boolean) {
+                            if(flag){
+                                //화면 전환
+                                mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료")
+                            }
+                        }
+                    }
+                )
             }
         }
     }
@@ -113,10 +103,10 @@ class CreateGroupImageFragment : Fragment() {
                                 currentImageUri
                             )
                             if (requestCode == CREATE_BACKGROUND_IMAGE) {
-                                model.setGroupHeader(currentImageUri)
+                                model.setGroupHeader(bitmap)
                                 binding.groupBackground.setImageBitmap(bitmap)
                             } else if (requestCode == CREATE_CIRCLE_IMAGE) {
-                                model.setGroupProfile(currentImageUri)
+                                model.setGroupProfile(bitmap)
                                 binding.groupImage.setImageBitmap(bitmap)
                             }
                         } else {
@@ -127,10 +117,10 @@ class CreateGroupImageFragment : Fragment() {
                                 )
                             val bitmap = ImageDecoder.decodeBitmap(source)
                             if (requestCode == CREATE_BACKGROUND_IMAGE) {
-                                model.setGroupHeader(currentImageUri)
+                                model.setGroupHeader(bitmap)
                                 binding.groupBackground.setImageBitmap(bitmap)
                             } else if (requestCode == CREATE_CIRCLE_IMAGE) {
-                                model.setGroupProfile(currentImageUri)
+                                model.setGroupProfile(bitmap)
                                 binding.groupImage.setImageBitmap(bitmap)
                             }
                         }

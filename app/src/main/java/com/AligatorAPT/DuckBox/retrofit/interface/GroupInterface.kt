@@ -1,21 +1,30 @@
 package com.AligatorAPT.DuckBox.retrofit.`interface`
 
+import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
+import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
+import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
 import okhttp3.ResponseBody
 import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.HeaderMap
 import retrofit2.http.POST
-import retrofit2.http.Query
-import java.io.File
-import java.util.*
 
 interface GroupInterface {
-    @POST("/api/v1/group/register")
+    @POST("/api/v1/group")
     fun register(
-        @Query("description") description: String,
-        @Query("header") header: File,
-        @HeaderMap httpHeaders: HashMap<String, Any?>,
-        @Query("leader") leader: String,
-        @Query("name") name: String,
-        @Query("profile") profile: File,
+        @HeaderMap httpHeaders: HashMap<String, String>,
+        @Body groupRegisterDto: GroupRegisterDto
         ): Call<ResponseBody>
+
+    @GET("/api/v1/group")
+    fun getAllGroup(
+        @HeaderMap httpHeaders: HashMap<String, String>
+    ): Call<List<GroupDetailDto>>
+
+    @POST("/api/v1/group/detail")
+    fun updateGroup(
+        @Body groupUpdateDto: GroupUpdateDto,
+        @HeaderMap httpHeaders: HashMap<String, String>
+    ): Call<ResponseBody>
 }

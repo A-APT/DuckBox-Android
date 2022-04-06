@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.databinding.ActivityLoginBinding
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.viewmodel.LoginViewModel
 
@@ -33,7 +33,7 @@ class LoginActivity : AppCompatActivity() {
                     LoginRequestDto(
                         email = loginEmail.text.toString(),
                         password = loginPwd.text.toString()
-                    ), object :ApiCallback{
+                    ), object : ApiCallback {
                         override fun apiCallback(flag: Boolean) {
                             if(flag){
                                 Log.d("TOKEN", MyApplication.prefs.getString("token", "notExist"))

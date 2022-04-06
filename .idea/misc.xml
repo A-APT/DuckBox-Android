@@ -59,6 +59,7 @@
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/drawable/sub1_color_box_30dp.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_create_group.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_create_vote.xml" value="0.1" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_detail.xml" value="0.2" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_setting.xml" value="0.176" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/activity_group_update.xml" value="0.264" />
@@ -76,6 +77,10 @@
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email.xml" value="0.15833333333333333" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_email_code.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_finish_create_group.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_group_detail.xml" value="0.176" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_group_setting.xml" value="0.2" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_group_update.xml" value="0.11296296296296296" />
+        <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/fragment_mutual_auth.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_banner.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_cv_first_image.xml" value="0.1" />
         <entry key="..\:/Users/e5422/AndroidStudioProjects/DuckBox-Android/app/src/main/res/layout/row_cv_second_text.xml" value="0.176" />

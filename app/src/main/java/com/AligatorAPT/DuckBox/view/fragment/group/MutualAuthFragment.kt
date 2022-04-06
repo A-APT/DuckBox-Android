@@ -1,31 +1,42 @@
-package com.AligatorAPT.DuckBox.view.activity
+package com.AligatorAPT.DuckBox.view.fragment.group
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import com.AligatorAPT.DuckBox.databinding.ActivityMutualAuthBinding
+import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.databinding.FragmentMutualAuthBinding
+import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
 import com.AligatorAPT.DuckBox.view.data.MutualAuthData
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 
-class MutualAuthActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMutualAuthBinding
+class MutualAuthFragment : Fragment() {
+    private var _binding: FragmentMutualAuthBinding? = null
+    private val binding: FragmentMutualAuthBinding get() = _binding!!
+
+    private val model: GroupViewModel by activityViewModels()
 
     private lateinit var mutualAuthAdapter : MutualAuthAdapter
-    private var _groupName = ""
-    private var _groupDescription = ""
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMutualAuthBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMutualAuthBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         init()
     }
 
     private fun init(){
-        //intent
-        _groupName = intent.getStringExtra("groupName")!!
-        _groupDescription = intent.getStringExtra("groupDescription")!!
+        val mActivity = activity as GroupActivity
 
         //list 어뎁터 등록
         mutualAuthAdapter = MutualAuthAdapter(setMutualAuthList())
@@ -45,12 +56,18 @@ class MutualAuthActivity : AppCompatActivity() {
             recyclerView.adapter = mutualAuthAdapter
 
             //그룹 정보
-            groupTitle.text = _groupName
-            groupDescription.text = _groupDescription
+            //그룹 정보 추가
+            model.name.observe(viewLifecycleOwner, Observer {
+                groupTitle.text = it
+            })
+            model.description.observe(viewLifecycleOwner, Observer {
+                groupDescription.text = it
+            })
+
 
             //버튼 이벤트
             backBtn.setOnClickListener {
-                onBackPressed()
+                mActivity.onBackPressed()
             }
         }
     }
@@ -64,5 +81,10 @@ class MutualAuthActivity : AppCompatActivity() {
             MutualAuthData(name="최길동", email="abc@konkuk.ac.kr", studentId = 201911111),
             MutualAuthData(name="백길동", email="abc@konkuk.ac.kr", studentId = 201911111),
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

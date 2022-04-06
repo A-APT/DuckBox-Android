@@ -3,7 +3,7 @@ package com.AligatorAPT.DuckBox.model
 import android.util.Log
 import com.AligatorAPT.DuckBox.dto.user.EmailTokenDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
