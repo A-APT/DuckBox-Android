@@ -16,11 +16,6 @@ class VoteDetailListAdapter(
     : RecyclerView.Adapter<VoteDetailListAdapter.ViewHolder>(){
 
     var isClickable : Boolean = true
-    var item: List<String> = items
-    set(value) {
-        field = value
-        notifyDataSetChanged()
-    }
 
     var selectedPosition by Delegates.observable(-1) { property, oldPos, newPos ->
         if(isClickable && newPos in items.indices){
@@ -38,7 +33,7 @@ class VoteDetailListAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(isClickable && position in item.indices){
+        if(isClickable && position in items.indices){
             holder.bind(items[position], position == selectedPosition)
             holder.binding.vdTextTv.setOnClickListener { selectedPosition = position }
         }

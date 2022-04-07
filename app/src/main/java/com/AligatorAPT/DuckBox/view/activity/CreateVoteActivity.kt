@@ -13,25 +13,42 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
+import androidx.activity.viewModels
+import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 
 
 class CreateVoteActivity : FragmentActivity() {
     lateinit var binding: ActivityCreateVoteBinding
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
+    var voteRegisterDto = VoteRegisterDto("","",false,"","","",null,null,null,false,false)
+
+    val viewModel : CreateVoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateVoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        voteRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
+        if(voteRegisterDto.isGroup){
+            //groupId 설정
+        }
+
         initViewPager()
 
+        initButton()
+    }
+
+    private fun initButton() {
         binding.createVoteNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2) {
+                updateInfo()
+                Log.e("LAST",voteRegisterDto.toString())
+                //api 연결
+
                 binding.createVoteFr.visibility = View.VISIBLE
                 binding.createVoteVp.visibility = View.GONE
                 binding.createVoteNextTv.visibility = View.GONE
@@ -101,5 +118,19 @@ class CreateVoteActivity : FragmentActivity() {
         } else{
             super.onBackPressed()
         }
+    }
+
+    fun updateInfo(){
+        voteRegisterDto.apply {
+            title = viewModel.title.value!!
+            content = viewModel.content.value!!
+            startTime = viewModel.startTime.value!!
+            finishTime = viewModel.finishTime.value!!
+            candidates = viewModel.candidates.value
+            voters = viewModel.voters.value
+            reward = viewModel.reward.value!!
+            notice = viewModel.notice.value!!
+        }
+
     }
 }

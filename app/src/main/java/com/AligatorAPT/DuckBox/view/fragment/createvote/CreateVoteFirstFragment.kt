@@ -14,11 +14,13 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteFirstBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.util.*
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import java.time.LocalDateTime
@@ -30,14 +32,16 @@ class CreateVoteFirstFragment: Fragment()  {
     private var checkValidation = booleanArrayOf(false, false, false, false, false)
     private lateinit var firstImageRVAdapter: FirstImageRVAdapter
     private var list: ArrayList<Uri> = arrayListOf(Uri.parse("LAST"))
-    private var startDate = ""
-    private var lastDate = ""
+    var title = ""
+    var content = ""
+    var startDate = ""
+    var lastDate = ""
     private val IMAGE_REQUEST_CODE = 100
+    val viewModel : CreateVoteViewModel by activityViewModels()
 
     companion object{
         var isFirst = true
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,6 +104,7 @@ class CreateVoteFirstFragment: Fragment()  {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+        val mActivity = activity as CreateVoteActivity
         if(requestCode == IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
             list.removeAt(list.size-1)
 
@@ -108,6 +113,11 @@ class CreateVoteFirstFragment: Fragment()  {
                 val count = data.clipData!!.itemCount
                 for(i in 0 until count){
                     val imageUri = data.clipData!!.getItemAt(i).uri
+
+                    val bitmap = MediaStore.Images.Media.getBitmap(
+                        mActivity.contentResolver,
+                        imageUri
+                    )
                     list.add(imageUri)
                 }
             }else{
@@ -233,7 +243,7 @@ class CreateVoteFirstFragment: Fragment()  {
         if(finampm == "AM" && startampm =="PM") return finday != startday
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
-            if(finhour > starthour + 1) return true
+            if(finhour > starthour ) return true
             else if(finhour == (starthour+1)) {
                 return if(isNow) finmin>=startmin
                 else finmin>startmin
@@ -242,13 +252,15 @@ class CreateVoteFirstFragment: Fragment()  {
     }
 
     fun setIsActivateBtn(){
-        val mActivity = activity as CreateVoteActivity
-        mActivity.
         binding.apply {
+            val mActivity = activity as CreateVoteActivity
             if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4]){
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
                 mActivity.binding.createVoteNextTv.isEnabled = true
                 mActivity.checkValidation[0] = true
+
+                list.removeAt(list.size-1)
+                viewModel.setVoteFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),cvFirstStartdateCheck.text.toString(),cvFirstLastdateCheck.text.toString())
             }else{
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
                 mActivity.binding.createVoteNextTv.isEnabled = false

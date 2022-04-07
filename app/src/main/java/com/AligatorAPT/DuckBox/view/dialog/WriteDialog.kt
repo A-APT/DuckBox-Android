@@ -31,12 +31,18 @@ class WriteDialog: DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
+
+            val args = arguments
+            val isGroup = args!!.getBoolean("isGroup")
+
             voteBtn.setOnClickListener {
                 val intent = Intent(requireActivity(), CreateVoteActivity::class.java)
+                intent.putExtra("isGroup",isGroup)
                 startActivity(intent)
             }
             pollBtn.setOnClickListener {
                 val intent = Intent(requireActivity(), PollCreateActivity::class.java)
+                intent.putExtra("isGroup",isGroup)
                 startActivity(intent)
             }
         }

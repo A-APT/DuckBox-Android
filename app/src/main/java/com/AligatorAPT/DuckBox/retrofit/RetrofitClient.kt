@@ -28,4 +28,8 @@ object RetrofitClient {
     val USER_INTERFACE_SERVICE: UserInterface by lazy{
         retrofit.build().create(UserInterface::class.java)
     }
+
+    val VOTE_INTERFACE_SERVICE: VoteInterface by lazy{
+        retrofit.build().create(VoteInterface::class.java)
+    }
 }
