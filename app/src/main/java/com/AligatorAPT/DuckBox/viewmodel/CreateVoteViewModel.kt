@@ -1,41 +1,52 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
+import android.graphics.Bitmap
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.lifecycle.viewModelScope
+import com.AligatorAPT.DuckBox.model.VoteModel
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 
 class CreateVoteViewModel : ViewModel() {
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     val title = MutableLiveData<String>()
     val content = MutableLiveData<String>()
     val isGroup = MutableLiveData<Boolean>()
-    val owner = MutableLiveData<String>()
-    val startTime = MutableLiveData<String>()
-    val finishTime = MutableLiveData<String>()
-    val images = MutableLiveData<ArrayList<ByteArray>?>()
-    val candidates = MutableLiveData<ArrayList<String>?>()
-    val voters = MutableLiveData<ArrayList<String>?>()
+    val groupId = MutableLiveData<String?>()
+    val startTime = MutableLiveData<Date>()
+    val finishTime = MutableLiveData<Date>()
+    val images = MutableLiveData<ArrayList<ByteArray>>()
+    val candidates = MutableLiveData<ArrayList<String>>()
+    val voters = MutableLiveData<ArrayList<Int>?>()
     val reward = MutableLiveData<Boolean>()
     val notice = MutableLiveData<Boolean>()
 
     val data get() = candidates
 
-    fun setVoteFirst(_title: String, _content: String, _startTime: String, _finalTime: String){
+    fun setVoteFirst(_title: String, _content: String, _startTime: Date, _finalTime: Date, _images: ArrayList<ByteArray>){
         title.value = _title
         content.value = _content
         startTime.value = _startTime
         finishTime.value = _finalTime
-//        images.value = _images
+        images.value = _images
+        Log.e("viewmodel_list",images.value.toString())
     }
 
     fun setCandidateData(arr: ArrayList<String>){
         candidates.value = arr
     }
 
-    fun setVoters(_voters: ArrayList<String>?){
+    fun setVoters(_voters: ArrayList<Int>?){
         voters.value = _voters
     }
 
@@ -45,5 +56,34 @@ class CreateVoteViewModel : ViewModel() {
 
     fun setNotice(_notice: Boolean){
         notice.value = _notice
+    }
+
+    fun setGroup(_isGroup: Boolean, _groupId: String?){
+        isGroup.value = _isGroup
+        groupId.value = _groupId
+    }
+
+    fun registerVote(callback: ApiCallback){
+
+        viewModelScope.launch {
+            withContext(dispatcher){
+                VoteModel.registerVote(
+                    _voteRegisterDto = VoteRegisterDto(
+                        title = title.value!!,
+                        content = content.value!!,
+                        isGroup = isGroup.value!!,
+                        groupId = groupId.value,
+                        startTime = startTime.value!!,
+                        finishTime = finishTime.value!!,
+                        images = images.value!!,
+                        candidates = candidates.value!!,
+                        voters = voters.value,
+                        reward = reward.value!!,
+                        notice = notice.value!!
+                    ),
+                    callback
+                )
+            }
+        }
     }
 }

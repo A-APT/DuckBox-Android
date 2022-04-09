@@ -26,7 +26,7 @@ class DatePickerFragment : BottomSheetDialogFragment() {
     }
 
     interface DatePickerClickListener{
-        fun onDatePicked(date : String)
+        fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String)
     }
 
     private lateinit var mDatePickerClickListener : DatePickerClickListener
@@ -150,9 +150,7 @@ class DatePickerFragment : BottomSheetDialogFragment() {
             val min = binding.dialogMinNp.value
             val cal_ampm = binding.dialogAmpmNp.value
             val ampm = if(cal_ampm==0) "AM" else "PM"
-
-            val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
-            mDatePickerClickListener.onDatePicked(date)
+            mDatePickerClickListener.onDatePicked(year,month,day,hour,min,cal_ampm,ampm)
             dismiss()
         }
     }

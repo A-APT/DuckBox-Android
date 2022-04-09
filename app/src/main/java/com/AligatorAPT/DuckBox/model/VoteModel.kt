@@ -1,7 +1,7 @@
 package com.AligatorAPT.DuckBox.model
 
 import android.util.Log
-import com.AligatorAPT.DuckBox.callback.VoteCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
@@ -12,8 +12,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 
-class VoteModel {
-
+object VoteModel {
     fun registerVote(_voteRegisterDto: VoteRegisterDto, callback: ApiCallback){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
@@ -68,7 +67,7 @@ class VoteModel {
             })
     }
 
-    fun findVotesOfGroup(groupId: String, callback: VoteCallback ){
+    fun findVotesOfGroup(groupId: String, callback: VoteCallback){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)

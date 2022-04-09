@@ -30,7 +30,7 @@ class CreateVoteThirdFragment: Fragment()  {
     private val binding : FragmentCreateVoteThirdBinding get() = _binding!!
     private val FILE_REQUEST_CODE = 100
     private var filename : String? = null
-    var excelList : ArrayList<String> = arrayListOf()
+    var excelList : ArrayList<Int> = arrayListOf()
     val viewModel : CreateVoteViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -45,6 +45,11 @@ class CreateVoteThirdFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setVoters(null)
+        viewModel.setReward(false)
+        viewModel.setNotice(false)
+
         initButton()
     }
 
@@ -136,12 +141,12 @@ class CreateVoteThirdFragment: Fragment()  {
 
             for (row in rowIndexStart until rowTotal) {
                 var name = ""
-                var studentId = ""
+                var studentId = 0
                 for (col in 0 until colTotal) {
                     val contents: String = sheet.getCell(col, row).contents
                     when (col) {
                         0 -> name = contents
-                        1 -> studentId = contents
+                        1 -> studentId = contents.toInt()
                     }
                 }
                 excelList.add(studentId)

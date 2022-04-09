@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.callback
+package com.AligatorAPT.DuckBox.retrofit.callback
 
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 
