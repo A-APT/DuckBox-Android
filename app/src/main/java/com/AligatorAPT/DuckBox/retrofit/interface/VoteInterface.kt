@@ -18,7 +18,7 @@ interface VoteInterface {
         @HeaderMap httpHeaders: HashMap<String, String>
     ): Call<List<VoteDetailDto>>
 
-    @POST("/api/v1/vote/{groupId}")
+    @GET("/api/v1/vote/{groupId}")
     fun findVotesOfGroup(
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Path ("groupId") groupId: String

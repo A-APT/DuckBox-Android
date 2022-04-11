@@ -36,8 +36,6 @@ class CreateVoteFirstFragment: Fragment()  {
     private var checkValidation = booleanArrayOf(false, false, false, false, false)
     private lateinit var firstImageRVAdapter: FirstImageRVAdapter
     private var list: ArrayList<Bitmap> = arrayListOf()
-    var title = ""
-    var content = ""
     var startDate = ""
     var lastDate = ""
     lateinit var start_Datefor: Date
@@ -152,13 +150,6 @@ class CreateVoteFirstFragment: Fragment()  {
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         startDate = date
-                        val start = Calendar.getInstance()
-                        start[Calendar.YEAR] = year
-                        start[Calendar.DAY_OF_MONTH] = day
-                        start[Calendar.MONTH] = month-1 // 0-11 so 1 less
-                        start[Calendar.HOUR] = hour
-                        start[Calendar.MINUTE] = min
-                        start[Calendar.AM_PM] = cal_ampm
                         start_Datefor = Date(year,month,day,hour,min,cal_ampm)
                         Log.e("DATEPICKER",start_Datefor.toString())
                         cvFirstStartdateCheck.setText(date)
@@ -270,9 +261,10 @@ class CreateVoteFirstFragment: Fragment()  {
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
             if(finhour > starthour ) return true
-            else if(finhour == starthour) {
-                return if(isNow) finmin>=startmin
-                else finmin>startmin
+            if(!isNow){
+                if(finhour == starthour) {
+                    return finmin>startmin
+                }
             }
         return false
     }
@@ -286,14 +278,12 @@ class CreateVoteFirstFragment: Fragment()  {
                 mActivity.binding.createVoteNextTv.isEnabled = true
                 mActivity.checkValidation[0] = true
 
-
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
                 val imageByteArray: OutputStream = ByteArrayOutputStream()
                 for (i in 0 until list.size-1){
                     list[i].compress(Bitmap.CompressFormat.JPEG, 2, imageByteArray)
                     bytearr.add(list[i].toString().toByteArray())
                 }
-                Log.e("SETISACTIVT_FIRST",bytearr.toString())
                 viewModel.setVoteFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
             }else{
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))

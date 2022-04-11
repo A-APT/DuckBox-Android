@@ -51,9 +51,6 @@ class CreateVoteActivity : FragmentActivity() {
         binding.createVoteNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2) {
-                updateInfo()
-                Log.e("LAST",voteRegisterDto.toString())
-
                 viewModel.registerVote(object: ApiCallback {
                     override fun apiCallback(flag: Boolean) {
                         if(flag){
@@ -129,20 +126,5 @@ class CreateVoteActivity : FragmentActivity() {
         } else{
             super.onBackPressed()
         }
-    }
-
-    fun updateInfo(){
-        voteRegisterDto.apply {
-            title = viewModel.title.value!!
-            content = viewModel.content.value!!
-            startTime = viewModel.startTime.value!!
-            finishTime = viewModel.finishTime.value!!
-            candidates = viewModel.candidates.value!!
-            images = viewModel.images.value!!
-            voters = viewModel.voters.value
-            reward = viewModel.reward.value!!
-            notice = viewModel.notice.value!!
-        }
-
     }
 }
