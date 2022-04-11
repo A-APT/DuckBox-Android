@@ -11,7 +11,10 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     private const val BASE_URL:String = "http://172.30.1.58:8080"
 
-    var gson = GsonBuilder().setLenient().create()
+    var gson = GsonBuilder()
+        .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        .setLenient()
+        .create()
 
     private val loggingInterceptor = HttpLoggingInterceptor()
 
@@ -23,8 +26,10 @@ object RetrofitClient {
         .build()
 
     private val retrofit:Retrofit.Builder by lazy{
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
         Retrofit.Builder()
             .baseUrl(BASE_URL)
+            .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addConverterFactory(GsonConverterFactory.create())
     }
@@ -46,10 +51,6 @@ object RetrofitClient {
     }
 
     val VOTE_INTERFACE_SERVICE: VoteInterface by lazy{
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        retrofit
-            .client(client)
-            .build()
-            .create(VoteInterface::class.java)
+        retrofit.client(client).build().create(VoteInterface::class.java)
     }
 }
