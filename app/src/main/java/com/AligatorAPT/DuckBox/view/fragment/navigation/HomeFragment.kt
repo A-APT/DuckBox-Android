@@ -2,18 +2,24 @@ package com.AligatorAPT.DuckBox.view.fragment.navigation
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentHomeBinding
+import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
+import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.MyGroupData
 import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
+import com.AligatorAPT.DuckBox.viewmodel.HomeViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -23,6 +29,9 @@ class HomeFragment : Fragment() {
     private lateinit var paperListAdapter: PaperListAdapter
 
     private var isParticipation = true
+    private var isVerification = true
+
+    private val model: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,23 +47,73 @@ class HomeFragment : Fragment() {
     }
 
     private fun init(){
-        binding.apply {
-            //MyGroup list 관리하는 메니저 등록
-            myGroupAdapter = MyGroupAdapter(setGroupList())
-            myGroupAdapter.itemClickListener = object :MyGroupAdapter.OnItemClickListener{
-                override fun OnItemClick(
-                    holder: MyGroupAdapter.MyViewHolder,
-                    view: View,
-                    data: MyGroupData,
-                    position: Int
-                ) {
-                    //그룹 상세로 화면 전환
-                    val intent = Intent(activity, GroupDetailActivity::class.java)
-                    intent.putExtra("groupData", data)
-                    startActivity(intent)
+        //내 그룹 리스트 가져오기
+        model.getAllGroup(object: MyGroupCallback{
+            override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
+                if(_list != null){
+                    model.setMyGroup(_list)
                 }
             }
-            recyclerMyGroup.adapter = myGroupAdapter
+        })
+
+        val mActivity = activity as NavigationActivity
+
+        binding.apply {
+            createGroupBtn.setOnClickListener {
+                if(isVerification){
+                    //그룹 만들기 액티비티 이동
+                    val intent = Intent(activity, CreateGroupActivity::class.java)
+                    startActivity(intent)
+                }else{
+                    //다이얼로그
+                    val bundle = Bundle()
+                    bundle.putString("message", "모든 인증을 완료하고\n" +
+                            "그룹을 만들어주세요.")
+                    val modalDialog = ModalDialog()
+                    modalDialog.arguments = bundle
+                    modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                        override fun OnPositiveClick() {
+                            modalDialog.dismiss()
+                            //내정보로 이동
+                            mActivity.selectedBottomNavigationItem(R.id.tab_my)
+                        }
+
+                        override fun OnNegativeClick() {
+                            modalDialog.dismiss()
+                        }
+                    }
+                    modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+                }
+            }
+
+            //MyGroup list 관리하는 메니저 등록
+            model.myGroup.observe(viewLifecycleOwner, Observer {
+                if (it != null) {
+                    Log.d("MYGROUP", it.toString())
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    arrayList.addAll(it)
+                    myGroupAdapter = MyGroupAdapter(arrayList)
+                }else{
+                    //서버에서 받아오는 정보가 없을 때
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    myGroupAdapter = MyGroupAdapter(arrayList)
+                }
+
+                myGroupAdapter.itemClickListener = object :MyGroupAdapter.OnItemClickListener{
+                    override fun OnItemClick(
+                        holder: MyGroupAdapter.MyViewHolder,
+                        view: View,
+                        data: GroupDetailDto,
+                        position: Int
+                    ) {
+                        //그룹 상세로 화면 전환
+                        val intent = Intent(activity, GroupActivity::class.java)
+                        intent.putExtra("groupData", data)
+                        startActivity(intent)
+                    }
+                }
+                recyclerMyGroup.adapter = myGroupAdapter
+            })
 
             //paper list 관리하는 메니저 등록
             paperListAdapter = PaperListAdapter(setPaperList())
@@ -77,7 +136,6 @@ class HomeFragment : Fragment() {
             }
             recyclerPaperList.adapter = paperListAdapter
 
-            val mActivity = activity as NavigationActivity
             binding.apply {
                 //참여 가능 버튼 누를 경우
                 toggleParticipationPossible.setOnClickListener {
@@ -103,16 +161,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private fun setGroupList(): ArrayList<MyGroupData>{
-        return arrayListOf<MyGroupData>(
-            MyGroupData(R.drawable.community, "KU 총학생회"),
-            MyGroupData(R. drawable.community, "악어아파트"),
-            MyGroupData(R.drawable.community, "SecurityFact"),
-            MyGroupData(R.drawable.community, "연합봉사동아리"),
-            MyGroupData(R.drawable.community, "오리박스"),
-        )
     }
 
     private fun setPaperList(): ArrayList<PaperListData>{

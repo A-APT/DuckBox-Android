@@ -6,14 +6,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.MainActivity
 import com.AligatorAPT.DuckBox.databinding.FragmentFinishSignUpBinding
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
 class FinishSignUpFragment : Fragment() {
     private var _binding: FragmentFinishSignUpBinding? = null
     private val binding: FragmentFinishSignUpBinding get() = _binding!!
+
+    private val model: RegisterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +36,9 @@ class FinishSignUpFragment : Fragment() {
         val mActivity = activity as SignUpActivity
         binding.apply {
             //유저 닉네임 설정
-            setFragmentResultListener("toFinishSignUp"){key, bundle->
-                finishUserName.text = bundle.getString("nickname").toString()
-            }
+            model.nickname.observe(viewLifecycleOwner, Observer {
+                finishUserName.text = it
+            })
 
             //시작하기 버튼 이벤트
             startHome.setOnClickListener {

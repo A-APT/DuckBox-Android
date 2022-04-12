@@ -13,33 +13,58 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
-import android.view.MotionEvent
-import android.view.View.OnTouchListener
+import androidx.activity.viewModels
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CreateVoteActivity : FragmentActivity() {
     lateinit var binding: ActivityCreateVoteBinding
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
+    var voteRegisterDto = VoteRegisterDto(
+        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), ArrayList<String>(), null,false,false)
+
+    val viewModel : CreateVoteViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateVoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        voteRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
+        if(voteRegisterDto.isGroup){
+            viewModel.setGroup(voteRegisterDto.isGroup, intent.getStringExtra("groupId"))
+        }else {
+            viewModel.setGroup(voteRegisterDto.isGroup, null)
+        }
+
         initViewPager()
 
+        initButton()
+    }
+
+    private fun initButton() {
         binding.createVoteNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2) {
-                binding.createVoteFr.visibility = View.VISIBLE
-                binding.createVoteVp.visibility = View.GONE
-                binding.createVoteNextTv.visibility = View.GONE
-                binding.createVoteTl.visibility = View.GONE
-                binding.createVoteTitle.text = "투표 생성 완료"
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
-                    .commit()
+                viewModel.registerVote(object: ApiCallback {
+                    override fun apiCallback(flag: Boolean) {
+                        if(flag){
+                            binding.createVoteFr.visibility = View.VISIBLE
+                            binding.createVoteVp.visibility = View.GONE
+                            binding.createVoteNextTv.visibility = View.GONE
+                            binding.createVoteTl.visibility = View.GONE
+                            binding.createVoteTitle.text = "투표 생성 완료"
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
+                                .commit()
+                        }
+                    }
+                })
             }
 
             viewPager.currentItem = viewPager.currentItem+1

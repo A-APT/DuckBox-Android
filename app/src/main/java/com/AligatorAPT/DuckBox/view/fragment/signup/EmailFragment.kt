@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.core.widget.doAfterTextChanged
-import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.activityViewModels
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailBinding
-import com.AligatorAPT.DuckBox.model.EmailModel
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
 class EmailFragment : Fragment() {
     private var _binding: FragmentEmailBinding? = null
@@ -23,7 +23,7 @@ class EmailFragment : Fragment() {
     private var checkEmail = false
     private var isActivateBtn = false
 
-    private val emailModel: EmailModel = EmailModel()
+    private val model: RegisterViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -96,12 +96,16 @@ class EmailFragment : Fragment() {
             emailBtn.setOnClickListener {
                 if(isActivateBtn){
                     //이메일 전송
-                    emailModel.generateEmailAuth(textEmail.text.toString())
-
-                    //프래그먼트에 이메일 주소 전달
-                    setFragmentResult("toEmailCode", bundleOf("email" to textEmail.text.toString()))
-
-                    mActivity.changeFragment(EmailCodeFragment(), "이메일 인증하기")
+                    model.generateEmailAuth(textEmail.text.toString(), object: ApiCallback {
+                        override fun apiCallback(flag: Boolean) {
+                            if(flag){
+                                //이메일 뷰모델에 저장
+                                model.setEmail(textEmail.text.toString())
+                                //화면 전환
+                                mActivity.changeFragment(EmailCodeFragment(), "이메일 인증하기")
+                            }
+                        }
+                    })
                 }
             }
         }

@@ -6,8 +6,8 @@ import android.view.*
 import androidx.fragment.app.DialogFragment
 import com.AligatorAPT.DuckBox.databinding.DialogWriteBinding
 import com.AligatorAPT.DuckBox.view.activity.PollCreateActivity
-import com.AligatorAPT.DuckBox.view.activity.VoteCreateActivity
 import android.util.DisplayMetrics
+import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 
 class WriteDialog: DialogFragment() {
     private var _binding: DialogWriteBinding? = null
@@ -31,12 +31,21 @@ class WriteDialog: DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.apply {
+
+            val args = arguments
+            val isGroup = args!!.getBoolean("isGroup")
+            val groupId = args.getString("groupId")
+
             voteBtn.setOnClickListener {
-                val intent = Intent(requireActivity(), VoteCreateActivity::class.java)
+                val intent = Intent(requireActivity(), CreateVoteActivity::class.java)
+                intent.putExtra("isGroup",isGroup)
+                intent.putExtra("groupId",groupId)
                 startActivity(intent)
             }
             pollBtn.setOnClickListener {
                 val intent = Intent(requireActivity(), PollCreateActivity::class.java)
+                intent.putExtra("isGroup",isGroup)
+                intent.putExtra("groupId",groupId)
                 startActivity(intent)
             }
         }

@@ -2,29 +2,36 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.AligatorAPT.DuckBox">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
+        android:name=".sharedpreferences.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.DuckBox">
+        android:theme="@style/Theme.DuckBox"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.activity.GroupUpdateActivity"
+            android:name=".view.activity.GroupActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.GroupSettingActivity"
+            android:name=".view.activity.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ResultActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.CreateGroupActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.PollCreateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.VoteCreateActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.PollDetailActivity"
@@ -32,9 +39,8 @@
         <activity
             android:name=".view.activity.VoteDetailActivity"
             android:exported="false" />
-        <activity
-            android:name=".view.activity.GroupDetailActivity"
-            android:exported="false" />
+        <activity android:name=".view.activity.VoteDetailImageInfoActivity"
+            android:exported="false"/>
         <activity
             android:name=".view.activity.NavigationActivity"
             android:exported="false" />

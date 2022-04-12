@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteFinalBinding
+import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.VoteDetailActivity
 
 class CreateVoteFinalFragment: Fragment()  {
@@ -27,8 +28,10 @@ class CreateVoteFinalFragment: Fragment()  {
         super.onViewCreated(view, savedInstanceState)
 
         binding.cvFinalCheckTv.setOnClickListener {
+            val mActivity = activity as CreateVoteActivity
             val intent = Intent(activity, VoteDetailActivity::class.java)
             startActivity(intent)
+            mActivity.finish()
         }
     }
 

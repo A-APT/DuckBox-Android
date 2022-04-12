@@ -1,12 +1,10 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -17,19 +15,15 @@ import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteSecondBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.SecondListRVAdapter
 import androidx.core.view.get
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
-import java.util.*
-import kotlin.collections.ArrayList
+import androidx.fragment.app.activityViewModels
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 
 
 class CreateVoteSecondFragment: Fragment()  {
     private var _binding : FragmentCreateVoteSecondBinding? = null
     private val binding : FragmentCreateVoteSecondBinding get() = _binding!!
-    private val viewModel : CVSecondListViewModel by viewModels()
+    val viewModel : CreateVoteViewModel by activityViewModels()
     var checkValidation = booleanArrayOf(false)
-    private var list : ArrayList<String> = arrayListOf()
     private lateinit var secondListRVAdapter : SecondListRVAdapter
 
     override fun onCreateView(
@@ -43,14 +37,13 @@ class CreateVoteSecondFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initButton()
         initList()
         check()
     }
 
 
     private fun initList() {
-        secondListRVAdapter = SecondListRVAdapter(requireContext())
+        secondListRVAdapter = SecondListRVAdapter(viewModel)
         binding.apply {
             val layoutManager = LinearLayoutManager(requireContext())
             layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -58,8 +51,7 @@ class CreateVoteSecondFragment: Fragment()  {
             cvSecondListRv.adapter = secondListRVAdapter
 
             cvSecondAddTv.setOnClickListener {
-                list.add("")
-                viewModel.addTask(list)
+                secondListRVAdapter.addData()
             }
         }
 
@@ -73,12 +65,12 @@ class CreateVoteSecondFragment: Fragment()  {
             ): Boolean {
                 val fromPos: Int = from.adapterPosition
                 val toPos: Int = to.adapterPosition
-                viewModel.swapTask(fromPos, toPos)
+                secondListRVAdapter.swapData(fromPos,toPos)
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                viewModel.deleteTask(viewHolder.layoutPosition)
+                secondListRVAdapter.removeData(viewHolder.layoutPosition)
                 binding.cvSecondListRv.get(viewHolder.layoutPosition).clearFocus()
             }
         }
@@ -87,28 +79,27 @@ class CreateVoteSecondFragment: Fragment()  {
 
     }
 
-    private fun initButton() {
-        binding.apply {
-
-            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
-                if(cvSecondTypeRb1.isChecked){
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-                if(cvSecondTypeRb2.isChecked){
-                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-                }
-            }
-        }
-    }
+//    private fun initButton() {
+//        binding.apply {
+//
+//            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
+//                if(cvSecondTypeRb1.isChecked){
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//                if(cvSecondTypeRb2.isChecked){
+//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
+//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
+//                }
+//            }
+//        }
+//    }
 
     private fun check() {
         binding.apply {
             viewModel.data.observe(viewLifecycleOwner,{
-                secondListRVAdapter.setData(it!!)
-                Log.e("OBSERVER",it.size.toString()+"내용:"+it.toString())
-                checkValidation[0] = it.size>=2
+                Log.e("OBSERVER",it!!.size.toString()+"내용:"+it.toString())
+                checkValidation[0] = (it.size>=2 && !it.contains(""))
                 setIsActivateBtn()
             })
         }
