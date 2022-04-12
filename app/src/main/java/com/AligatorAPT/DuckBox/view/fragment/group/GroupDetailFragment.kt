@@ -16,6 +16,7 @@ import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
+import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -94,7 +95,7 @@ class GroupDetailFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
-                                model.joinGroup(object: ApiCallback{
+                                model.joinGroup(object: ApiCallback {
                                     override fun apiCallback(flag: Boolean) {
                                         if(flag){
                                             //그룹 가입 요청 완료로 화면 전환
@@ -183,6 +184,16 @@ class GroupDetailFragment : Fragment() {
                 }
 
             })
+
+            //다이얼로그
+            fab.setOnClickListener {
+                val args = Bundle()
+                args.putBoolean("isGroup", true)
+                args.putString("groupId",model.id.value)
+                val writeDialog = WriteDialog()
+                writeDialog.arguments = args
+                writeDialog.show(mActivity.supportFragmentManager, "WriteDialog")
+            }
         }
     }
 

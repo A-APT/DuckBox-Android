@@ -15,7 +15,8 @@ import android.app.Activity
 import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
-import com.AligatorAPT.DuckBox.view.data.ExcelData
+import androidx.fragment.app.activityViewModels
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
 import jxl.Sheet
@@ -29,7 +30,8 @@ class CreateVoteThirdFragment: Fragment()  {
     private val binding : FragmentCreateVoteThirdBinding get() = _binding!!
     private val FILE_REQUEST_CODE = 100
     private var filename : String? = null
-    var excelList : MutableList<ExcelData> = arrayListOf()
+    var excelList : ArrayList<Int> = arrayListOf()
+    val viewModel : CreateVoteViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,11 @@ class CreateVoteThirdFragment: Fragment()  {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.setVoters(null)
+        viewModel.setReward(false)
+        viewModel.setNotice(false)
+
         initButton()
     }
 
@@ -53,6 +60,7 @@ class CreateVoteThirdFragment: Fragment()  {
             val reward_black = getDrawable(requireContext(), R.drawable.reward_black)!!.constantState
 
             cvThirdListTv.setOnClickListener {
+
                 if(cvThirdListIv.drawable.constantState!! == folder_black){
 
                     val intent = Intent(Intent.ACTION_GET_CONTENT)
@@ -70,6 +78,7 @@ class CreateVoteThirdFragment: Fragment()  {
                     cvThirdListTitleTv.visibility = View.GONE
                     cvThirdListTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
                     cvThirdListTv.setTextColor(resources.getColor(R.color.black,null))
+                    viewModel.setVoters(null)
                 }
             }
             cvThirdAlarmTv.setOnClickListener {
@@ -77,10 +86,12 @@ class CreateVoteThirdFragment: Fragment()  {
                     cvThirdAlarmIv.setImageResource(R.drawable.bell_blue)
                     cvThirdAlarmTv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
                     cvThirdAlarmTv.setTextColor(resources.getColor(R.color.main,null))
+                    viewModel.setReward(true)
                 }else{
                     cvThirdAlarmIv.setImageResource(R.drawable.bell_black)
                     cvThirdAlarmTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
                     cvThirdAlarmTv.setTextColor(resources.getColor(R.color.black,null))
+                    viewModel.setReward(false)
                 }
             }
             cvThirdRewardTv.setOnClickListener {
@@ -88,10 +99,12 @@ class CreateVoteThirdFragment: Fragment()  {
                     cvThirdRewardIv.setImageResource(R.drawable.reward_blue)
                     cvThirdRewardTv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
                     cvThirdRewardTv.setTextColor(resources.getColor(R.color.main,null))
+                    viewModel.setNotice(true)
                 }else{
                     cvThirdRewardIv.setImageResource(R.drawable.reward_black)
                     cvThirdRewardTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
                     cvThirdRewardTv.setTextColor(resources.getColor(R.color.black,null))
+                    viewModel.setNotice(false)
                 }
             }
         }
@@ -118,55 +131,6 @@ class CreateVoteThirdFragment: Fragment()  {
         }
     }
 
-    //xlsx도 포함 -> 권한 등에 오류 발생
-//    private fun readExcelFile(inputStream : InputStream){
-//        Log.e("1","여기")
-//        try{
-//            val myFileSystem = POIFSFileSystem(inputStream)
-//            //워크 북
-//            val myWorkBook = HSSFWorkbook(myFileSystem)
-//            // 워크북에서 시트 가져오기
-//            val s = myWorkBook.getSheetAt(0)
-//
-//            val sheet : HSSFSheet? = myWorkBook.getSheetAt(0)
-//            Log.e("2","여기")
-//            if(sheet != null){
-//                Log.e("3","여기")
-//                //행을 반복할 변수 만들어주기
-//                val rowIter = sheet.rowIterator()
-//                //행 넘버 변수 만들기
-//                var rowno = 0
-//
-//                while (rowIter.hasNext()) {
-//                    val myRow = rowIter.next() as HSSFRow
-//                    if (rowno != 0) {
-//                        val cellIter = myRow.cellIterator()
-//                        var colno = 0
-//                        var name = ""
-//                        var studentID = ""
-//                        while (cellIter.hasNext()) {
-//                            val myCell = cellIter.next() as HSSFCell
-//                            if (colno == 1) {//2번째 열이라면,
-//                                name = myCell.toString()
-//                            } else if (colno == 2) {//3번째 열이라면,
-//                                studentID = myCell.toString()
-//                            }
-//                            colno++
-//                        }
-//                        Log.e("아이템",name+studentID)
-//                        excelList.add(ExcelData(name, studentID))
-//                    }
-//                    rowno++
-//                }
-//                Log.e("checking", " items: $excelList");
-//            }
-//
-//        } catch (e: Exception) {
-//            Toast.makeText(context, "에러 발생", Toast.LENGTH_LONG).show()
-//        }
-//    }
-
-
     private fun readExcelFile(inputStream: InputStream) {
         try {
             val wb: Workbook = Workbook.getWorkbook(inputStream)
@@ -177,17 +141,18 @@ class CreateVoteThirdFragment: Fragment()  {
 
             for (row in rowIndexStart until rowTotal) {
                 var name = ""
-                var studentId = ""
+                var studentId = 0
                 for (col in 0 until colTotal) {
                     val contents: String = sheet.getCell(col, row).contents
                     when (col) {
                         0 -> name = contents
-                        1 -> studentId = contents
+                        1 -> studentId = contents.toInt()
                     }
                 }
-                excelList.add(ExcelData(name,studentId))
+                excelList.add(studentId)
             }
             Log.d("끝", excelList.toString())
+            viewModel.setVoters(excelList)
         } catch (e: IOException) {
             e.printStackTrace()
         } catch (e: BiffException) {
