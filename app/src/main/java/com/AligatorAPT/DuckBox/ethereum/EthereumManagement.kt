@@ -26,6 +26,9 @@ object EthereumManagement {
     private val web3j = Admin.build(HttpService(ETH_NETWORK))
     private var credentials: Credentials? = null
 
+    private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
+    private val gasLimit: BigInteger = BigInteger.valueOf(80000) // gasLimit
+
     fun createWallet(password: String): WalletFile {
         val keyPair: ECKeyPair = Keys.createEcKeyPair()
         return Wallet.createLight(password, keyPair)
@@ -108,8 +111,8 @@ object EthereumManagement {
         // send raw transaction
         val manager = RawTransactionManager(web3j, credentials)
         val ethSend: EthSendTransaction = manager.sendTransaction(
-            Convert.toWei("1", Convert.Unit.GWEI).toBigInteger(), // gasPrice
-            BigInteger.valueOf(80000), // gasLimit
+            gasPrice,
+            gasLimit,
             contractAddress, // to
             encodedFunction, // data
             BigInteger.ZERO // value
