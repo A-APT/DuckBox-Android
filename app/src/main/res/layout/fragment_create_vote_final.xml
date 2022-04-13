@@ -42,42 +42,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <TextView
-        android:id="@+id/cv_final_join_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="참여링크"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="30dp"
-        app:layout_constraintTop_toBottomOf="@id/cv_final_check_tv"
-        app:layout_constraintStart_toStartOf="parent"/>
-
-    <TextView
-        android:id="@+id/cv_final_joinlink_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/sub1_stroke_white_solid_box_5dp"
-        android:paddingVertical="12dp"
-        android:paddingStart="30dp"
-        android:text="https://www.figma.com/file/4F1..."
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cv_final_join_tv" />
-
-    <androidx.constraintlayout.utils.widget.ImageFilterView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/copy"
-        android:layout_marginEnd="15dp"
-        app:layout_constraintEnd_toEndOf="@id/cv_final_joinlink_tv"
-        app:layout_constraintTop_toTopOf="@id/cv_final_joinlink_tv"
-        app:layout_constraintBottom_toBottomOf="@id/cv_final_joinlink_tv"/>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

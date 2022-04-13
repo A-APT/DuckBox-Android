@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.view.adapter.createvote
 
 import android.content.Context
+import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.databinding.RowCvFirstImageBinding
 import com.bumptech.glide.Glide
 
-class FirstImageRVAdapter(private var items: ArrayList<Uri>, val context : Context) : RecyclerView.Adapter<FirstImageRVAdapter.ViewHolder>(){
+class FirstImageRVAdapter(private var items: ArrayList<Bitmap>, val context : Context) : RecyclerView.Adapter<FirstImageRVAdapter.ViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnRemoveClick(holder:ViewHolder, view:View, data:Uri, position: Int)
-        fun OnAddClick(holder:ViewHolder, view:View, position: Int)
+        fun OnRemoveClick(holder:ViewHolder, position: Int)
+        fun OnAddClick(holder:ViewHolder, position: Int)
     }
 
     var itemClickListener: OnItemClickListener ?= null
@@ -31,17 +32,13 @@ class FirstImageRVAdapter(private var items: ArrayList<Uri>, val context : Conte
 
         holder.binding.apply {
             if(position != items.size-1){
-                Glide.with(context).load(items[position])
-                    .override(100,100)
-                    .into(imageRvIv)
+                imageRvIv.setImageBitmap(items[position])
                 imageRemoveIv.visibility = View.VISIBLE
                 imagePlusIv.visibility = View.GONE
             }else{
                 imageRemoveIv.visibility = View.GONE
             }
         }
-
-
     }
 
     override fun getItemCount(): Int = items.size
@@ -53,11 +50,11 @@ class FirstImageRVAdapter(private var items: ArrayList<Uri>, val context : Conte
                 imageRemoveIv.bringToFront()
 
                 imageRemoveIv.setOnClickListener {
-                    itemClickListener?.OnRemoveClick(this@ViewHolder,it,items[adapterPosition],adapterPosition)
+                    itemClickListener?.OnRemoveClick(this@ViewHolder,adapterPosition)
                 }
                 imageRvIv.setOnClickListener {
                     if(adapterPosition == items.size-1){
-                        itemClickListener?.OnAddClick(this@ViewHolder,it,adapterPosition)
+                        itemClickListener?.OnAddClick(this@ViewHolder,adapterPosition)
                     }
                 }
             }

@@ -1,7 +1,6 @@
 package com.AligatorAPT.DuckBox.view.fragment.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentEmailCodeBinding
 import com.AligatorAPT.DuckBox.dto.user.EmailTokenDto
-import com.AligatorAPT.DuckBox.retrofit.`interface`.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
@@ -73,7 +72,7 @@ class EmailCodeFragment : Fragment() {
             //다시보내기 버튼 이벤트
             reSendCodeBtn.setOnClickListener {
                 model.email.observe(viewLifecycleOwner, Observer {
-                    model.generateEmailAuth(it, object: ApiCallback{
+                    model.generateEmailAuth(it, object: ApiCallback {
                         override fun apiCallback(flag: Boolean) {
                             Toast.makeText(mActivity, "$it 으로 이메일을 다시 전송했습니다.", Toast.LENGTH_LONG).show()
                         }

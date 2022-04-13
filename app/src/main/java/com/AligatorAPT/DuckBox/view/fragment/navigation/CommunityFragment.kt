@@ -100,7 +100,11 @@ class CommunityFragment : Fragment() {
 
             //다이얼로그
             fab.setOnClickListener {
-                WriteDialog().show(mActivity.supportFragmentManager, "WriteDialog")
+                val args = Bundle()
+                args.putBoolean("isGroup", false)
+                val writeDialog = WriteDialog()
+                writeDialog.arguments = args
+                writeDialog.show(mActivity.supportFragmentManager, "WriteDialog")
             }
         }
     }

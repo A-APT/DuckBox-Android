@@ -1,23 +1,19 @@
 package com.AligatorAPT.DuckBox.view.adapter.createvote
 
-import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.databinding.RowCvSecondTextBinding
-import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteSecondFragment
-import com.AligatorAPT.DuckBox.viewmodel.createvote.CVSecondListViewModel
-import java.util.*
+import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import kotlin.collections.ArrayList
 
-class SecondListRVAdapter(val context: Context)
+class SecondListRVAdapter(val model: CreateVoteViewModel)
     : RecyclerView.Adapter<SecondListRVAdapter.ViewHolder>(){
 
-    var mList : ArrayList<String> = arrayListOf()
+    var mList : ArrayList<String> = arrayListOf("")
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -43,7 +39,8 @@ class SecondListRVAdapter(val context: Context)
 
                     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                         mList.set(adapterPosition, p0.toString())
-                        Log.e("ONTEXT", "position:$adapterPosition  $mList")
+                        Log.e("ONTEXT", "position:$adapterPosition  ${model.data.value}")
+                        model.setCandidateData(mList)
                     }
                     override fun afterTextChanged(p0: Editable?) {
 
@@ -53,8 +50,23 @@ class SecondListRVAdapter(val context: Context)
         }
     }
 
-    fun setData(newData: ArrayList<String>){
-        mList = newData
+    fun addData(){
+        mList.add("")
+        notifyItemInserted(mList.size)
+        Log.e("mList",mList.toString())
+    }
+
+    fun swapData(fromPos : Int, toPos: Int){
+        val swap = mList[fromPos]
+        mList[fromPos] = mList[toPos]
+        mList[toPos] = swap
         notifyDataSetChanged()
+        Log.e("mList",mList.toString())
+    }
+
+    fun removeData(pos: Int){
+        mList.removeAt(pos)
+        notifyDataSetChanged()
+        Log.e("mList",mList.toString())
     }
 }
