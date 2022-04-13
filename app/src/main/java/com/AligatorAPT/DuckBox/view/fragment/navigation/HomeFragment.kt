@@ -52,6 +52,11 @@ class HomeFragment : Fragment() {
             override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
                 if(_list != null){
                     model.setMyGroup(_list)
+                    binding.apply {
+                        recyclerMyGroup.visibility = View.VISIBLE
+                        emptyGroup1.visibility = View.GONE
+                        emptyGroup2.visibility = View.GONE
+                    }
                 }
             }
         })
