@@ -7,6 +7,7 @@ import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -14,7 +15,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object GroupModel {
-    fun register(_groupRegisterDto: GroupRegisterDto, callback: ApiCallback){
+    fun register(_groupRegisterDto: GroupRegisterDto, callback: RegisterCallBack){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)
@@ -27,24 +28,25 @@ object GroupModel {
             httpHeaders = headers,
             groupRegisterDto = _groupRegisterDto
         ).enqueue(object :
-            Callback<ResponseBody> {
+            Callback<String> {
             override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
+                call: Call<String>,
+                response: Response<String>
             ) {
                 Log.d("Response:: ", response.toString())
                 if (response.isSuccessful) {
-                    callback.apiCallback(true)
+                    callback.registerCallBack(true, response.body()!!)
                 } else {
-                    callback.apiCallback(false)
+                    callback.registerCallBack(false, null)
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d(
-                    "onFailure::", "Failed API call with call: " + call +
+                    "onFailure::", "Failed RegisterGroup API call with call: " + call +
                             " + exception: " + t
                 )
+                callback.registerCallBack(false, null)
             }
         })
     }
@@ -73,7 +75,7 @@ object GroupModel {
             override fun onFailure(call: Call<List<GroupDetailDto>>, t: Throwable) {
                 callback.apiCallback(false, null)
                 Log.d(
-                    "onFailure::", "Failed API call with call: " + call +
+                    "onFailure::", "Failed GetAllGroup API call with call: " + call +
                             " + exception: " + t
                 )
             }
@@ -103,7 +105,7 @@ object GroupModel {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 callback.apiCallback(false)
                 Log.d(
-                    "onFailure::", "Failed API call with call: " + call +
+                    "onFailure::", "Failed UpdateGroup call with call: " + call +
                             " + exception: " + t
                 )
             }
