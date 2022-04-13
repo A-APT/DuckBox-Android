@@ -9,6 +9,7 @@ import com.AligatorAPT.DuckBox.view.fragment.creategroup.CreateGroupInfoFragment
 
 class CreateGroupActivity : AppCompatActivity() {
     lateinit var binding: ActivityCreateGroupBinding
+    private var page = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,11 +29,28 @@ class CreateGroupActivity : AppCompatActivity() {
         }
     }
 
-    fun changeFragment(fragment: Fragment, title:String) {
+    fun changeFragment(fragment: Fragment, title:String, _page: Int) {
         val transaction = supportFragmentManager.beginTransaction()
             .replace(R.id.createGroupFrameLayout, fragment)
             .addToBackStack(null)
         transaction.commit()
         binding.createGroupTitle.text = title
+        page = _page
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        when(page){
+            0 -> {
+                finish()
+            }
+            1 -> {
+                binding.createGroupTitle.text = "그룹 정보 입력하기"
+                page = 0
+            }
+            2 -> {
+                finish()
+            }
+        }
     }
 }

@@ -79,7 +79,7 @@ class CreateGroupInfoFragment : Fragment() {
                     if(!checkDuplicateGroupName()){
                         model.setLeaderDid("groupLeaderDid")
                         model.setGroupInfo(setGroupName.text.toString(), setIntroduce.text.toString())
-                        mActivity.changeFragment(CreateGroupImageFragment(), "이미지 추가하기")
+                        mActivity.changeFragment(CreateGroupImageFragment(), "이미지 추가하기", 1)
                     }
                 }
             }

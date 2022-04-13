@@ -79,7 +79,7 @@ class CreateGroupImageFragment : Fragment() {
                         override fun apiCallback(flag: Boolean) {
                             if(flag){
                                 //화면 전환
-                                mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료")
+                                mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료", 2)
                             }
                         }
                     }
