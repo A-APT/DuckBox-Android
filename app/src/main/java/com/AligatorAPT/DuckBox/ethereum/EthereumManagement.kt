@@ -5,8 +5,8 @@ import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.FunctionReturnDecoder
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Type
-import org.web3j.crypto.Credentials
-import org.web3j.protocol.Web3j
+import org.web3j.crypto.*
+import org.web3j.protocol.admin.Admin
 import org.web3j.protocol.core.DefaultBlockParameterName
 import org.web3j.protocol.core.methods.request.Transaction
 import org.web3j.protocol.core.methods.response.EthCall
@@ -16,15 +16,36 @@ import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.RawTransactionManager
 import org.web3j.utils.Convert
+import java.io.File
 import java.math.BigInteger
 
 object EthereumManagement {
 
     private const val ETH_NETWORK = BuildConfig.ETH_NETWORK_LOCAL
-    private val web3j = Web3j.build(HttpService(ETH_NETWORK))
+    //private val web3j = Web3j.build(HttpService(ETH_NETWORK))
+    private val web3j = Admin.build(HttpService(ETH_NETWORK))
+    private var credentials: Credentials? = null
+
+    private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
+    private val gasLimit: BigInteger = BigInteger.valueOf(80000) // gasLimit
+
+    fun createWallet(password: String): WalletFile {
+        val keyPair: ECKeyPair = Keys.createEcKeyPair()
+        return Wallet.createLight(password, keyPair)
+    }
+
+    fun createWallet(password: String, path: String): String {
+        val walletFileName: String = WalletUtils.generateLightNewWalletFile(password, File(path))
+        val walletPath: String = File(path, walletFileName).absolutePath
+        credentials = WalletUtils.loadCredentials(password, walletPath)
+        return walletPath
+    }
+
+    fun loadCredentials(password: String, walletPath: String) {
+        credentials = WalletUtils.loadCredentials(password, walletPath)
+    }
 
     fun ethCall(
-        clientAddress: String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -37,7 +58,7 @@ object EthereumManagement {
 
         // call function
         // createFunctionCallTransaction BigInteger
-        val transaction = Transaction.createEthCallTransaction(clientAddress, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
         val ethCall: EthCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get()
 
         if (ethCall.hasError()){
@@ -51,7 +72,6 @@ object EthereumManagement {
     }
 
     fun ethSend(
-        clientAddress: String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -64,8 +84,7 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // create raw transaction (:signed transaction)
-        // Convert.toWei("1", Convert.Unit.GWEI).toBigInteger(), // gasPrice
-        val transaction = Transaction.createEthCallTransaction(clientAddress, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
         val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
 
         if (ethSend.hasError()){
@@ -78,7 +97,6 @@ object EthereumManagement {
     }
 
     fun ethSendRaw(
-        privateKey: String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -91,11 +109,10 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // send raw transaction
-        val credentials: Credentials = Credentials.create(privateKey)
         val manager = RawTransactionManager(web3j, credentials)
         val ethSend: EthSendTransaction = manager.sendTransaction(
-            Convert.toWei("1", Convert.Unit.GWEI).toBigInteger(), // gasPrice
-            BigInteger.valueOf(80000), // gasLimit (ropsten)
+            gasPrice,
+            gasLimit,
             contractAddress, // to
             encodedFunction, // data
             BigInteger.ZERO // value
