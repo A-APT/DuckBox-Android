@@ -3,6 +3,6 @@ package com.AligatorAPT.DuckBox.dto.group
 data class GroupUpdateDto (
     var id: String, // ObjectId
     var description: String?,
-    var profile: ByteArray? = null, // image
-    var header: ByteArray? = null, // image
+    var profile: ByteArray?, // image
+    var header: ByteArray?, // image
 )

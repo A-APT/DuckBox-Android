@@ -15,7 +15,7 @@ interface GroupInterface {
     fun register(
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Body groupRegisterDto: GroupRegisterDto
-        ): Call<ResponseBody>
+        ): Call<String>
 
     @GET("/api/v1/group")
     fun getAllGroup(

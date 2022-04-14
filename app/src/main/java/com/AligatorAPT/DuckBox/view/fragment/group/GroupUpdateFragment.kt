@@ -16,12 +16,12 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupUpdateBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import java.io.ByteArrayOutputStream
-import java.io.OutputStream
 import java.lang.Exception
 
 class GroupUpdateFragment : Fragment() {
@@ -70,6 +70,8 @@ class GroupUpdateFragment : Fragment() {
                     oldProfile = it
                     val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
                     groupImage.setImageBitmap(bmp)
+                }else{
+                    groupImage.setImageResource(R.drawable.sub2_color_box_3dp)
                 }
             })
 
@@ -78,6 +80,8 @@ class GroupUpdateFragment : Fragment() {
                     oldHeader = it
                     val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
                     groupBackground.setImageBitmap(bmp)
+                }else{
+                    groupBackground.setImageResource(R.drawable.sub1_color_box_5dp)
                 }
             })
 
@@ -102,17 +106,16 @@ class GroupUpdateFragment : Fragment() {
                 startActivityForResult(intent, CIRCLE_IMAGE)
             }
             submitBtn.setOnClickListener {
-                val profileByteArray: OutputStream? = ByteArrayOutputStream()
-                newProfile?.compress(Bitmap.CompressFormat.JPEG, 2, profileByteArray)
-                Log.d("IMAGEBITMAP", profileByteArray.toString().toByteArray().toString())
+                val profileByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+                newProfile?.compress(Bitmap.CompressFormat.PNG, 2, profileByteArray)
 
-                val headerByteArray: OutputStream? = ByteArrayOutputStream()
-                newHeader?.compress(Bitmap.CompressFormat.JPEG, 2, headerByteArray)
+                val headerByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+                newHeader?.compress(Bitmap.CompressFormat.PNG, 2, headerByteArray)
 
                 model.updateGroupInfo(
                     _description = groupDescriptionEditText.text.toString(),
-                    _profile = profileByteArray.toString().toByteArray(),
-                    _header = headerByteArray.toString().toByteArray(),
+                    _profile = profileByteArray?.toByteArray(),
+                    _header = headerByteArray?.toByteArray(),
                 )
 
                 model.updateGroup(object :ApiCallback{
