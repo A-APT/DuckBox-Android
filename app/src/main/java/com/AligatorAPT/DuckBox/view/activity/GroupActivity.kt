@@ -30,15 +30,17 @@ class GroupActivity : AppCompatActivity() {
         val index = intent.getIntExtra("groupData", 0)
 
         homeModel!!.myGroup.observe(this, Observer {
-            model.setGroupInfo(
-                _name = it!![index].name,
-                _profile = it!![index].profile,
-                _leader = it!![index].leader,
-                _id = it!![index].id,
-                _header = it!![index].header,
-                _description = it!![index].description,
-                _status = it!![index].status
-            )
+            if(it != null){
+                model.setGroupInfo(
+                    _name = it[index].name,
+                    _profile = it[index].profile,
+                    _leader = it[index].leader,
+                    _id = it[index].id,
+                    _header = it[index].header,
+                    _description = it[index].description,
+                    _status = it[index].status
+                )
+            }
         })
 
         val transaction = supportFragmentManager.beginTransaction()
