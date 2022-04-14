@@ -47,10 +47,10 @@ class CreateGroupViewModel: ViewModel() {
 
     fun register(callback: RegisterCallBack){
         val profileByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
-        profile.value?.compress(Bitmap.CompressFormat.PNG, 100, profileByteArray)
+        profile.value?.compress(Bitmap.CompressFormat.PNG, 2, profileByteArray)
 
         val headerByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
-        header.value?.compress(Bitmap.CompressFormat.PNG, 100, headerByteArray)
+        header.value?.compress(Bitmap.CompressFormat.PNG, 2, headerByteArray)
 
         viewModelScope.launch {
             withContext(dispatcher){

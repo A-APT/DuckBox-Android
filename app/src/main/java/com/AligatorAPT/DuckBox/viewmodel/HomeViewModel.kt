@@ -12,9 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+
 class HomeViewModel:ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
-
     //내 그룹 리스트
     var myGroup = MutableLiveData<List<GroupDetailDto>?>()
 
@@ -33,5 +33,16 @@ class HomeViewModel:ViewModel() {
                 )
             }
         }
+    }
+}
+
+object SingletonGroup  {
+    private var model: HomeViewModel? = null
+
+    fun getInstance(): HomeViewModel? {
+        if (model == null) {
+            model = HomeViewModel()
+        }
+        return model
     }
 }

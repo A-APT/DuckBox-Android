@@ -281,7 +281,7 @@ class CreateVoteFirstFragment: Fragment()  {
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
                 val imageByteArray: OutputStream = ByteArrayOutputStream()
                 for (i in 0 until list.size-1){
-                    list[i].compress(Bitmap.CompressFormat.JPEG, 2, imageByteArray)
+                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imageByteArray)
                     bytearr.add(list[i].toString().toByteArray())
                 }
                 viewModel.setVoteFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentHomeBinding
@@ -19,7 +18,7 @@ import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
-import com.AligatorAPT.DuckBox.viewmodel.HomeViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroup
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -31,7 +30,7 @@ class HomeFragment : Fragment() {
     private var isParticipation = true
     private var isVerification = true
 
-    private val model: HomeViewModel by activityViewModels()
+    private val model = SingletonGroup.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,14 +47,22 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         //내 그룹 리스트 가져오기
-        model.getAllGroup(object: MyGroupCallback{
+        model!!.getAllGroup(object: MyGroupCallback{
             override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
                 if(_list != null){
                     model.setMyGroup(_list)
-                    binding.apply {
-                        recyclerMyGroup.visibility = View.VISIBLE
-                        emptyGroup1.visibility = View.GONE
-                        emptyGroup2.visibility = View.GONE
+                    if(_list.size != 0){
+                        binding.apply {
+                            recyclerMyGroup.visibility = View.VISIBLE
+                            emptyGroup1.visibility = View.GONE
+                            emptyGroup2.visibility = View.GONE
+                        }
+                    }else{
+                        binding.apply {
+                            recyclerMyGroup.visibility = View.GONE
+                            emptyGroup1.visibility = View.VISIBLE
+                            emptyGroup2.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -92,7 +99,7 @@ class HomeFragment : Fragment() {
             }
 
             //MyGroup list 관리하는 메니저 등록
-            model.myGroup.observe(viewLifecycleOwner, Observer {
+            model!!.myGroup.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
                     Log.d("MYGROUP", it.toString())
                     val arrayList = ArrayList<GroupDetailDto>()
@@ -113,7 +120,7 @@ class HomeFragment : Fragment() {
                     ) {
                         //그룹 상세로 화면 전환
                         val intent = Intent(activity, GroupActivity::class.java)
-                        intent.putExtra("groupData", data)
+                        intent.putExtra("groupData", position)
                         startActivity(intent)
                     }
                 }

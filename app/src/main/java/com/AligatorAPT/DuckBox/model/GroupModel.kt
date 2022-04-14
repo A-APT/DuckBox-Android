@@ -66,7 +66,7 @@ object GroupModel {
             ) {
                 if(response.isSuccessful){
                     Log.d("Response:: ", response.body().toString())
-                    callback.apiCallback(true, response.body()!!)
+                    callback.apiCallback(true, response.body())
                 }else{
                     callback.apiCallback(false, null)
                 }

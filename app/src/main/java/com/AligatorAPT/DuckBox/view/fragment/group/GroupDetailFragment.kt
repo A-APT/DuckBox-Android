@@ -3,6 +3,7 @@ package com.AligatorAPT.DuckBox.view.fragment.group
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,10 +58,13 @@ class GroupDetailFragment : Fragment() {
             })
 
             //이미지
-            model.profile.observe(viewLifecycleOwner, Observer {
-                if(it != null){
-                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
-                    groupBackgroundImg.setImageBitmap(bmp)
+            model.header.observe(viewLifecycleOwner, Observer {
+                Log.e("HEADER::", it.toString())
+                if(it == null){
+                    groupBackgroundImg.setImageResource(R.drawable.sub1_color_box_5dp)
+                }else{
+                    val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupBackgroundImg.setImageBitmap(bitmap)
                 }
             })
 
