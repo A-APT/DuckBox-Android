@@ -15,7 +15,7 @@ data class GroupDetailDto (
     var leader: String, // did
     var status: GroupStatus,
     var description: String,
-    var profile: ByteArray? = null, // image
-    var header: ByteArray? = null, // image
+    var profile: String?, // image
+    var header: String?, // image
 ): Serializable {
 }

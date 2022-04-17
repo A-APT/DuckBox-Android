@@ -19,6 +19,7 @@ import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroup
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 
 class HomeFragment : Fragment() {
@@ -32,8 +33,8 @@ class HomeFragment : Fragment() {
     private var isVerification = true
     private var voteList = arrayListOf<VoteDetailDto>()
 
-//    private val model = SingletonGroup.getInstance()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
+    private val model = SingletonGroup.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,27 @@ class HomeFragment : Fragment() {
     }
 
     private fun init(){
+        //내 그룹 리스트 가져오기
+        model!!.getAllGroup(object: MyGroupCallback{
+            override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
+                if(_list != null){
+                    model.setMyGroup(_list)
+                    if(_list.size != 0){
+                        binding.apply {
+                            recyclerMyGroup.visibility = View.VISIBLE
+                            emptyGroup1.visibility = View.GONE
+                            emptyGroup2.visibility = View.GONE
+                        }
+                    }else{
+                        binding.apply {
+                            recyclerMyGroup.visibility = View.GONE
+                            emptyGroup1.visibility = View.VISIBLE
+                            emptyGroup2.visibility = View.VISIBLE
+                        }
+                    }
+                }
+            }
+        })
 
         //투표 리스트 가져오기
         setPaperList(false)
@@ -83,6 +105,35 @@ class HomeFragment : Fragment() {
                 }
             }
 
+            //MyGroup list 관리하는 메니저 등록
+            model!!.myGroup.observe(viewLifecycleOwner, Observer {
+                if (it != null) {
+                    Log.d("MYGROUP", it.toString())
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    arrayList.addAll(it)
+                    myGroupAdapter = MyGroupAdapter(arrayList)
+                }else{
+                    //서버에서 받아오는 정보가 없을 때
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    myGroupAdapter = MyGroupAdapter(arrayList)
+                }
+
+                myGroupAdapter.itemClickListener = object :MyGroupAdapter.OnItemClickListener{
+                    override fun OnItemClick(
+                        holder: MyGroupAdapter.MyViewHolder,
+                        view: View,
+                        data: GroupDetailDto,
+                        position: Int
+                    ) {
+                        //그룹 상세로 화면 전환
+                        val intent = Intent(activity, GroupActivity::class.java)
+                        intent.putExtra("groupData", position)
+                        startActivity(intent)
+                    }
+                }
+                recyclerMyGroup.adapter = myGroupAdapter
+            })
+
             //투표리스트 리사이클러뷰
             voteModel!!.myVote.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
                 if(it != null){
@@ -109,6 +160,7 @@ class HomeFragment : Fragment() {
                 }
                 recyclerPaperList.adapter = paperListAdapter
             })
+
 
             //참여 가능 버튼 누를 경우
             toggleParticipationPossible.setOnClickListener {

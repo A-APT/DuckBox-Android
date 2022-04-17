@@ -1,6 +1,8 @@
 package com.AligatorAPT.DuckBox.view.adapter
 
 import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,12 +38,15 @@ class MyGroupAdapter (var items:ArrayList<GroupDetailDto>)
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if(items[position].profile != null){
-            val bmp = BitmapFactory.decodeByteArray(items[position].profile, 0, items[position].profile!!.size)
-            holder.binding.myGroupImage.setImageBitmap(bmp)
-        }else{
+        Log.d("HOLDER::", items[position].profile!!.encodeToByteArray().toString())
+
+        if(items[position].profile == ""){
             //기본 이미지 설정
             holder.binding.myGroupImage.setImageResource(R.drawable.sub1_color_box_5dp)
+        }else{
+            val decodedImageBytes: ByteArray = Base64.decode(items[position].profile, Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
+            holder.binding.myGroupImage.setImageBitmap(bitmap)
         }
 
         holder.binding.myGroupName.text = items[position].name

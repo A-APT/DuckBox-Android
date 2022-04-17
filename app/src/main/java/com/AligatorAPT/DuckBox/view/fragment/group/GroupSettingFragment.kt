@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.view.fragment.group
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupSettingBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
@@ -56,6 +58,23 @@ class GroupSettingFragment : Fragment() {
             })
 
             //이미지
+            model.header.observe(viewLifecycleOwner, Observer {
+                if(it == null){
+                    groupBackground.setImageResource(R.drawable.sub1_color_box_5dp)
+                }else{
+                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupBackground.setImageBitmap(bmp)
+                }
+            })
+
+            model.profile.observe(viewLifecycleOwner, Observer {
+                if(it != null){
+                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                    groupImage.setImageBitmap(bmp)
+                }else{
+                    groupImage.setImageResource(R.drawable.sub2_color_box_3dp)
+                }
+            })
 
             //그룹장, 그룹원 여부
             model.authority.observe(viewLifecycleOwner, Observer {

@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
+import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -40,16 +41,19 @@ class GroupViewModel: ViewModel() {
         _name:String,
         _leader:String,
         _description:String,
-        _profile:ByteArray?,
-        _header:ByteArray?,
+        _profile:String?,
+        _header:String?,
         _id:String,
         _status:GroupStatus){
+
+        val profileByte: ByteArray = Base64.decode(_header, Base64.DEFAULT)
+        val headerByte: ByteArray = Base64.decode(_profile, Base64.DEFAULT)
 
         name.value = _name
         leader.value = _leader
         description.value = _description
-        profile.value = _profile
-        header.value = _header
+        profile.value = profileByte
+        header.value = headerByte
         id.value = _id
         status.value = _status
     }

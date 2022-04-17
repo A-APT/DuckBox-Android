@@ -70,8 +70,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingStart="15dp"
+                android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/row_my_group" />
+
+            <TextView
+                android:id="@+id/emptyGroup1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="38dp"
+                android:layout_marginBottom="5dp"
+                android:text="가입한 그룹이 없어요"
+                android:textColor="@color/black"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/emptyGroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="47dp"
+                android:text="새로운 그룹을 만들거나 가입해보세요."
+                android:textColor="@color/black"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

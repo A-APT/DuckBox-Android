@@ -1,20 +1,18 @@
 package com.AligatorAPT.DuckBox.viewmodel.createvote
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
 import com.AligatorAPT.DuckBox.model.GroupModel
-import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
-import java.io.OutputStream
 
 class CreateGroupViewModel: ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -24,6 +22,7 @@ class CreateGroupViewModel: ViewModel() {
     val leader = MutableLiveData<String>()
     val profile = MutableLiveData<Bitmap?>()
     val header = MutableLiveData<Bitmap?>()
+    val id = MutableLiveData<String>()
 
     fun setGroupInfo(_name:String, _description:String){
         name.value = _name
@@ -42,14 +41,16 @@ class CreateGroupViewModel: ViewModel() {
         profile.value = _profile
     }
 
-    fun register(callback: ApiCallback){
-        Log.d("IMAGE", profile.value.toString())
-        val profileByteArray: OutputStream? = ByteArrayOutputStream()
-        profile.value?.compress(Bitmap.CompressFormat.JPEG, 2, profileByteArray)
-        Log.d("IMAGEBITMAP", profileByteArray.toString().toByteArray().toString())
+    fun setGroupId(_id: String){
+        id.value = _id
+    }
 
-        val headerByteArray: OutputStream? = ByteArrayOutputStream()
-        header.value?.compress(Bitmap.CompressFormat.JPEG, 2, headerByteArray)
+    fun register(callback: RegisterCallBack){
+        val profileByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+        profile.value?.compress(Bitmap.CompressFormat.PNG, 2, profileByteArray)
+
+        val headerByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+        header.value?.compress(Bitmap.CompressFormat.PNG, 2, headerByteArray)
 
         viewModelScope.launch {
             withContext(dispatcher){
@@ -58,8 +59,8 @@ class CreateGroupViewModel: ViewModel() {
                         name = name.value!!,
                         leader = MyApplication.prefs.getString("did", "notExist"),
                         description = description.value!!,
-                        profile = profile.toString().toByteArray(),
-                        header = headerByteArray.toString().toByteArray(),
+                        profile = profileByteArray?.toByteArray(),
+                        header = headerByteArray?.toByteArray(),
                     ),
                     callback
                 )
