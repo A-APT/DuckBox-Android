@@ -31,7 +31,7 @@ class VoteViewModel: ViewModel() {
         }
     }
 
-    object SingletonGroup  {
+    object VoteSingletonGroup  {
         private var model: VoteViewModel? = null
 
         fun getInstance(): VoteViewModel? {

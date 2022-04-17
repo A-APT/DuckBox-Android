@@ -29,7 +29,7 @@ class GroupDetailFragment : Fragment() {
     private val binding: FragmentGroupDetailBinding get() = _binding!!
 
     private val model: GroupViewModel by activityViewModels()
-    val voteModel : VoteViewModel by viewModels()
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
 
     private lateinit var paperListAdapter: PaperListAdapter
 
@@ -222,7 +222,7 @@ class GroupDetailFragment : Fragment() {
         var groupList = arrayListOf<VoteDetailDto>()
         when(flag){
             0->{//투표
-                voteModel.getAllVote(object: VoteCallback {
+                voteModel!!.getAllVote(object: VoteCallback {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
@@ -235,7 +235,7 @@ class GroupDetailFragment : Fragment() {
                 })
             }
             1->{//설문
-                voteModel.getAllVote(object: VoteCallback{
+                voteModel!!.getAllVote(object: VoteCallback{
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
@@ -248,7 +248,7 @@ class GroupDetailFragment : Fragment() {
                 })
             }
             2->{//참여 완료
-                voteModel.getAllVote(object: VoteCallback{
+                voteModel!!.getAllVote(object: VoteCallback{
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
@@ -262,6 +262,6 @@ class GroupDetailFragment : Fragment() {
                 })
             }
         }
-        voteModel.setMyVote(groupList)
+        voteModel!!.setMyVote(groupList)
     }
 }

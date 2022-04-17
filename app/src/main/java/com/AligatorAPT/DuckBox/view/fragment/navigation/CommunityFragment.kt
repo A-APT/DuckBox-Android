@@ -32,9 +32,7 @@ class CommunityFragment : Fragment() {
     private lateinit var bannerAdapter: BannerAdapter
 
     private var toggleFlag = false
-
-//    val viewModel : VoteViewModel by viewModels()
-    private val voteModel =  VoteViewModel.SingletonGroup.getInstance()
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
