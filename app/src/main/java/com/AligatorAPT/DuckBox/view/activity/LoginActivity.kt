@@ -38,6 +38,8 @@ class LoginActivity : AppCompatActivity() {
                             if(flag){
                                 Log.d("TOKEN", MyApplication.prefs.getString("token", "notExist"))
                                 Log.d("REFRESHTOKEN", MyApplication.prefs.getString("refreshToken", "notExist"))
+                                Log.d("STUDENTID", MyApplication.prefs.getString("studentId","notExist"))
+                                Log.d("DID", MyApplication.prefs.getString("did","notExist"))
                                 val intent = Intent(this@LoginActivity, NavigationActivity::class.java)
                                 startActivity(intent)
                             }else{

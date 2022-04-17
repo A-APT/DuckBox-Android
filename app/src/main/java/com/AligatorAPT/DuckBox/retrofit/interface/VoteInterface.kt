@@ -16,11 +16,11 @@ interface VoteInterface {
     @GET("/api/v1/vote")
     fun getAllVote(
         @HeaderMap httpHeaders: HashMap<String, String>
-    ): Call<List<VoteDetailDto>>
+    ): Call<ArrayList<VoteDetailDto>>
 
     @GET("/api/v1/vote/{groupId}")
     fun findVotesOfGroup(
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Path ("groupId") groupId: String
-    ): Call<List<VoteDetailDto>>
+    ): Call<ArrayList<VoteDetailDto>>
 }

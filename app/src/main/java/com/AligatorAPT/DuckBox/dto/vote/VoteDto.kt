@@ -27,7 +27,7 @@ data class VoteDetailDto(
     var startTime: Date,
     var finishTime: Date,
     var status: BallotStatus,
-    var images: List<ByteArray>, // image list
+    var images: List<String>, // image list
     var candidates: List<String>,
     var reward: Boolean,
 )

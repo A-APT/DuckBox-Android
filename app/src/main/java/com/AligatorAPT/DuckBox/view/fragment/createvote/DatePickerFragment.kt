@@ -1,17 +1,13 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.NumberPicker
-import android.widget.Toast
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.DialogTimedatepickerBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DatePickerFragment : BottomSheetDialogFragment() {
