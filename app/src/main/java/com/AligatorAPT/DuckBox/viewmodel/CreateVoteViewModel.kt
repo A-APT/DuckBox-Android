@@ -19,6 +19,8 @@ import java.io.OutputStream
 class CreateVoteViewModel : ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
+
+
     val title = MutableLiveData<String>()
     val content = MutableLiveData<String>()
     val isGroup = MutableLiveData<Boolean>()

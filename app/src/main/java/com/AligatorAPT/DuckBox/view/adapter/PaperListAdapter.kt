@@ -83,10 +83,18 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
 
     @SuppressLint("SimpleDateFormat")
     fun compareDate(startTime: Date, finishTime: Date){
-        val dateformat = SimpleDateFormat("yyyy,MM,dd,HH,mm,ss,a",Locale.KOREA)
+        val dateformat = SimpleDateFormat("yyyy,MM,dd,HH,mm,a",Locale.KOREA)
         val dates = dateformat.format(startTime)
         val datef = dateformat.format(finishTime)
-        Log.e("PARSEDATE",dates.toString()+datef.toString())
+        Log.e("PARSEDATE!!!!!!!!!!!!!!!!!!!!",dates.toString()+datef.toString())
+
+        val diff: Long = finishTime.getTime() - startTime.getTime()
+        val seconds = diff / 1000
+        val minutes = seconds / 60
+        val hours = minutes / 60
+        val days = hours / 24
+
+        Log.e("PARSEDATE_SPLIT!!!!!!!!!!!!!!!","min: "+minutes+"hour: "+hours+"days: "+days)
 
     }
 }

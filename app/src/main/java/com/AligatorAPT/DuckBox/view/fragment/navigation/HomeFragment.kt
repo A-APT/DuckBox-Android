@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
@@ -14,6 +15,7 @@ import com.AligatorAPT.DuckBox.databinding.FragmentHomeBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
@@ -154,8 +156,14 @@ class HomeFragment : Fragment() {
                         position: Int
                     ) {
                         // 투표 및 설문 상세로 화면 전환
-                        val intent = Intent(activity, VoteDetailActivity::class.java)
-                        startActivity(intent)
+                        val studentId = MyApplication.prefs.getString("studentId", "notExist")
+                        Log.d("studentId", studentId+"candidate: "+data.candidates.toString())
+//                        if(data.candidates.contains(studentId)){
+                            val intent = Intent(activity, VoteDetailActivity::class.java)
+                            intent.putExtra("vote",data)
+                            startActivity(intent)
+//                        }
+//                        else Toast.makeText(context,"유권자가 아닙니다.",Toast.LENGTH_SHORT)
                     }
                 }
                 recyclerPaperList.adapter = paperListAdapter
@@ -194,7 +202,7 @@ class HomeFragment : Fragment() {
                 if(flag && _list != null){
                     Log.e("HOME",_list.toString())
                     for(i in 0 until _list.size){
-                        if(_list[i].isGroup){
+                        if(_list[i].group){
                             if(toggleFlag){
                                 //참여함
                             }else{

@@ -16,6 +16,7 @@ import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.util.*
 import kotlin.collections.ArrayList
@@ -59,6 +60,10 @@ class CreateVoteActivity : FragmentActivity() {
                             binding.createVoteNextTv.visibility = View.GONE
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
+                            val args = Bundle()
+//                            args.putSerializable("vote", vote)
+                            val writeDialog = WriteDialog()
+                            writeDialog.arguments = args
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
                                 .commit()

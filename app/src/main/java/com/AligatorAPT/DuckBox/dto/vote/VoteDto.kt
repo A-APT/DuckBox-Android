@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.view.data
 
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -21,7 +22,7 @@ data class VoteDetailDto(
     val id: String, // ObjectId
     var title: String,
     var content: String,
-    var isGroup: Boolean,
+    var group: Boolean,
     var groupId: String?, // groupId(ObjectId) if isGroup is true
     var owner: String, // owner's nicknam
     var startTime: Date,
@@ -30,10 +31,10 @@ data class VoteDetailDto(
     var images: List<String>, // image list
     var candidates: List<String>,
     var reward: Boolean,
-)
+):Serializable
 
 enum class BallotStatus {
+    REGISTERED,
     OPEN,
-    ONGOING,
     FINISHED,
 }

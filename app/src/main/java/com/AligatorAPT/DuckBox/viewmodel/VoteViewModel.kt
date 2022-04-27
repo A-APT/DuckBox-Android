@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
+import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

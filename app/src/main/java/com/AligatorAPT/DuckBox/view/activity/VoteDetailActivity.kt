@@ -14,15 +14,16 @@ import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVoteDetailBinding
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
+import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.viewmodel.VoteDetailViewModel
 import java.util.*
 
 class VoteDetailActivity : AppCompatActivity() {
     lateinit var binding : ActivityVoteDetailBinding
-    private val img_arr : ArrayList<Int> = arrayListOf(R.drawable.banner1,R.drawable.banner2,R.drawable.banner3)
-    private val arr: ArrayList<String> = arrayListOf("1. 절대 있을 수 없다..",
-        "2. 있을 수 있다!", "3. 할 수 있다.!!", "4. 안녕안녕안녕", "5. 최대한 길게ㅔㅔ", "6. 난 중립이다.", "7. 하이하이하이하이", "8. 지금은 오후 8시")
+    private var img_arr : ArrayList<String> = arrayListOf()
+    private var candidate: ArrayList<String> = arrayListOf()
     private lateinit var ListAdapter : VoteDetailListAdapter
+    private lateinit var voteList : VoteDetailDto
 
     private val model: VoteDetailViewModel by viewModels()
 
@@ -32,6 +33,9 @@ class VoteDetailActivity : AppCompatActivity() {
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        voteList = intent.getSerializableExtra("vote") as VoteDetailDto
+        img_arr = voteList.images as ArrayList<String>
+        candidate = voteList.candidates as ArrayList<String>
 
         model.isSelected.observe(this){
             if(it){
@@ -45,9 +49,20 @@ class VoteDetailActivity : AppCompatActivity() {
         }
         
         initToolbar()
+        initText()
         initRV()
         initImageRV()
         initFinalBtn()
+    }
+
+    private fun initText() {
+        binding.apply{
+            vdTitleTv.text = voteList.title
+            vdUserNameTv.text = voteList.owner
+            vdContentTv.text = voteList.content
+            vdLastTimeTv.text = voteList.finishTime.toString()
+            //남은 시간
+        }
     }
 
     private fun initToolbar() {
@@ -63,7 +78,7 @@ class VoteDetailActivity : AppCompatActivity() {
 
     private fun initRV() {
         binding.apply {
-            ListAdapter = VoteDetailListAdapter(arr, model)
+            ListAdapter = VoteDetailListAdapter(candidate, model)
             vdListRv.adapter = ListAdapter
         }
     }
@@ -74,7 +89,7 @@ class VoteDetailActivity : AppCompatActivity() {
             override fun OnItemClick(
                 holder: BannerAdapter.MyViewHolder,
                 view: View,
-                data: Int,
+                data: String,
                 position: Int
             ) {
                 val intent = Intent(applicationContext, VoteDetailImageInfoActivity::class.java)

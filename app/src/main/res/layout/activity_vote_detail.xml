@@ -179,38 +179,8 @@
                     android:text="3일 06:05:03 남음"
                     android:textColor="@color/darkgray"
                     android:textSize="14sp"
-                    app:layout_constraintBottom_toTopOf="@+id/vd_people_tv"
+                    app:layout_constraintTop_toTopOf="@id/vd_participate_tag_tv"
                     app:layout_constraintEnd_toEndOf="parent" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="참여율 "
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@id/vd_ratio_tv"
-                    app:layout_constraintTop_toTopOf="@id/vd_ratio_tv"/>
-
-                <TextView
-                    android:id="@+id/vd_ratio_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20.36% "
-                    android:textColor="@color/main"
-                    android:textSize="14sp"
-                    app:layout_constraintEnd_toStartOf="@id/vd_people_tv"
-                    app:layout_constraintTop_toTopOf="@id/vd_people_tv"/>
-
-                <TextView
-                    android:id="@+id/vd_people_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(851명)"
-                    android:textColor="@color/black"
-                    android:textSize="14sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/vd_participate_tag_tv"
-                    app:layout_constraintEnd_toEndOf="@id/vd_last_time_tv"/>
 
                 <View
                     android:id="@+id/vd_line"

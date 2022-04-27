@@ -7,17 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCommunityBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.BallotStatus
-import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
@@ -54,12 +52,12 @@ class CommunityFragment : Fragment() {
             setVoteList(false)
 
             //배너
-            bannerAdapter = BannerAdapter(setBanner())
+            bannerAdapter = BannerAdapter(arrayListOf("YW5kcm9pZC5ncmFwaGljcy5CaXRtYXBAYjk3MTQ2"))
             bannerAdapter.itemClickListener = object :BannerAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: BannerAdapter.MyViewHolder,
                     view: View,
-                    data: Int,
+                    data: String,
                     position: Int
                 ) {
                     //배너 화면으로 전환
@@ -91,8 +89,14 @@ class CommunityFragment : Fragment() {
                         position: Int
                     ) {
                         // 투표 및 설문 상세로 화면 전환
-                        val intent = Intent(activity, VoteDetailActivity::class.java)
-                        startActivity(intent)
+                        val studentId = MyApplication.prefs.getString("studentId", "notExist")
+                        Log.d("studentId", studentId+"candidate: "+data.candidates.toString())
+//                        if(data.candidates.contains(studentId)){
+                            val intent = Intent(activity, VoteDetailActivity::class.java)
+                            intent.putExtra("vote",data)
+                            startActivity(intent)
+//                        }
+//                        else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT)
                     }
                 }
                 recyclerCommunityList.adapter = communityAdapter
@@ -127,11 +131,6 @@ class CommunityFragment : Fragment() {
         }
     }
 
-    private fun setBanner(): ArrayList<Int>{
-        return arrayListOf<Int>(R.drawable.banner1, R.drawable.banner2, R.drawable.banner3)
-    }
-
-
     private fun setVoteList(toggleFlag : Boolean){
         //투표 리스트 가져오기
         voteModel!!.getAllVote(object: VoteCallback{
@@ -140,7 +139,7 @@ class CommunityFragment : Fragment() {
                 if(flag && _list != null){
                     Log.e("COMMUNITY",_list.toString())
                     for(i in 0 until _list.size){
-                        if(!_list[i].isGroup){
+                        if(!_list[i].group){
                             if(toggleFlag){
                                 //참여함
                             }else{

@@ -149,8 +149,9 @@ class CreateVoteFirstFragment: Fragment()  {
                 datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
+                        Log.e("DATEPICKER_BEFORE",date)
                         startDate = date
-                        start_Datefor = Date(year,month,day,hour,min,cal_ampm)
+                        start_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
                         Log.e("DATEPICKER",start_Datefor.toString())
                         cvFirstStartdateCheck.setText(date)
 
@@ -174,7 +175,7 @@ class CreateVoteFirstFragment: Fragment()  {
                         last[Calendar.HOUR] = hour
                         last[Calendar.MINUTE] = min
                         last[Calendar.AM_PM] = cal_ampm
-                        last_Datefor = Date(year,month,day,hour,min,cal_ampm)
+                        last_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
                         Log.e("DATEPICKER",last_Datefor.toString())
                         cvFirstLastdateCheck.setText(date)
                     }

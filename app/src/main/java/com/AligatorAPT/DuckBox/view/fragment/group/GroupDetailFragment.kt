@@ -9,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.PaperListData
@@ -180,9 +180,13 @@ class GroupDetailFragment : Fragment() {
                                 }
                                 modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
                             }else{
-                                // 투표 및 설문 상세로 화면 전환
-                                val intent = Intent(mActivity, VoteDetailActivity::class.java)
-                                startActivity(intent)
+                                val studentId = MyApplication.prefs.getString("studentId", "notExist")
+                                Log.d("studentId", studentId+"candidate: "+data.candidates.toString())
+//                                if(data.candidates.contains(studentId)){
+                                    val intent = Intent(activity, VoteDetailActivity::class.java)
+                                    startActivity(intent)
+//                                }
+//                                else Toast.makeText(context,"유권자가 아닙니다.",Toast.LENGTH_SHORT)
                             }
                         })
                     }
@@ -230,10 +234,12 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                                if(_list[i].group) {
                                     groupList.add(_list[i])
                                 }
                             }
+                            Log.e("GROUPDETAIL",groupList.toString())
+                            voteModel.setMyVote(groupList)
                         }
                     }
                 })
@@ -243,10 +249,11 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                                if(_list[i].group) {
                                     groupList.add(_list[i])
                                 }
                             }
+                            voteModel.setMyVote(groupList)
                         }
                     }
                 })
@@ -256,16 +263,15 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                                if(_list[i].group) {
                                     groupList.add(_list[i])
                                 }
                             }
-
+                            voteModel.setMyVote(groupList)
                         }
                     }
                 })
             }
         }
-        voteModel!!.setMyVote(groupList)
     }
 }
