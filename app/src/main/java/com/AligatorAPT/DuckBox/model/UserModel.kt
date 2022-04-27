@@ -4,6 +4,8 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
 import com.AligatorAPT.DuckBox.dto.user.LoginResponseDto
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
+import com.AligatorAPT.DuckBox.ethereum.DIDContract
+import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
@@ -24,6 +26,14 @@ object UserModel{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("did", response.body()!!)
+                    //이더리움 계정 생성
+//                    EthereumManagement.createWallet(_userInfo.password, "./eth/user")
+//                    DIDContract.registerDid(EthereumManagement.getCredentialAddress(), response.body()!!)
+
+                    //가나쉬에서 계정과 did 등록
+//                    DIDContract.registerDid(GanacheAddress.addressList[GanacheAddress.signUpCount], response.body()!!)
+//                    GanacheAddress.signUpCount++
+
                     Log.d("DID", response.body()!!)
                     callback.apiCallback(true)
                 }else{
@@ -50,6 +60,8 @@ object UserModel{
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("token", response.body()!!.token)
                     MyApplication.prefs.setString("refreshToken", response.body()!!.refreshToken)
+                    MyApplication.prefs.setString("did", response.body()!!.did)
+                    MyApplication.prefs.setString("studentId", response.body()!!.studentId.toString())
                     callback.apiCallback(true)
                 }else{
                     callback.apiCallback(false)
