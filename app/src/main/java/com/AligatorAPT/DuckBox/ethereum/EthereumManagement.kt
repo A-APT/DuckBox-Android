@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.ethereum
 
+import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.FunctionReturnDecoder
@@ -15,9 +16,9 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.RawTransactionManager
-import org.web3j.utils.Convert
 import java.io.File
 import java.math.BigInteger
+import java.util.*
 
 object EthereumManagement {
 
@@ -43,6 +44,10 @@ object EthereumManagement {
 
     fun loadCredentials(password: String, walletPath: String) {
         credentials = WalletUtils.loadCredentials(password, walletPath)
+    }
+
+    fun getCredentialAddress(): String{
+        return credentials!!.address
     }
 
     fun ethCall(
@@ -72,6 +77,7 @@ object EthereumManagement {
     }
 
     fun ethSend(
+        userAddress:String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -84,11 +90,12 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // create raw transaction (:signed transaction)
-        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
         val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
 
         if (ethSend.hasError()){
-            throw Exception(ethSend.error.message)
+//            throw Exception(ethSend.error.message)
+            Log.e("EthException", ethSend.error.message)
         }
 
         // decode response
@@ -140,5 +147,14 @@ object EthereumManagement {
         } else {
             null
         }
+    }
+
+    fun asciiToHex(asciiValue: String): String? {
+        val chars = asciiValue.toCharArray()
+        val hex = StringBuffer()
+        for (i in chars.indices) {
+            hex.append(Integer.toHexString(chars[i].toInt()))
+        }
+        return hex.toString() + Collections.nCopies(32 - hex.length / 2, "00").joinToString("")
     }
 }

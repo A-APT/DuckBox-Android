@@ -4,6 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
+import com.AligatorAPT.DuckBox.ethereum.DIDContract
+import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
@@ -45,6 +48,47 @@ class MainActivity : AppCompatActivity() {
             LoginButton.setOnClickListener {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
+            }
+
+            DID.setOnClickListener {
+                DIDContract.registerDid(GanacheAddress.GROUP_OWNER,"groupOwner")
+                DIDContract.registerDid(GanacheAddress.APPROVER1,"approver1")
+                DIDContract.registerDid(GanacheAddress.APPROVER2,"approver2")
+                DIDContract.registerDid(GanacheAddress.USER1,"user1")
+                DIDContract.registerDid(GanacheAddress.USER2,"user2")
+            }
+
+            createGroup.setOnClickListener {
+//                GroupsContract.testFunction("adsfasdf")
+                GroupsContract.testFunction("aaaa", "groupOwner")
+            }
+
+            approveGroup1.setOnClickListener {
+                GroupsContract.approveGroupAuthentication1("aaaa", "approver1")
+            }
+
+            approveGroup2.setOnClickListener {
+                GroupsContract.approveGroupAuthentication2("aaaa", "approver2")
+            }
+
+            requestJoinGroup.setOnClickListener {
+                GroupsContract.requestMember("aaaa", "user1")
+            }
+
+            approveJoin1.setOnClickListener {
+                GroupsContract.approveMember1("aaaa", "approver1", "user1")
+            }
+
+            approveJoin2.setOnClickListener {
+                GroupsContract.approveMember2("aaaa", "approver1", "user1")
+            }
+
+            exitMember.setOnClickListener {
+                GroupsContract.exitMember("aaaa","user1")
+            }
+
+            deleteGroup.setOnClickListener {
+                GroupsContract.deleteGroup("aaaa","groupOwner")
             }
         }
     }

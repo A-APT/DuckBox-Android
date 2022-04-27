@@ -1,10 +1,12 @@
 package com.AligatorAPT.DuckBox.ethereum
 
+import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Type
 import org.web3j.abi.datatypes.generated.Bytes32
+import org.web3j.utils.Numeric
 
 object DIDContract {
 
@@ -15,15 +17,19 @@ object DIDContract {
     private const val UNREGISTER = "removeId"
 
     fun registerDid(address: String, did: String): Boolean? {
-        val inputParams = listOf<Type<*>>(Address(address), Bytes32(did.toByteArray()))
+        Log.d("ADDRESS", contractAddress)
+        val inputParams = listOf<Type<*>>(
+            Address(address),
+            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(did)))
+        )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSend(GanacheAddress.CONTRACT_OWNER, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
     fun removeDid(address: String) {
         val inputParams = listOf<Type<*>>(Address(address))
         val outputParams = listOf<TypeReference<*>>()
-        ethereumManagement.ethSendRaw(contractAddress, UNREGISTER, inputParams, outputParams)
+        ethereumManagement.ethSend(GanacheAddress.CONTRACT_OWNER, contractAddress, UNREGISTER, inputParams, outputParams)
     }
 
     fun getOwner(): String? {

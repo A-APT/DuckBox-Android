@@ -4,6 +4,7 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
 import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
@@ -35,6 +36,9 @@ object GroupModel {
             ) {
                 Log.d("Response:: ", response.toString())
                 if (response.isSuccessful) {
+                    //그룹 컨트랙트에 등록
+                    GroupsContract.registerGroup(response.body()!!, MyApplication.prefs.getString("did", "notExist"))
+
                     callback.registerCallBack(true, response.body()!!)
                 } else {
                     callback.registerCallBack(false, null)
