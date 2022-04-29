@@ -82,4 +82,6 @@ dependencies {
     implementation("org.web3j:core:4.5.11")
     // Log
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
