@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.SearchActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="12dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="30dp">
+
+        <ImageView
+            android:contentDescription="back"
+            android:id="@+id/searchBack"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:paddingVertical="10dp"
+            app:srcCompat="@drawable/back" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gray_color_box_5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="12dp">
+
+            <EditText
+                android:id="@+id/searchHolder"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:ems="10"
+                android:hint="검색어를 입력해주세요."
+                android:inputType="text"
+                android:importantForAutofill="no"
+                android:textColor="@color/black"
+                android:textColorHint="@color/darkgray"
+                android:background="@null"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/searchBtn"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="search"
+                android:scaleType="fitXY"
+                android:src="@drawable/search" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/searchTabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="28dp"
+        app:tabIndicatorColor="@color/main"
+        app:tabSelectedTextColor="@color/main"
+        app:tabTextColor="@color/darkgray2">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 투표/설문" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="그룹명" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="커뮤니티" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+</LinearLayout>

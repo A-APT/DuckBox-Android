@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.AligatorAPT.DuckBox">
+    package="com.AligatorAPT.DuckBox" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DuckBox"
-        android:usesCleartextTraffic="true">
+        android:usesCleartextTraffic="true" >
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.GroupActivity"
             android:exported="false" />
@@ -39,8 +42,9 @@
         <activity
             android:name=".view.activity.VoteDetailActivity"
             android:exported="false" />
-        <activity android:name=".view.activity.VoteDetailImageInfoActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".view.activity.VoteDetailImageInfoActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.NavigationActivity"
             android:exported="false" />
@@ -52,7 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
