@@ -74,12 +74,12 @@ class MutualAuthFragment : Fragment() {
 
     private fun setMutualAuthList(): ArrayList<MutualAuthData>{
         return arrayListOf(
-            MutualAuthData(name="홍길동", email="abc@konkuk.ac.kr", studentId = 201911111),
-            MutualAuthData(name="김길동", email="abc@konkuk.ac.kr", studentId = 201911111),
-            MutualAuthData(name="박길동", email="abc@konkuk.ac.kr", studentId = 201911111),
-            MutualAuthData(name="이길동", email="abc@konkuk.ac.kr", studentId = 201911111),
-            MutualAuthData(name="최길동", email="abc@konkuk.ac.kr", studentId = 201911111),
-            MutualAuthData(name="백길동", email="abc@konkuk.ac.kr", studentId = 201911111),
+            MutualAuthData(name="홍길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="김길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="박길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="이길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="최길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="백길동", email="abc@korea.ac.kr", studentId = 201911111),
         )
     }
 

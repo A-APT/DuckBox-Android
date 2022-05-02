@@ -36,9 +36,6 @@ object GroupModel {
             ) {
                 Log.d("Response:: ", response.toString())
                 if (response.isSuccessful) {
-                    //그룹 컨트랙트에 등록
-                    GroupsContract.registerGroup(response.body()!!, MyApplication.prefs.getString("did", "notExist"))
-
                     callback.registerCallBack(true, response.body()!!)
                 } else {
                     callback.registerCallBack(false, null)

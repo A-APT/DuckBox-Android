@@ -2,6 +2,8 @@ package com.AligatorAPT.DuckBox
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.ethereum.DIDContract
@@ -11,12 +13,15 @@ import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.viewmodel.TestViewModel
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+
+    private val model: TestViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,44 +56,48 @@ class MainActivity : AppCompatActivity() {
             }
 
             DID.setOnClickListener {
-                DIDContract.registerDid(GanacheAddress.GROUP_OWNER,"groupOwner")
-                DIDContract.registerDid(GanacheAddress.APPROVER1,"approver1")
-                DIDContract.registerDid(GanacheAddress.APPROVER2,"approver2")
-                DIDContract.registerDid(GanacheAddress.USER1,"user1")
-                DIDContract.registerDid(GanacheAddress.USER2,"user2")
+                DIDContract.registerDid(GanacheAddress.GROUP_OWNER,"67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                DIDContract.registerDid(GanacheAddress.APPROVER1,"77b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                DIDContract.registerDid(GanacheAddress.APPROVER2,"87b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                DIDContract.registerDid(GanacheAddress.USER1,"97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                DIDContract.registerDid(GanacheAddress.USER2,"a7b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             createGroup.setOnClickListener {
-//                GroupsContract.testFunction("adsfasdf")
-                GroupsContract.testFunction("aaaa", "groupOwner")
+                model.registerGroup("duck", "67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             approveGroup1.setOnClickListener {
-                GroupsContract.approveGroupAuthentication1("aaaa", "approver1")
+                GroupsContract.approveGroupAuthentication("duck", "77b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             approveGroup2.setOnClickListener {
-                GroupsContract.approveGroupAuthentication2("aaaa", "approver2")
+                GroupsContract.approveGroupAuthentication("duck", "87b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             requestJoinGroup.setOnClickListener {
-                GroupsContract.requestMember("aaaa", "user1")
+                GroupsContract.requestMember("duck", "97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             approveJoin1.setOnClickListener {
-                GroupsContract.approveMember1("aaaa", "approver1", "user1")
+                GroupsContract.approveMember("duck", "77b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a", "97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             approveJoin2.setOnClickListener {
-                GroupsContract.approveMember2("aaaa", "approver1", "user1")
+                GroupsContract.approveMember("duck", "87b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a", "97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             exitMember.setOnClickListener {
-                GroupsContract.exitMember("aaaa","user1")
+                GroupsContract.exitMember("duck","97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             deleteGroup.setOnClickListener {
-                GroupsContract.deleteGroup("aaaa","groupOwner")
+                GroupsContract.deleteGroup("duck","67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+            }
+
+            getList.setOnClickListener {
+                val list = GroupsContract.getRequesterList("duck")
+                Log.e("List::", list.toString())
             }
         }
     }

@@ -2,11 +2,11 @@ package com.AligatorAPT.DuckBox.ethereum
 
 import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
+import com.AligatorAPT.DuckBox.dto.ethereum.Requester
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Type
 import org.web3j.abi.datatypes.Utf8String
 import org.web3j.abi.datatypes.generated.Bytes32
-import org.web3j.utils.Numeric
 
 object GroupsContract {
 
@@ -19,89 +19,75 @@ object GroupsContract {
     private const val APPROVEMEMBER = "approveMember"
     private const val EXITMEMBER = "exitMember"
     private const val APPROVEGROUP = "approveGroupAuthentication"
+    private const val GETREQUESTERLIST = "getRequesterList"
 
     fun registerGroup(groupId: String, ownerDid: String): Boolean? { //only owner
         Log.d("ADDRESS", contractAddress)
+        ethereumManagement.setCredentials(GanacheAddress.GROUP_OWNER)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(ownerDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.GROUP_OWNER, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
-    fun testFunction(groupId: String, ownerDid: String): Boolean? { //only owner
-        Log.d("ADDRESS", contractAddress)
+    fun approveGroupAuthentication(groupId: String, approverDid: String): Boolean? {
+        ethereumManagement.setCredentials(GanacheAddress.APPROVER1)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(ownerDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.GROUP_OWNER, contractAddress, "testFunction2", inputParams, outputParams) as Boolean?
-    }
-
-    fun approveGroupAuthentication1(groupId: String, approverDid: String): Boolean? {
-        val inputParams = listOf<Type<*>>(
-            Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(approverDid)))
-        )
-        val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.APPROVER1, contractAddress, APPROVEGROUP, inputParams, outputParams) as Boolean?
-    }
-
-    fun approveGroupAuthentication2(groupId: String, approverDid: String): Boolean? {
-        val inputParams = listOf<Type<*>>(
-            Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(approverDid)))
-        )
-        val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.APPROVER2, contractAddress, APPROVEGROUP, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, APPROVEGROUP, inputParams, outputParams) as Boolean?
     }
 
     fun deleteGroup(groupId: String, ownerDid: String): Boolean? { //only owner
+        ethereumManagement.setCredentials(GanacheAddress.GROUP_OWNER)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(ownerDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.GROUP_OWNER, contractAddress, DELETEGROUP, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, DELETEGROUP, inputParams, outputParams) as Boolean?
     }
 
     fun requestMember(groupId: String, userDid: String): Boolean? {
+        ethereumManagement.setCredentials(GanacheAddress.USER1)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(userDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.USER1, contractAddress, REQUESTMEMBER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, REQUESTMEMBER, inputParams, outputParams) as Boolean?
     }
 
-    fun approveMember1(groupId: String, approverDid: String, requesterDid:String): Boolean? {
+    fun approveMember(groupId: String, approverDid: String, requesterDid:String): Boolean? {
+        ethereumManagement.setCredentials(GanacheAddress.APPROVER1)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(approverDid))),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(requesterDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid)),
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(requesterDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.APPROVER1, contractAddress, APPROVEMEMBER, inputParams, outputParams) as Boolean?
-    }
-
-    fun approveMember2(groupId: String, approverDid: String, requesterDid:String): Boolean? {
-        val inputParams = listOf<Type<*>>(
-            Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(approverDid))),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(requesterDid)))
-        )
-        val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.APPROVER2, contractAddress, APPROVEMEMBER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, APPROVEMEMBER, inputParams, outputParams) as Boolean?
     }
 
     fun exitMember(groupId: String, requesterDid: String): Boolean? {
+        ethereumManagement.setCredentials(GanacheAddress.USER1)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(requesterDid)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(requesterDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.USER1, contractAddress, EXITMEMBER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, EXITMEMBER, inputParams, outputParams) as Boolean?
+    }
+
+    fun getRequesterList(groupId: String): ArrayList<Requester>? {
+        val inputParams = listOf<Type<*>>(
+            Utf8String(groupId)
+        )
+        val outputParams = listOf<TypeReference<*>>()
+        return ethereumManagement.ethCall(contractAddress, GETREQUESTERLIST, inputParams, outputParams) as ArrayList<Requester>?
     }
 }

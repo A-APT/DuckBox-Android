@@ -78,9 +78,12 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
-
     // Ethereum
     implementation("org.web3j:core:4.5.11")
     // Log
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    //DatatypeConverter
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation("xerces:xercesImpl:2.12.0")
+
 }

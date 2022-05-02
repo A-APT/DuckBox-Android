@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="건국대학교 제47회 공과대학 학생회 투표"
+            android:text="오리대학교 제47회 공과대학 학생회 투표"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="KU총학생회"
+                android:text="총학생회"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
         </LinearLayout>

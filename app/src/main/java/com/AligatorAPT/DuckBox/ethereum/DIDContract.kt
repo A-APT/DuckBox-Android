@@ -6,7 +6,6 @@ import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Address
 import org.web3j.abi.datatypes.Type
 import org.web3j.abi.datatypes.generated.Bytes32
-import org.web3j.utils.Numeric
 
 object DIDContract {
 
@@ -20,7 +19,7 @@ object DIDContract {
         Log.d("ADDRESS", contractAddress)
         val inputParams = listOf<Type<*>>(
             Address(address),
-            Bytes32(Numeric.hexStringToByteArray(EthereumManagement.asciiToHex(did)))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(did))
         )
         val outputParams = listOf<TypeReference<*>>()
         return ethereumManagement.ethSend(GanacheAddress.CONTRACT_OWNER, contractAddress, REGISTER, inputParams, outputParams) as Boolean?

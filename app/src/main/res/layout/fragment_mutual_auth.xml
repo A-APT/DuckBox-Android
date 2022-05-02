@@ -18,7 +18,7 @@
             android:layout_height="180dp"
             android:contentDescription="gradation"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/banner1" />
+            app:srcCompat="@drawable/sub1_color_box_5dp" />
 
         <ImageView
             android:layout_width="match_parent"

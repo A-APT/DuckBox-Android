@@ -26,14 +26,6 @@ object UserModel{
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("did", response.body()!!)
-                    //이더리움 계정 생성
-//                    EthereumManagement.createWallet(_userInfo.password, "./eth/user")
-//                    DIDContract.registerDid(EthereumManagement.getCredentialAddress(), response.body()!!)
-
-                    //가나쉬에서 계정과 did 등록
-//                    DIDContract.registerDid(GanacheAddress.addressList[GanacheAddress.signUpCount], response.body()!!)
-//                    GanacheAddress.signUpCount++
-
                     Log.d("DID", response.body()!!)
                     callback.apiCallback(true)
                 }else{

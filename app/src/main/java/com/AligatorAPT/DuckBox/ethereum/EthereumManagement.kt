@@ -18,7 +18,6 @@ import org.web3j.protocol.http.HttpService
 import org.web3j.tx.RawTransactionManager
 import java.io.File
 import java.math.BigInteger
-import java.util.*
 
 object EthereumManagement {
 
@@ -28,7 +27,7 @@ object EthereumManagement {
     private var credentials: Credentials? = null
 
     private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
-    private val gasLimit: BigInteger = BigInteger.valueOf(80000) // gasLimit
+    private val gasLimit: BigInteger = BigInteger.valueOf(800000) // gasLimit
 
     fun createWallet(password: String): WalletFile {
         val keyPair: ECKeyPair = Keys.createEcKeyPair()
@@ -46,8 +45,8 @@ object EthereumManagement {
         credentials = WalletUtils.loadCredentials(password, walletPath)
     }
 
-    fun getCredentialAddress(): String{
-        return credentials!!.address
+    fun setCredentials(password: String){
+        credentials = Credentials.create(password)
     }
 
     fun ethCall(
@@ -94,7 +93,6 @@ object EthereumManagement {
         val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
 
         if (ethSend.hasError()){
-//            throw Exception(ethSend.error.message)
             Log.e("EthException", ethSend.error.message)
         }
 
@@ -147,14 +145,5 @@ object EthereumManagement {
         } else {
             null
         }
-    }
-
-    fun asciiToHex(asciiValue: String): String? {
-        val chars = asciiValue.toCharArray()
-        val hex = StringBuffer()
-        for (i in chars.indices) {
-            hex.append(Integer.toHexString(chars[i].toInt()))
-        }
-        return hex.toString() + Collections.nCopies(32 - hex.length / 2, "00").joinToString("")
     }
 }
