@@ -19,7 +19,7 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
     RecyclerView.Adapter<PaperListAdapter.MyViewHolder>() {
 
     interface OnItemClickListener {
-        fun OnItemClick(holder: MyViewHolder, view: View, data: VoteDetailDto, position: Int)
+        fun OnItemClick(holder: MyViewHolder, view: View, data: VoteDetailDto, time: String, position: Int)
     }
 
     var itemClickListener: OnItemClickListener? = null
@@ -27,7 +27,7 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
     inner class MyViewHolder(val binding: RowPaperBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.paper.setOnClickListener {
-                itemClickListener?.OnItemClick(this, it, items[adapterPosition], adapterPosition)
+                itemClickListener?.OnItemClick(this, it, items[adapterPosition], compareDate(items[position].startTime,items[position].finishTime), adapterPosition)
             }
         }
     }
@@ -74,27 +74,37 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
 //                paperListIsVote.setBackgroundResource(R.drawable.sub2_color_box_3dp)
 //            }
 
-
-            compareDate(items[position].startTime,items[position].finishTime)
-            paperListTime.text = items[position].finishTime.toString()
+            paperListTime.text = compareDate(items[position].startTime,items[position].finishTime)
             paperListTitle.text = items[position].title
         }
     }
 
     @SuppressLint("SimpleDateFormat")
-    fun compareDate(startTime: Date, finishTime: Date){
-        val dateformat = SimpleDateFormat("yyyy,MM,dd,HH,mm,a",Locale.KOREA)
-        val dates = dateformat.format(startTime)
-        val datef = dateformat.format(finishTime)
-        Log.e("PARSEDATE!!!!!!!!!!!!!!!!!!!!",dates.toString()+datef.toString())
+    fun compareDate(startTime: Date, finishTime: Date): String{
+
+        var text = ""
 
         val diff: Long = finishTime.getTime() - startTime.getTime()
         val seconds = diff / 1000
         val minutes = seconds / 60
         val hours = minutes / 60
         val days = hours / 24
+        val years = days / 365
 
+        if(years != 0L){
+            text += "${years}년 "
+        }
+        if(days != 0L){
+            text += "${days}일 "
+        }
+        if(hours != 0L){
+            text += "${hours}:"
+        }
+        if(minutes != 0L) {
+            text += "${minutes}:00 남음"
+        }
         Log.e("PARSEDATE_SPLIT!!!!!!!!!!!!!!!","min: "+minutes+"hour: "+hours+"days: "+days)
 
+        return text
     }
 }

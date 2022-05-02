@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -159,6 +160,7 @@ class GroupDetailFragment : Fragment() {
                         holder: PaperListAdapter.MyViewHolder,
                         view: View,
                         data: VoteDetailDto,
+                        time: String,
                         position: Int
                     ) {
                         model.authority.observe(viewLifecycleOwner, Observer {
@@ -180,13 +182,23 @@ class GroupDetailFragment : Fragment() {
                                 }
                                 modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
                             }else{
-                                val studentId = MyApplication.prefs.getString("studentId", "notExist")
-                                Log.d("studentId", studentId+"candidate: "+data.candidates.toString())
-//                                if(data.candidates.contains(studentId)){
+                                // 투표 및 설문 상세로 화면 전환
+                                val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
+                                Log.d("studentId", studentId.toString()+"candidate: "+data.candidates.toString())
+                                if(data.voters != null){
+                                    if(data.voters.contains(studentId)){
+                                        val intent = Intent(activity, VoteDetailActivity::class.java)
+                                        intent.putExtra("vote",data)
+                                        intent.putExtra("time",time)
+                                        startActivity(intent)
+                                    }
+                                    else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
+                                }else{
                                     val intent = Intent(activity, VoteDetailActivity::class.java)
+                                    intent.putExtra("vote",data)
+                                    intent.putExtra("time",time)
                                     startActivity(intent)
-//                                }
-//                                else Toast.makeText(context,"유권자가 아닙니다.",Toast.LENGTH_SHORT)
+                                }
                             }
                         })
                     }
@@ -234,7 +246,7 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].group) {
+                                if(_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -249,7 +261,7 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].group) {
+                                if(_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -263,7 +275,7 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in 0 until _list.size){
-                                if(_list[i].group) {
+                                if(_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }

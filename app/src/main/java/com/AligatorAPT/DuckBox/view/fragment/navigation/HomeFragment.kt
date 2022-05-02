@@ -153,22 +153,30 @@ class HomeFragment : Fragment() {
                         holder: PaperListAdapter.MyViewHolder,
                         view: View,
                         data: VoteDetailDto,
+                        time: String,
                         position: Int
                     ) {
                         // 투표 및 설문 상세로 화면 전환
-                        val studentId = MyApplication.prefs.getString("studentId", "notExist")
-                        Log.d("studentId", studentId+"candidate: "+data.candidates.toString())
-//                        if(data.candidates.contains(studentId)){
+                        val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
+                        Log.d("studentId", studentId.toString()+"candidate: "+data.candidates.toString())
+                        if(data.voters != null){
+                            if(data.voters.contains(studentId)){
+                                val intent = Intent(activity, VoteDetailActivity::class.java)
+                                intent.putExtra("vote",data)
+                                intent.putExtra("time",time)
+                                startActivity(intent)
+                            }
+                            else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
+                        }else{
                             val intent = Intent(activity, VoteDetailActivity::class.java)
                             intent.putExtra("vote",data)
+                            intent.putExtra("time",time)
                             startActivity(intent)
-//                        }
-//                        else Toast.makeText(context,"유권자가 아닙니다.",Toast.LENGTH_SHORT)
+                        }
                     }
                 }
                 recyclerPaperList.adapter = paperListAdapter
             })
-
 
             //참여 가능 버튼 누를 경우
             toggleParticipationPossible.setOnClickListener {
@@ -202,7 +210,7 @@ class HomeFragment : Fragment() {
                 if(flag && _list != null){
                     Log.e("HOME",_list.toString())
                     for(i in 0 until _list.size){
-                        if(_list[i].group){
+                        if(_list[i].isGroup){
                             if(toggleFlag){
                                 //참여함
                             }else{

@@ -24,6 +24,7 @@ class VoteDetailActivity : AppCompatActivity() {
     private var candidate: ArrayList<String> = arrayListOf()
     private lateinit var ListAdapter : VoteDetailListAdapter
     private lateinit var voteList : VoteDetailDto
+    private lateinit var time: String
 
     private val model: VoteDetailViewModel by viewModels()
 
@@ -34,6 +35,7 @@ class VoteDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         voteList = intent.getSerializableExtra("vote") as VoteDetailDto
+        time = intent.getStringExtra("time").toString()
         img_arr = voteList.images as ArrayList<String>
         candidate = voteList.candidates as ArrayList<String>
 
@@ -60,8 +62,7 @@ class VoteDetailActivity : AppCompatActivity() {
             vdTitleTv.text = voteList.title
             vdUserNameTv.text = voteList.owner
             vdContentTv.text = voteList.content
-            vdLastTimeTv.text = voteList.finishTime.toString()
-            //남은 시간
+            vdLastTimeTv.text = time
         }
     }
 
@@ -105,7 +106,6 @@ class VoteDetailActivity : AppCompatActivity() {
         binding.vdBannerVp.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                Log.e("POSITION",position.toString())
                 binding.vdIndicatorTv.text = ("${position+1} / ${img_arr.size}")
             }
             override fun onPageScrollStateChanged(state: Int) {

@@ -11,7 +11,7 @@ interface VoteInterface {
     fun register(
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Body voteRegisterDto: VoteRegisterDto
-    ): Call<ResponseBody>
+    ): Call<String>
 
     @GET("/api/v1/vote")
     fun getAllVote(
