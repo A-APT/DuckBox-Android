@@ -254,6 +254,7 @@ class CreateVoteFirstFragment: Fragment()  {
         if(finampm == "AM" && startampm =="PM") return finday != startday
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
+            if(starthour == 12 && finhour < 12) return true
             if(finhour > starthour ) return true
             if(!isNow){
                 if(finhour == starthour) {

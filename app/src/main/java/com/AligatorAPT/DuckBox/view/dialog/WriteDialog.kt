@@ -41,12 +41,14 @@ class WriteDialog: DialogFragment() {
                 intent.putExtra("isGroup",isGroup)
                 intent.putExtra("groupId",groupId)
                 startActivity(intent)
+                dismiss()
             }
             pollBtn.setOnClickListener {
                 val intent = Intent(requireActivity(), PollCreateActivity::class.java)
                 intent.putExtra("isGroup",isGroup)
                 intent.putExtra("groupId",groupId)
                 startActivity(intent)
+                dismiss()
             }
         }
     }

@@ -92,17 +92,18 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
         val years = days / 365
 
         if(years != 0L){
-            text += "${years}년 "
+            text += "${years}년"
         }
-        if(days != 0L){
-            text += "${days}일 "
+        if(days-(365*years) != 0L){
+            text += "${days-(365*years)}일"
         }
-        if(hours != 0L){
-            text += "${hours}:"
+        if(hours-(24*days) != 0L){
+            text += "${hours-(24*days)}시간"
         }
-        if(minutes != 0L) {
-            text += "${minutes}:00 남음"
+        if(minutes-(60*hours) != 0L) {
+            text += "${minutes-(60*hours)}분"
         }
+        text += " 남음"
         Log.e("PARSEDATE_SPLIT!!!!!!!!!!!!!!!","min: "+minutes+"hour: "+hours+"days: "+days)
 
         return text

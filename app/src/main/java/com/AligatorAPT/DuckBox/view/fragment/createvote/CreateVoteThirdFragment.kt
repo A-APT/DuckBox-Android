@@ -16,6 +16,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.fragment.app.activityViewModels
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -150,6 +151,10 @@ class CreateVoteThirdFragment: Fragment()  {
                     }
                 }
                 excelList.add(studentId)
+            }
+            val owner_studentId = MyApplication.prefs.getString("studentId","notExist")
+            if(!excelList.contains(owner_studentId.toInt())){
+                excelList.add(owner_studentId.toInt())
             }
             Log.d("끝", excelList.toString())
             viewModel.setVoters(excelList)

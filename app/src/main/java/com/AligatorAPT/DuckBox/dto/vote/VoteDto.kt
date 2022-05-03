@@ -25,7 +25,7 @@ data class VoteDetailDto(
     var content: String,
     var isGroup: Boolean,
     var groupId: String?, // groupId(ObjectId) if isGroup is true
-    var owner: String, // owner's nicknam
+    var owner: String, // owner's nickname
     var startTime: Date,
     var finishTime: Date,
     var status: BallotStatus,
