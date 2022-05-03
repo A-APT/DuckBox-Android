@@ -32,15 +32,6 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
         }
     }
 
-    fun setData(newData:ArrayList<VoteDetailDto>){
-        items.clear()
-        items.addAll(newData)
-        if(!items.isEmpty()){
-            Log.e("PAPERLIST_SETDATA",items.toString())
-            notifyDataSetChanged()
-        }
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = RowPaperBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(view)
@@ -58,21 +49,11 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
             val decodedImageBytes = Base64.decode(items[position].images[0], Base64.DEFAULT);
             val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
             holder.binding.paperListImage.setImageBitmap(bitmap)
-//            if (items[position].canParticipate) {
-                paperListCanParticipate.text = "참여 가능"
-                paperListCanParticipate.setBackgroundResource(R.drawable.sub1_color_box_3dp)
-//            } else {
-//                paperListCanParticipate.text = "참여 완료"
-//                paperListCanParticipate.setBackgroundResource(R.drawable.sub5_color_box_3dp)
-//            }
 
-//            if (items[position].isVote) {
-                paperListIsVote.text = "투표"
-                paperListIsVote.setBackgroundResource(R.drawable.sub4_color_box_3dp)
-//            } else {
-//                paperListIsVote.text = "설문"
-//                paperListIsVote.setBackgroundResource(R.drawable.sub2_color_box_3dp)
-//            }
+            paperListCanParticipate.text = "참여 가능"
+            paperListCanParticipate.setBackgroundResource(R.drawable.sub1_color_box_3dp)
+            paperListIsVote.text = "투표"
+            paperListIsVote.setBackgroundResource(R.drawable.sub4_color_box_3dp)
 
             paperListTime.text = compareDate(items[position].startTime,items[position].finishTime)
             paperListTitle.text = items[position].title
