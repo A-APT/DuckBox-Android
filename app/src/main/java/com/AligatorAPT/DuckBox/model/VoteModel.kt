@@ -4,6 +4,7 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
@@ -13,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 object VoteModel {
-    fun registerVote(_voteRegisterDto: VoteRegisterDto, callback: ApiCallback){
+    fun registerVote(_voteRegisterDto: VoteRegisterDto, callback: RegisterCallBack){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)
@@ -25,17 +26,17 @@ object VoteModel {
         RetrofitClient.VOTE_INTERFACE_SERVICE.register(
             httpHeaders = headers,
             voteRegisterDto = _voteRegisterDto
-        ).enqueue(object : Callback<ResponseBody>{
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        ).enqueue(object : Callback<String>{
+            override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.d("Response:: ", response.toString())
                 if (response.isSuccessful) {
-                    callback.apiCallback(true)
+                    callback.registerCallBack(true, response.body())
                 } else {
-                    callback.apiCallback(false)
+                    callback.registerCallBack(false, response.body())
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d("onFailure::", "Failed API call with call: $call + exception: $t")
             }
         })

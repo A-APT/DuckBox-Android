@@ -8,6 +8,7 @@ import java.util.*
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.model.VoteModel
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ class CreateVoteViewModel : ViewModel() {
     val startTime = MutableLiveData<Date>()
     val finishTime = MutableLiveData<Date>()
     val images = MutableLiveData<ArrayList<ByteArray>>()
+    val ownerPrivate = MutableLiveData<String>()
     val candidates = MutableLiveData<ArrayList<String>>()
     val voters = MutableLiveData<ArrayList<Int>?>()
     val reward = MutableLiveData<Boolean>()
@@ -63,7 +65,7 @@ class CreateVoteViewModel : ViewModel() {
         groupId.value = _groupId
     }
 
-    fun registerVote(callback: ApiCallback){
+    fun registerVote(callback: RegisterCallBack){
 
         viewModelScope.launch {
             withContext(dispatcher){

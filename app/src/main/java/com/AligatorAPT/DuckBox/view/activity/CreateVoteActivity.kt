@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.view.activity
 
+import BlindSecp256k1
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,9 +15,16 @@ import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
+import com.AligatorAPT.DuckBox.ethereum.BallotContract
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -29,6 +37,7 @@ class CreateVoteActivity : FragmentActivity() {
         "","",false,"",Date(), Date(),ArrayList<ByteArray>(), ArrayList<String>(), null,false,false)
 
     val viewModel : CreateVoteViewModel by viewModels()
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +60,28 @@ class CreateVoteActivity : FragmentActivity() {
         binding.createVoteNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2) {
-                viewModel.registerVote(object: ApiCallback {
-                    override fun apiCallback(flag: Boolean) {
+                val blindsig = BlindSecp256k1()
+                val keyPair = blindsig.generateKeyPair()
+                viewModel.ownerPrivate.value = keyPair.privateKey.toString()
+
+                viewModel.registerVote(object: RegisterCallBack {
+                    override fun registerCallBack(flag: Boolean, id:String?) {
                         if(flag){
                             binding.createVoteFr.visibility = View.VISIBLE
                             binding.createVoteVp.visibility = View.GONE
                             binding.createVoteNextTv.visibility = View.GONE
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
+
+                            CoroutineScope(dispatcher).launch{
+                                val startMillis = viewModel.startTime.value!!.toInstant().toEpochMilli()
+                                val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
+                                Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
+                                val did = MyApplication.prefs.getString("did", "notExist")
+                                BallotContract.registerBallot(
+                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
+                            }
+
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
                                 .commit()

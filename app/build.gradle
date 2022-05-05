@@ -84,4 +84,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    //Blindsignature
+    implementation 'com.github.A-APT:BlindSignature:2.0.0'
 }
