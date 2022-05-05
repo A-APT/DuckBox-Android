@@ -16,6 +16,7 @@ import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.viewmodel.VoteDetailViewModel
+import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 import java.util.*
 
 class VoteDetailActivity : AppCompatActivity() {
@@ -27,6 +28,7 @@ class VoteDetailActivity : AppCompatActivity() {
     private lateinit var time: String
 
     private val model: VoteDetailViewModel by viewModels()
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +36,10 @@ class VoteDetailActivity : AppCompatActivity() {
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        voteList = intent.getSerializableExtra("vote") as VoteDetailDto
+
+        val position = intent.getIntExtra("position", 0)
         time = intent.getStringExtra("time").toString()
+        voteList = voteModel!!.myVote.value!![position]
         img_arr = voteList.images as ArrayList<String>
         candidate = voteList.candidates as ArrayList<String>
 

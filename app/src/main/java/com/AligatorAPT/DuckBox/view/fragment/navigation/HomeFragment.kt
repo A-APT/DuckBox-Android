@@ -162,14 +162,14 @@ class HomeFragment : Fragment() {
                         if(data.voters != null){
                             if(data.voters.contains(studentId)){
                                 val intent = Intent(activity, VoteDetailActivity::class.java)
-                                intent.putExtra("vote",data)
+                                intent.putExtra("position",position)
                                 intent.putExtra("time",time)
                                 startActivity(intent)
                             }
                             else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
                         }else{
                             val intent = Intent(activity, VoteDetailActivity::class.java)
-                            intent.putExtra("vote",data)
+                            intent.putExtra("position",position)
                             intent.putExtra("time",time)
                             startActivity(intent)
                         }

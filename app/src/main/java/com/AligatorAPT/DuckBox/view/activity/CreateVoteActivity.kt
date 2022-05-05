@@ -38,10 +38,20 @@ class CreateVoteActivity : FragmentActivity() {
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
     var voteRegisterDto = VoteRegisterDto(
-        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), "", ArrayList<String>(), null,false,false)
+        title = "",
+        content = "",
+        isGroup = false,
+        groupId = "",
+        startTime = Date(),
+        finishTime = Date(),
+        images = ArrayList<ByteArray>(),
+        ownerPrivate = "",
+        candidates = ArrayList<String>(),
+        voters = null,
+        reward = false,
+        notice = false)
 
     val viewModel : CreateVoteViewModel by viewModels()
-    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
