@@ -2,7 +2,6 @@ package com.AligatorAPT.DuckBox.view.activity
 
 import BlindSecp256k1
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -15,20 +14,9 @@ import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
-import com.AligatorAPT.DuckBox.ethereum.BallotsContract
-import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
-import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.collections.ArrayList
 

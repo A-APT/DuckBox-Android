@@ -158,9 +158,9 @@ class HomeFragment : Fragment() {
                     ) {
                         // 투표 및 설문 상세로 화면 전환
                         val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
-                        Log.d("studentId", studentId.toString()+"candidate: "+data.candidates.toString())
+                        val nickname = MyApplication.prefs.getString("nickname","notExist")
                         if(data.voters != null){
-                            if(data.voters.contains(studentId)){
+                            if(data.voters.contains(studentId) || data.owner == nickname){
                                 val intent = Intent(activity, VoteDetailActivity::class.java)
                                 intent.putExtra("position",position)
                                 intent.putExtra("time",time)

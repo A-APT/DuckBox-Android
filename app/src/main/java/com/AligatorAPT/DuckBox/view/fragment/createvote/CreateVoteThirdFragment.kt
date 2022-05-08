@@ -152,10 +152,6 @@ class CreateVoteThirdFragment: Fragment()  {
                 }
                 excelList.add(studentId)
             }
-            val owner_studentId = MyApplication.prefs.getString("studentId","notExist")
-            if(!excelList.contains(owner_studentId.toInt())){
-                excelList.add(owner_studentId.toInt())
-            }
             Log.d("끝", excelList.toString())
             viewModel.setVoters(excelList)
         } catch (e: IOException) {
