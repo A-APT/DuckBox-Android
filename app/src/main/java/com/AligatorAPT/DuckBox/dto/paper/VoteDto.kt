@@ -2,7 +2,6 @@ package com.AligatorAPT.DuckBox.view.data
 
 import java.io.Serializable
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class VoteRegisterDto(
     var title: String,

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.AligatorAPT.DuckBox.databinding.FragmentMyBinding
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.AskMasterActivity
+import com.AligatorAPT.DuckBox.view.activity.ChangeInfoActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.PolicyActivity
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
@@ -42,7 +43,8 @@ class MyFragment : Fragment() {
             }
 
             changeInfo.setOnClickListener {
-
+                val intent = Intent(mActivity, ChangeInfoActivity::class.java)
+                startActivity(intent)
             }
 
             termsOfUseBtn.setOnClickListener {

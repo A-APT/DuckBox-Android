@@ -16,6 +16,9 @@
         android:theme="@style/Theme.DuckBox"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.ChangeInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.PolicyActivity"
             android:exported="false" />
         <activity
