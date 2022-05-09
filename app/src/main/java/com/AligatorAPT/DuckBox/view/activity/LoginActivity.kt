@@ -40,6 +40,9 @@ class LoginActivity : AppCompatActivity() {
                                 Log.d("REFRESHTOKEN", MyApplication.prefs.getString("refreshToken", "notExist"))
                                 Log.d("STUDENTID", MyApplication.prefs.getString("studentId","notExist"))
                                 Log.d("DID", MyApplication.prefs.getString("did","notExist"))
+                                //이메일 저장
+                                MyApplication.prefs.setString("email",loginEmail.text.toString())
+
                                 val intent = Intent(this@LoginActivity, NavigationActivity::class.java)
                                 startActivity(intent)
                             }else{

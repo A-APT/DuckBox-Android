@@ -1,17 +1,83 @@
 package com.AligatorAPT.DuckBox.view.fragment.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.AligatorAPT.DuckBox.R
+import com.AligatorAPT.DuckBox.databinding.FragmentMyBinding
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
+import com.AligatorAPT.DuckBox.view.activity.AskMasterActivity
+import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
+import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 
 class MyFragment : Fragment() {
+    private var _binding: FragmentMyBinding? = null
+    private val binding: FragmentMyBinding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_my, container, false)
+        _binding = FragmentMyBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        init()
+    }
+
+    private fun init(){
+        val mActivity = activity as NavigationActivity
+
+        binding.apply {
+            email.text = MyApplication.prefs.getString("email", "notExist")
+            nickname.text = MyApplication.prefs.getString("nickname","notExist")
+
+            myPaper.setOnClickListener {
+
+            }
+
+            changeInfo.setOnClickListener {
+
+            }
+
+            termsOfUseBtn.setOnClickListener {
+
+            }
+
+            privacyPolicyBtn.setOnClickListener {
+
+            }
+
+            askMaster.setOnClickListener {
+
+            }
+
+            logout.setOnClickListener {
+                //다이얼로그
+                val bundle = Bundle()
+                bundle.putString("message", "로그아웃 하시겠습니까?\n 데이터는 해당 계정에 저장됩니다.")
+                val modalDialog = ModalDialog()
+                modalDialog.arguments = bundle
+                modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                    override fun OnPositiveClick() {
+                        modalDialog.dismiss()
+                    }
+
+                    override fun OnNegativeClick() {
+                        modalDialog.dismiss()
+                    }
+                }
+                modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
