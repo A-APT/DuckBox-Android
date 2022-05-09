@@ -28,7 +28,7 @@ class HomeViewModel:ViewModel() {
 
         viewModelScope.launch {
             withContext(dispatcher){
-                GroupModel.getAllGroup( //컨트랙트 연결 후 getGroupsOfUser로 변경하기
+                GroupModel.getGroupsOfUser( //컨트랙트 연결 후 getGroupsOfUser로 변경하기
                     callback = _callback,
                 )
             }
