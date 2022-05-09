@@ -4,13 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.databinding.ActivitySearchBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
-import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.view.adapter.GroupListAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
 import com.AligatorAPT.DuckBox.view.data.BallotStatus
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
+import com.AligatorAPT.DuckBox.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
 import java.util.*
 import kotlin.collections.ArrayList
@@ -21,6 +23,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var groupListAdapter: GroupListAdapter
 
     lateinit var binding: ActivitySearchBinding
+
+    private val model: SearchViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -36,10 +41,36 @@ class SearchActivity : AppCompatActivity() {
                 onBackPressed()
             }
 
+            model.groupList.observe(this@SearchActivity, androidx.lifecycle.Observer {
+                if (it != null) {
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    arrayList.addAll(it)
+                    groupListAdapter.setData(arrayList)
+                }else{
+                    //서버에서 받아오는 정보가 없을 때
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    groupListAdapter.setData(arrayList)
+                }
+            })
+
             searchBtn.setOnClickListener {
+                //그룹 검색
+                model.searchGroup( searchHolder.text.toString(), object: MyGroupCallback {
+                    override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
+                        if(flag){
+                            emptyResult.visibility = View.GONE
+                            searchRecyclerView.visibility = View.VISIBLE
+                            if(_list != null){
+                                model.setGroupList(_list)
+                            }
+                        }else{
+                            emptyResult.visibility = View.VISIBLE
+                            searchRecyclerView.visibility = View.GONE
+                        }
+                    }
+                })
                 myPaperListAdapter.setData(setPaperList(0))
                 communityListAdapter.setData(setPaperList(0))
-                groupListAdapter.setData(setGroupList())
             }
 
             //my paper list 매니저 등록
@@ -85,7 +116,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             //group list 매니저 등록
-            groupListAdapter = GroupListAdapter(setGroupList())
+            groupListAdapter = GroupListAdapter(arrayListOf())
             groupListAdapter.itemClickListener = object : GroupListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: GroupListAdapter.MyViewHolder,
@@ -119,29 +150,6 @@ class SearchActivity : AppCompatActivity() {
 
             })
         }
-    }
-
-    private fun setGroupList(): ArrayList<GroupDetailDto> {
-        return arrayListOf<GroupDetailDto>(
-            GroupDetailDto(
-                "1",
-                "ku총학생회",
-                "duck",
-                GroupStatus.VALID,
-                "2022 건국대학교 총학생회입니다.",
-                "",
-                "",
-            ),
-            GroupDetailDto(
-                "1",
-                "ku총학생회",
-                "duck",
-                GroupStatus.VALID,
-                "2022 건국대학교 총학생회입니다.",
-                "",
-                "",
-            ),
-        )
     }
 
     private fun setPaperList(flag: Int): ArrayList<VoteDetailDto> {

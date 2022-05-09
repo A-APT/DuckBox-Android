@@ -5,10 +5,7 @@ import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
 import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
 import okhttp3.ResponseBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.HeaderMap
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface GroupInterface {
     @POST("/api/v1/group")
@@ -32,4 +29,10 @@ interface GroupInterface {
     fun getGroupsOfUser(
         @HeaderMap httpHeaders: HashMap<String, String>
     ): Call<List<GroupDetailDto>>
+
+    @GET("/api/v1/group/{query}")
+    fun searchGroup(
+        @HeaderMap httpHeaders: HashMap<String, String>,
+        @Path("query") query: String
+    ): Call<ArrayList<GroupDetailDto>>
 }

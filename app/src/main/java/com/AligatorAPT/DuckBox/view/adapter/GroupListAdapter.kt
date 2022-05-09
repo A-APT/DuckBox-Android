@@ -45,7 +45,7 @@ class GroupListAdapter (var items:ArrayList<GroupDetailDto>)
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         if(items[position].profile == ""){
             //기본 이미지 설정
-            holder.binding.searchGroupImage.setImageResource(R.drawable.banner1)
+            holder.binding.searchGroupImage.setImageResource(R.drawable.user_default)
         }else{
             val decodedImageBytes: ByteArray = Base64.decode(items[position].profile, Base64.DEFAULT)
             val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
