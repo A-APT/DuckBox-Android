@@ -17,7 +17,7 @@ interface GroupInterface {
         @Body groupRegisterDto: GroupRegisterDto
         ): Call<String>
 
-    @GET("/api/v1/group")
+    @GET("/api/v1/group/all")
     fun getAllGroup(
         @HeaderMap httpHeaders: HashMap<String, String>
     ): Call<List<GroupDetailDto>>
@@ -27,4 +27,9 @@ interface GroupInterface {
         @Body groupUpdateDto: GroupUpdateDto,
         @HeaderMap httpHeaders: HashMap<String, String>
     ): Call<ResponseBody>
+
+    @GET("/api/v1/group/my")
+    fun getGroupsOfUser(
+        @HeaderMap httpHeaders: HashMap<String, String>
+    ): Call<List<GroupDetailDto>>
 }

@@ -112,4 +112,36 @@ object GroupModel {
         })
     }
 
+    fun getGroupsOfUser(callback: MyGroupCallback){
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+        Log.d("UserToken", userToken)
+
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.getGroupsOfUser(headers).enqueue(object :
+            Callback<List<GroupDetailDto>> {
+            override fun onResponse(
+                call: Call<List<GroupDetailDto>>,
+                response: Response<List<GroupDetailDto>>
+            ) {
+                if(response.isSuccessful){
+                    Log.d("Response:: ", response.body().toString())
+                    callback.apiCallback(true, response.body())
+                }else{
+                    callback.apiCallback(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<List<GroupDetailDto>>, t: Throwable) {
+                callback.apiCallback(false, null)
+                Log.d(
+                    "onFailure::", "Failed GetAllGroup API call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+
+        })
+    }
+
 }

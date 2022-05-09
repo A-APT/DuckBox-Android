@@ -53,11 +53,11 @@ class HomeFragment : Fragment() {
 
     private fun init(){
         //내 그룹 리스트 가져오기
-        model!!.getAllGroup(object: MyGroupCallback{
+        model!!.getGroupsOfUserGroup(object: MyGroupCallback{
             override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
                 if(_list != null){
                     model.setMyGroup(_list)
-                    if(_list.size != 0){
+                    if(_list.isNotEmpty()){
                         binding.apply {
                             recyclerMyGroup.visibility = View.VISIBLE
                             emptyGroup1.visibility = View.GONE
@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
             }
 
             //MyGroup list 관리하는 메니저 등록
-            model!!.myGroup.observe(viewLifecycleOwner, Observer {
+            model.myGroup.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
                     Log.d("MYGROUP", it.toString())
                     val arrayList = ArrayList<GroupDetailDto>()

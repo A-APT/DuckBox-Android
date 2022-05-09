@@ -22,13 +22,13 @@ class HomeViewModel:ViewModel() {
         myGroup.value = _list
     }
 
-    fun getAllGroup(_callback: MyGroupCallback){
+    fun getGroupsOfUserGroup(_callback: MyGroupCallback){
         val hashMap = HashMap<String, String>()
         hashMap.put("token", MyApplication.prefs.getString("token", "notExist"))
 
         viewModelScope.launch {
             withContext(dispatcher){
-                GroupModel.getAllGroup(
+                GroupModel.getAllGroup( //컨트랙트 연결 후 getGroupsOfUser로 변경하기
                     callback = _callback,
                 )
             }
