@@ -1,7 +1,7 @@
 package com.AligatorAPT.DuckBox.view.activity
 
+import BlindSecp256k1
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -14,7 +14,7 @@ import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
-import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.util.*
@@ -26,7 +26,18 @@ class CreateVoteActivity : FragmentActivity() {
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
     var voteRegisterDto = VoteRegisterDto(
-        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), ArrayList<String>(), null,false,false)
+        title = "",
+        content = "",
+        isGroup = false,
+        groupId = "",
+        startTime = Date(),
+        finishTime = Date(),
+        images = ArrayList<ByteArray>(),
+        ownerPrivate = "",
+        candidates = ArrayList<String>(),
+        voters = null,
+        reward = false,
+        notice = false)
 
     val viewModel : CreateVoteViewModel by viewModels()
 
@@ -51,14 +62,19 @@ class CreateVoteActivity : FragmentActivity() {
         binding.createVoteNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2) {
-                viewModel.registerVote(object: ApiCallback {
-                    override fun apiCallback(flag: Boolean) {
+                val blindsig = BlindSecp256k1()
+                val keyPair = blindsig.generateKeyPair()
+                viewModel.ownerPrivate.value = keyPair.privateKey.toString()
+
+                viewModel.registerVote(object: RegisterCallBack {
+                    override fun registerCallBack(flag: Boolean, id:String?) {
                         if(flag){
                             binding.createVoteFr.visibility = View.VISIBLE
                             binding.createVoteVp.visibility = View.GONE
                             binding.createVoteNextTv.visibility = View.GONE
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
+
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.create_vote_fr, CreateVoteFinalFragment())
                                 .commit()

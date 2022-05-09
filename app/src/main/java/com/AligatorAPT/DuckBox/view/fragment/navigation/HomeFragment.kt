@@ -7,18 +7,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentHomeBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.MyGroupAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.viewmodel.SingletonGroup
+import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -29,7 +33,9 @@ class HomeFragment : Fragment() {
 
     private var isParticipation = true
     private var isVerification = true
+    private var voteList = arrayListOf<VoteDetailDto>()
 
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
     private val model = SingletonGroup.getInstance()
 
     override fun onCreateView(
@@ -67,6 +73,9 @@ class HomeFragment : Fragment() {
                 }
             }
         })
+
+        //투표 리스트 가져오기
+        setPaperList(false)
 
         val mActivity = activity as NavigationActivity
 
@@ -127,67 +136,93 @@ class HomeFragment : Fragment() {
                 recyclerMyGroup.adapter = myGroupAdapter
             })
 
-            //paper list 관리하는 메니저 등록
-            paperListAdapter = PaperListAdapter(setPaperList())
-            paperListAdapter.itemClickListener = object :PaperListAdapter.OnItemClickListener{
-                override fun OnItemClick(
-                    holder: PaperListAdapter.MyViewHolder,
-                    view: View,
-                    data: PaperListData,
-                    position: Int
-                ) {
-                    // 투표 및 설문 상세로 화면 전환
-                    if(data.isVote){
-                        val intent = Intent(activity, VoteDetailActivity::class.java)
-                        startActivity(intent)
-                    }else{
-                        val intent = Intent(activity, PollDetailActivity::class.java)
-                        startActivity(intent)
+            //투표리스트 리사이클러뷰
+            voteModel!!.myVote.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
+                if(it != null){
+                    Log.e("HOME_MYVOTE",it.toString())
+                    val arr = ArrayList<VoteDetailDto>()
+                    arr.addAll(it)
+                    paperListAdapter = PaperListAdapter(arr)
+
+                }else{
+                    val arr = ArrayList<VoteDetailDto>()
+                    paperListAdapter = PaperListAdapter(arr)
+                }
+                paperListAdapter.itemClickListener = object :PaperListAdapter.OnItemClickListener{
+                    override fun OnItemClick(
+                        holder: PaperListAdapter.MyViewHolder,
+                        view: View,
+                        data: VoteDetailDto,
+                        time: String,
+                        position: Int
+                    ) {
+                        // 투표 및 설문 상세로 화면 전환
+                        val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
+                        val nickname = MyApplication.prefs.getString("nickname","notExist")
+                        if(data.voters != null){
+                            if(data.voters.contains(studentId) || data.owner == nickname){
+                                val intent = Intent(activity, VoteDetailActivity::class.java)
+                                intent.putExtra("position",position)
+                                intent.putExtra("time",time)
+                                startActivity(intent)
+                            }
+                            else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
+                        }else{
+                            val intent = Intent(activity, VoteDetailActivity::class.java)
+                            intent.putExtra("position",position)
+                            intent.putExtra("time",time)
+                            startActivity(intent)
+                        }
                     }
+                }
+                recyclerPaperList.adapter = paperListAdapter
+            })
+
+            //참여 가능 버튼 누를 경우
+            toggleParticipationPossible.setOnClickListener {
+                if(!isParticipation){
+                    toggleParticipationCompleted.setTextColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+                    toggleParticipationCompleted.setBackgroundResource(0)
+                    toggleParticipationPossible.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
+                    toggleParticipationPossible.setBackgroundResource(R.drawable.white_color_box_50dp)
+                    isParticipation = !isParticipation
+                    setPaperList(isParticipation)
                 }
             }
-            recyclerPaperList.adapter = paperListAdapter
-
-            binding.apply {
-                //참여 가능 버튼 누를 경우
-                toggleParticipationPossible.setOnClickListener {
-                    if(!isParticipation){
-                        toggleParticipationCompleted.setTextColor(ContextCompat.getColor(mActivity, R.color.darkgray))
-                        toggleParticipationCompleted.setBackgroundResource(0)
-                        toggleParticipationPossible.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
-                        toggleParticipationPossible.setBackgroundResource(R.drawable.white_color_box_50dp)
-                        isParticipation = !isParticipation
-                        paperListAdapter.setData(setPaperList())
-                    }
-                }
-                //참여 완료 버튼 누를 경우
-                toggleParticipationCompleted.setOnClickListener {
-                    if(isParticipation){
-                        toggleParticipationPossible.setTextColor(ContextCompat.getColor(mActivity, R.color.darkgray))
-                        toggleParticipationPossible.setBackgroundResource(0)
-                        toggleParticipationCompleted.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
-                        toggleParticipationCompleted.setBackgroundResource(R.drawable.white_color_box_50dp)
-                        isParticipation = !isParticipation
-                        paperListAdapter.setData(setParticipationPaperList())
-                    }
+            //참여 완료 버튼 누를 경우
+            toggleParticipationCompleted.setOnClickListener {
+                if(isParticipation){
+                    toggleParticipationPossible.setTextColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+                    toggleParticipationPossible.setBackgroundResource(0)
+                    toggleParticipationCompleted.setTextColor(ContextCompat.getColor(mActivity, R.color.black))
+                    toggleParticipationCompleted.setBackgroundResource(R.drawable.white_color_box_50dp)
+                    isParticipation = !isParticipation
+                    setPaperList(isParticipation)
                 }
             }
         }
+
     }
 
-    private fun setPaperList(): ArrayList<PaperListData>{
-        return arrayListOf<PaperListData>(
-            PaperListData(R.drawable.sub4_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-            PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-            PaperListData(R.drawable.sub2_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-            PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-        )
-    }
-    private fun setParticipationPaperList(): ArrayList<PaperListData>{
-        return arrayListOf<PaperListData>(
-            PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
-            PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
-        )
+    private fun setPaperList(toggleFlag : Boolean){
+        voteModel!!.getAllVote(object: VoteCallback{
+            override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                if(flag && _list != null){
+                    Log.e("HOME",_list.toString())
+                    for(i in 0 until _list.size){
+                        if(_list[i].isGroup){
+                            if(toggleFlag){
+                                //참여함
+                            }else{
+                                //참여 안 함
+                            }
+                            voteList.add(_list[i])
+                        }
+                    }
+                    voteModel.setMyVote(voteList)
+                }
+            }
+        })
     }
 
     override fun onDestroy() {

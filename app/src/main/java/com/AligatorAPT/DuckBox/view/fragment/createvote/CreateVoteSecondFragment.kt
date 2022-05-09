@@ -79,26 +79,11 @@ class CreateVoteSecondFragment: Fragment()  {
 
     }
 
-//    private fun initButton() {
-//        binding.apply {
-//
-//            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
-//                if(cvSecondTypeRb1.isChecked){
-//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-//                }
-//                if(cvSecondTypeRb2.isChecked){
-//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-//                }
-//            }
-//        }
-//    }
-
     private fun check() {
         binding.apply {
             viewModel.data.observe(viewLifecycleOwner,{
                 Log.e("OBSERVER",it!!.size.toString()+"내용:"+it.toString())
+                binding.cvSecondAddTv.isClickable = it.size < 10
                 checkValidation[0] = (it.size>=2 && !it.contains(""))
                 setIsActivateBtn()
             })
@@ -106,7 +91,7 @@ class CreateVoteSecondFragment: Fragment()  {
     }
 
 
-    fun setIsActivateBtn(){
+    private fun setIsActivateBtn(){
         val mActivity = activity as CreateVoteActivity
         binding.apply {
             if(checkValidation[0]){
