@@ -10,6 +10,7 @@ import com.AligatorAPT.DuckBox.databinding.FragmentMyBinding
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.AskMasterActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
+import com.AligatorAPT.DuckBox.view.activity.PolicyActivity
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 
 class MyFragment : Fragment() {
@@ -45,15 +46,20 @@ class MyFragment : Fragment() {
             }
 
             termsOfUseBtn.setOnClickListener {
-
+                val intent = Intent(mActivity, PolicyActivity::class.java)
+                intent.putExtra("isTerm", true)
+                startActivity(intent)
             }
 
             privacyPolicyBtn.setOnClickListener {
-
+                val intent = Intent(mActivity, PolicyActivity::class.java)
+                intent.putExtra("isTerm", false)
+                startActivity(intent)
             }
 
             askMaster.setOnClickListener {
-
+                val intent = Intent(mActivity, AskMasterActivity::class.java)
+                startActivity(intent)
             }
 
             logout.setOnClickListener {
