@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.view.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -23,8 +24,8 @@ class NavigationActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        //탭바
         binding.apply {
+            //탭바
             bottomNavigation.run {
                 setOnItemSelectedListener {
                     when (it.itemId) {
@@ -45,6 +46,12 @@ class NavigationActivity : AppCompatActivity() {
                 }
                 //초기값 셋팅
                 selectedItemId = R.id.tab_home
+            }
+
+            //검색
+            searchBtn.setOnClickListener {
+                val intent = Intent(this@NavigationActivity, SearchActivity::class.java)
+                startActivity(intent)
             }
         }
     }
