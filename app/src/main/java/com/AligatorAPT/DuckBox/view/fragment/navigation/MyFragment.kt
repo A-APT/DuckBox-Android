@@ -8,10 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.AligatorAPT.DuckBox.databinding.FragmentMyBinding
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.view.activity.AskMasterActivity
-import com.AligatorAPT.DuckBox.view.activity.ChangeInfoActivity
-import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
-import com.AligatorAPT.DuckBox.view.activity.PolicyActivity
+import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 
 class MyFragment : Fragment() {
@@ -39,7 +36,8 @@ class MyFragment : Fragment() {
             nickname.text = MyApplication.prefs.getString("nickname","notExist")
 
             myPaper.setOnClickListener {
-
+                val intent = Intent(mActivity, MyPaperActivity::class.java)
+                startActivity(intent)
             }
 
             changeInfo.setOnClickListener {
