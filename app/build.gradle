@@ -22,6 +22,7 @@ android {
         buildConfigField("String", "ETH_NETWORK_LOCAL", properties.getProperty("ethereum.network-local"))
         buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
         buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
+        buildConfigField("String", "ADDRESS_BALLOTS", properties.getProperty("contract.address.ballots"))
     }
 
     buildTypes {

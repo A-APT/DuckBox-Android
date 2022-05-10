@@ -14,7 +14,7 @@ data class VoteRegisterDto(
     var candidates: List<String>,
     var voters: List<Int>?,
     var reward: Boolean,
-    var notice: Boolean,
+    var notice: Boolean
 )
 
 data class VoteDetailDto(
@@ -29,7 +29,7 @@ data class VoteDetailDto(
     var status: BallotStatus,
     var images: List<ByteArray>, // image list
     var candidates: List<String>,
-    var reward: Boolean,
+    var reward: Boolean
 )
 
 enum class BallotStatus {

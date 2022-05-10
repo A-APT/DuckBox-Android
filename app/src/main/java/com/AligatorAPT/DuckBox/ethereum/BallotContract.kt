@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.ethereum
 
 import com.AligatorAPT.DuckBox.BuildConfig
+import com.AligatorAPT.DuckBox.dto.ethereum.Candidate
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.Bool
 import org.web3j.abi.datatypes.DynamicArray
@@ -60,9 +61,9 @@ object BallotContract {
         return EthereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams) as String?
     }
 
-    fun resultOfBallot(ballotId: String) {
+    fun resultOfBallot(ballotId: String):  ArrayList<Candidate>? {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
-        val outputParams = listOf<TypeReference<*>>() // TODO
-        EthereumManagement.ethSendRaw(contractAddress, RESULT, inputParams, outputParams)
+        val outputParams = listOf<TypeReference<*>>()
+        return EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams) as ArrayList<Candidate>?
     }
 }
