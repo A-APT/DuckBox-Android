@@ -4,14 +4,18 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.AligatorAPT.DuckBox.R
+import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.databinding.ActivitySearchBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
-import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.view.adapter.GroupListAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.PaperListData
+import com.AligatorAPT.DuckBox.view.data.BallotStatus
+import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
+import com.AligatorAPT.DuckBox.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var myPaperListAdapter: PaperListAdapter
@@ -19,6 +23,9 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var groupListAdapter: GroupListAdapter
 
     lateinit var binding: ActivitySearchBinding
+
+    private val model: SearchViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
@@ -34,10 +41,36 @@ class SearchActivity : AppCompatActivity() {
                 onBackPressed()
             }
 
+            model.groupList.observe(this@SearchActivity, androidx.lifecycle.Observer {
+                if (it != null) {
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    arrayList.addAll(it)
+                    groupListAdapter.setData(arrayList)
+                }else{
+                    //서버에서 받아오는 정보가 없을 때
+                    val arrayList = ArrayList<GroupDetailDto>()
+                    groupListAdapter.setData(arrayList)
+                }
+            })
+
             searchBtn.setOnClickListener {
+                //그룹 검색
+                model.searchGroup( searchHolder.text.toString(), object: MyGroupCallback {
+                    override fun apiCallback(flag: Boolean, _list: List<GroupDetailDto>?) {
+                        if(flag){
+                            emptyResult.visibility = View.GONE
+                            searchRecyclerView.visibility = View.VISIBLE
+                            if(_list != null){
+                                model.setGroupList(_list)
+                            }
+                        }else{
+                            emptyResult.visibility = View.VISIBLE
+                            searchRecyclerView.visibility = View.GONE
+                        }
+                    }
+                })
                 myPaperListAdapter.setData(setPaperList(0))
-                communityListAdapter.setData(setPaperList(1))
-                groupListAdapter.setData(setGroupList())
+                communityListAdapter.setData(setPaperList(0))
             }
 
             //my paper list 매니저 등록
@@ -46,11 +79,12 @@ class SearchActivity : AppCompatActivity() {
                 override fun OnItemClick(
                     holder: PaperListAdapter.MyViewHolder,
                     view: View,
-                    data: PaperListData,
+                    data: VoteDetailDto,
+                    time: String,
                     position: Int
                 ) {
-                    // 투표 및 설문 상세로 화면 전환
-                    if (data.isVote) {
+                    // 투표와 설문이 한꺼번에 받아지는 그날 수정하기
+                    if (true) {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -61,16 +95,17 @@ class SearchActivity : AppCompatActivity() {
             }
 
             //community paper list 매니저 등록
-            communityListAdapter = PaperListAdapter(setPaperList(1))
+            communityListAdapter = PaperListAdapter(setPaperList(0))
             communityListAdapter.itemClickListener = object : PaperListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: PaperListAdapter.MyViewHolder,
                     view: View,
-                    data: PaperListData,
+                    data: VoteDetailDto,
+                    time: String,
                     position: Int
                 ) {
-                    // 투표 및 설문 상세로 화면 전환
-                    if (data.isVote) {
+                    // 투표와 설문이 한꺼번에 받아지는 그날 수정하기
+                    if (true) {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
@@ -81,7 +116,7 @@ class SearchActivity : AppCompatActivity() {
             }
 
             //group list 매니저 등록
-            groupListAdapter = GroupListAdapter(setGroupList())
+            groupListAdapter = GroupListAdapter(arrayListOf())
             groupListAdapter.itemClickListener = object : GroupListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: GroupListAdapter.MyViewHolder,
@@ -117,96 +152,39 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun setGroupList(): ArrayList<GroupDetailDto> {
-        return arrayListOf<GroupDetailDto>(
-            GroupDetailDto(
-                "1",
-                "ku총학생회",
-                "duck",
-                GroupStatus.VALID,
-                "2022 건국대학교 총학생회입니다.",
-                "",
-                "",
-            ),
-            GroupDetailDto(
-                "1",
-                "ku총학생회",
-                "duck",
-                GroupStatus.VALID,
-                "2022 건국대학교 총학생회입니다.",
-                "",
-                "",
-            ),
-        )
-    }
-
-    private fun setPaperList(flag: Int): ArrayList<PaperListData> {
+    private fun setPaperList(flag: Int): ArrayList<VoteDetailDto> {
         when (flag) {
             0 -> {
-                return arrayListOf<PaperListData>(
-                    PaperListData(
-                        R.drawable.sub4_color_box_3dp,
-                        "건국대학교 제47회 공과대학 학생회 투표",
-                        "KU총학생회",
-                        true,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
+                return arrayListOf<VoteDetailDto>(
+                    VoteDetailDto(
+                        id = "1",
+                        title = "건국대학교 제47회 공과대학 학생회 투표",
+                        content = "KU총학생회",
+                        isGroup = true,
+                        groupId = "a",
+                        owner = "owner",
+                        startTime = Date(),
+                        finishTime = Date(),
+                        status = BallotStatus.OPEN,
+                        images = listOf(),
+                        candidates = listOf("a", "b"),
+                        voters = null,
+                        reward = false
                     ),
-                    PaperListData(
-                        R.drawable.sub1_color_box_3dp,
-                        "건국대학교 제47회 공과대학 학생회 투표",
-                        "KU총학생회",
-                        true,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
-                    ),
-                    PaperListData(
-                        R.drawable.sub2_color_box_3dp,
-                        "건국대학교 제47회 공과대학 학생회 투표",
-                        "KU총학생회",
-                        true,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
-                    ),
-                    PaperListData(
-                        R.drawable.sub5_color_box_3dp,
-                        "건국대학교 제47회 공과대학 학생회 투표",
-                        "KU총학생회",
-                        true,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
-                    ),
-                )
-            }
-            1 -> {
-                return arrayListOf<PaperListData>(
-                    PaperListData(
-                        R.drawable.sub5_color_box_3dp,
-                        "남녀사이에 친구가 있다 없다?",
-                        "난없다",
-                        true,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
-                    ),
-                    PaperListData(
-                        R.drawable.sub1_color_box_3dp,
-                        "가장 좋아하는 운동은?",
-                        "운린이",
-                        false,
-                        true,
-                        "3일 06:05:03 남음",
-                        100,
-                        50
+                    VoteDetailDto(
+                        id = "1",
+                        title = "건국대학교 제47회 공과대학 학생회 투표",
+                        content = "KU총학생회",
+                        isGroup = true,
+                        groupId = "a",
+                        owner = "owner",
+                        startTime = Date(),
+                        finishTime = Date(),
+                        status = BallotStatus.OPEN,
+                        images = listOf(),
+                        candidates = listOf("a", "b"),
+                        voters = null,
+                        reward = false
                     ),
                 )
             }

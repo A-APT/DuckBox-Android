@@ -46,8 +46,8 @@ class GroupViewModel: ViewModel() {
         _id:String,
         _status:GroupStatus){
 
-        val profileByte: ByteArray = Base64.decode(_header, Base64.DEFAULT)
-        val headerByte: ByteArray = Base64.decode(_profile, Base64.DEFAULT)
+        val profileByte: ByteArray = Base64.decode(_profile, Base64.DEFAULT)
+        val headerByte: ByteArray = Base64.decode(_header, Base64.DEFAULT)
 
         name.value = _name
         leader.value = _leader
