@@ -8,18 +8,19 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentMutualAuthBinding
-import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
 import com.AligatorAPT.DuckBox.view.data.MutualAuthData
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
 
 class MutualAuthFragment : Fragment() {
     private var _binding: FragmentMutualAuthBinding? = null
     private val binding: FragmentMutualAuthBinding get() = _binding!!
 
     private val model: GroupViewModel by activityViewModels()
+    private val contractModel = SingletonGroupsContract.getInstance()
 
     private lateinit var mutualAuthAdapter : MutualAuthAdapter
 
@@ -51,7 +52,7 @@ class MutualAuthFragment : Fragment() {
             ) {
                 //승인하기 버튼 이벤트
                 model.id.observe(viewLifecycleOwner, Observer {
-                    GroupsContract.approveMember(
+                    contractModel?.approveMember(
                         groupId = it,
                         approverDid = MyApplication.prefs.getString("did","notExist"),
                         requesterDid = data.did

@@ -3,7 +3,6 @@ package com.AligatorAPT.DuckBox
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.ethereum.DIDContract
@@ -13,7 +12,7 @@ import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
-import com.AligatorAPT.DuckBox.viewmodel.TestViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
@@ -21,7 +20,7 @@ import java.security.Security
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
-    private val model: TestViewModel by viewModels()
+    private val contractModel = SingletonGroupsContract.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             createGroup.setOnClickListener {
-                model.registerGroup("duck", "67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                contractModel?.registerGroup("duck", "67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
 
             approveGroup1.setOnClickListener {
@@ -76,7 +75,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             requestJoinGroup.setOnClickListener {
-                GroupsContract.requestMember("duck", "97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
+                GroupsContract.requestMember("duck", "97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a", "jiwoo", "email@k.com")
             }
 
             approveJoin1.setOnClickListener {

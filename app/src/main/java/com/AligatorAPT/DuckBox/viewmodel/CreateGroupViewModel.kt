@@ -68,13 +68,4 @@ class CreateGroupViewModel : ViewModel() {
             }
         }
     }
-
-    fun registerGroupContract(groupId: String, ownerDid: String) {
-        viewModelScope.launch {
-            withContext(dispatcher) {
-                GroupsContract.registerGroup(groupId, ownerDid)
-            }
-        }
-    }
-
 }

@@ -12,19 +12,20 @@ import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupSettingBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
-import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.activity.ReportActivity
 import com.AligatorAPT.DuckBox.view.activity.ResultActivity
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
 
 class GroupSettingFragment : Fragment() {
     private var _binding: FragmentGroupSettingBinding? = null
     private val binding: FragmentGroupSettingBinding get() = _binding!!
 
     private val model: GroupViewModel by activityViewModels()
+    private val contractModel = SingletonGroupsContract.getInstance()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,7 +124,7 @@ class GroupSettingFragment : Fragment() {
                                 modalDialog.dismiss()
                                 //그룹 삭제 컨트랙트 실행
                                 model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                    GroupsContract.deleteGroup(
+                                    contractModel?.deleteGroup(
                                         groupId = groupId,
                                         ownerDid = MyApplication.prefs.getString("did", "notExist")
                                     )
@@ -156,7 +157,7 @@ class GroupSettingFragment : Fragment() {
                                 modalDialog.dismiss()
                                 //그룹 탈퇴 컨트랙트 실행
                                 model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                    GroupsContract.exitMember(
+                                    contractModel?.exitMember(
                                         groupId = groupId,
                                         requesterDid = MyApplication.prefs.getString("did", "notExist")
                                     )

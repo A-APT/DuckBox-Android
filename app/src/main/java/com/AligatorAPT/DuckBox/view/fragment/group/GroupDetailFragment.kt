@@ -14,7 +14,6 @@ import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
-import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
@@ -24,6 +23,7 @@ import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 import com.google.android.material.tabs.TabLayout
 
@@ -33,6 +33,7 @@ class GroupDetailFragment : Fragment() {
 
     private val model: GroupViewModel by activityViewModels()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
+    private val contractModel = SingletonGroupsContract.getInstance()
 
     private lateinit var paperListAdapter: PaperListAdapter
 
@@ -117,7 +118,7 @@ class GroupDetailFragment : Fragment() {
                                 override fun OnPositiveClick() {
                                     modalDialog.dismiss()
                                     model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                        GroupsContract.approveGroupAuthentication(
+                                        contractModel?.approveGroupAuthentication(
                                             groupId = groupId,
                                             approverDid = MyApplication.prefs.getString("did", "notExist")
                                         )
@@ -146,9 +147,11 @@ class GroupDetailFragment : Fragment() {
                                                     if (flag) {
                                                         //컨트랙트에 가입 요청 등록
                                                         model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                                            GroupsContract.requestMember(
+                                                            contractModel?.requestMember(
                                                                 groupId = groupId,
-                                                                userDid = MyApplication.prefs.getString( "did","notExist")
+                                                                userDid = MyApplication.prefs.getString( "did","notExist"),
+                                                                name = MyApplication.prefs.getString("nickname","notExist"),
+                                                                email = MyApplication.prefs.getString("email", "notExist")
                                                             )
                                                         })
                                                         //그룹 가입 요청 완료로 화면 전환

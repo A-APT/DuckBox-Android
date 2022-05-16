@@ -52,11 +52,13 @@ object GroupsContract {
         return ethereumManagement.ethSendRaw(contractAddress, DELETEGROUP, inputParams, outputParams) as Boolean?
     }
 
-    fun requestMember(groupId: String, userDid: String): Boolean? {
+    fun requestMember(groupId: String, userDid: String, name: String, email: String): Boolean? {
         ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
-            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDid))
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDid)),
+            Utf8String(name),
+            Utf8String(email)
         )
         val outputParams = listOf<TypeReference<*>>()
         return ethereumManagement.ethSendRaw(contractAddress, REQUESTMEMBER, inputParams, outputParams) as Boolean?
