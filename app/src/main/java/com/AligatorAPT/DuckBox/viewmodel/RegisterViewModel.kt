@@ -19,6 +19,12 @@ class RegisterViewModel: ViewModel(){
     val email = MutableLiveData<String>()
     val nickname = MutableLiveData<String>()
 
+    val isNew = MutableLiveData<Boolean>()
+
+    fun setIsNew(_isNew: Boolean){
+        isNew.value = _isNew
+    }
+
     fun setEmail(_email:String){
         email.value = _email
     }

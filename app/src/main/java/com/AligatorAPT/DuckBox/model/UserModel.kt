@@ -52,8 +52,9 @@ object UserModel{
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("token", response.body()!!.token)
                     MyApplication.prefs.setString("refreshToken", response.body()!!.refreshToken)
-                    MyApplication.prefs.setString("did", response.body()!!.did)
                     MyApplication.prefs.setString("studentId", response.body()!!.studentId.toString())
+                    MyApplication.prefs.setString("did", response.body()!!.did)
+                    MyApplication.prefs.setString("nickname", response.body()!!.nickname)
                     callback.apiCallback(true)
                 }else{
                     callback.apiCallback(false)

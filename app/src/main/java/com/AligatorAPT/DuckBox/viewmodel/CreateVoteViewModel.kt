@@ -1,20 +1,17 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.model.VoteModel
-import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.ByteArrayOutputStream
-import java.io.OutputStream
 
 class CreateVoteViewModel : ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -26,6 +23,7 @@ class CreateVoteViewModel : ViewModel() {
     val startTime = MutableLiveData<Date>()
     val finishTime = MutableLiveData<Date>()
     val images = MutableLiveData<ArrayList<ByteArray>>()
+    val ownerPrivate = MutableLiveData<String>()
     val candidates = MutableLiveData<ArrayList<String>>()
     val voters = MutableLiveData<ArrayList<Int>?>()
     val reward = MutableLiveData<Boolean>()
@@ -63,8 +61,23 @@ class CreateVoteViewModel : ViewModel() {
         groupId.value = _groupId
     }
 
-    fun registerVote(callback: ApiCallback){
+    fun getVoteDto():VoteRegisterDto{
+        return VoteRegisterDto(
+            title = title.value!!,
+            content = content.value!!,
+            isGroup = isGroup.value!!,
+            groupId = groupId.value,
+            startTime = startTime.value!!,
+            finishTime = finishTime.value!!,
+            images = images.value!!,
+            ownerPrivate = ownerPrivate.value!!,
+            candidates = candidates.value!!,
+            voters = voters.value,
+            reward = reward.value!!,
+            notice = notice.value!!)
+    }
 
+    fun registerVote(callback: RegisterCallBack){
         viewModelScope.launch {
             withContext(dispatcher){
                 VoteModel.registerVote(
@@ -76,6 +89,7 @@ class CreateVoteViewModel : ViewModel() {
                         startTime = startTime.value!!,
                         finishTime = finishTime.value!!,
                         images = images.value!!,
+                        ownerPrivate = ownerPrivate.value!!,
                         candidates = candidates.value!!,
                         voters = voters.value,
                         reward = reward.value!!,

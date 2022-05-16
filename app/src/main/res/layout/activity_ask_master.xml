@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.fragment.navigation.AlarmFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_bottom"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/askBackBtn"
+            android:layout_width="10dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="30dp"
+            android:contentDescription="backBtn"
+            android:src="@drawable/back" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="40dp"
+            android:gravity="center"
+            android:paddingVertical="24dp"
+            android:text="문의하기"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <EditText
+        android:autofillHints="false"
+        android:id="@+id/askContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginBottom="11dp"
+        android:background="@drawable/sub1_color_box_10dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:hint="문의 사항을 입력해주세요."
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:paddingHorizontal="30dp"
+        android:paddingVertical="26dp"
+        android:scrollHorizontally="false"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/askBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:background="@drawable/main_color_box_10dp"
+        android:gravity="center"
+        android:paddingVertical="14dp"
+        android:text="전송하기"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

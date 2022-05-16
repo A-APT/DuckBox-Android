@@ -1,11 +1,14 @@
 package com.AligatorAPT.DuckBox.view.fragment.signup
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
@@ -41,6 +44,10 @@ class MoreInfoFragment : Fragment() {
         init()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+    }
+
     private fun checkPassword(password: String): Boolean {
         //숫자, 특수문자 포함
         val pwdRegex1 = "([0-9].*[!@#^&*()])|([!@#^&*()].*[0-9])"
@@ -71,7 +78,7 @@ class MoreInfoFragment : Fragment() {
     }
 
     private fun setIsActivateBtn() {
-        val mActivity = activity as SignUpActivity
+        val mActivity = context as Activity
         binding.apply {
             if (checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4]) {
                 binding.finishSignUp.setBackgroundColor(
@@ -94,9 +101,20 @@ class MoreInfoFragment : Fragment() {
     }
 
     private fun init() {
-        val mActivity = activity as SignUpActivity
-
+        val mActivity = context as Activity
         binding.apply {
+            model.isNew.observe(viewLifecycleOwner, Observer {
+                if (it) {
+                    title1.visibility = View.VISIBLE
+                    title2.visibility = View.VISIBLE
+                    finishSignUp.text = "완료"
+                } else {
+                    title1.visibility = View.GONE
+                    title2.visibility = View.GONE
+                    finishSignUp.text = "변경하기"
+                }
+            })
+
             //스피너 연결
             setDepartment.adapter = ArrayAdapter.createFromResource(
                 mActivity, R.array.department, android.R.layout.simple_spinner_item
@@ -143,28 +161,40 @@ class MoreInfoFragment : Fragment() {
                         if (setDepartment2.selectedItemPosition != 0)
                             departmentList.add(setDepartment2.selectedItem.toString())
 
-                        model.email.observe(viewLifecycleOwner, Observer {
-                            model.registser(
-                                RegisterDto(
-                                    studentId = setStudentId.text.toString().toInt(),
-                                    name = setName.text.toString(),
-                                    password = setPassword.text.toString(),
-                                    email = it,
-                                    phoneNumber = "",
-                                    nickname = setNickname.text.toString(),
-                                    college = "건국대학교",
-                                    department = departmentList
-                                ), object : ApiCallback {
-                                    override fun apiCallback(flag: Boolean) {
-                                        if(flag){
-                                            //닉네임 전달
-                                            model.setNickname(setNickname.text.toString())
-                                            //화면 전환
-                                            mActivity.changeFragment(FinishSignUpFragment(), "회원가입 완료")
+
+                        model.isNew.observe(viewLifecycleOwner, Observer { flag ->
+                            if(!flag){
+                                Toast.makeText(mActivity, "변경되었습니다.", Toast.LENGTH_LONG).show()
+                                mActivity.onBackPressed()
+                            }
+                            model.email.observe(viewLifecycleOwner, Observer {
+                                if (flag) {
+                                    model.registser(
+                                        RegisterDto(
+                                            studentId = setStudentId.text.toString().toInt(),
+                                            name = setName.text.toString(),
+                                            password = setPassword.text.toString(),
+                                            email = it,
+                                            phoneNumber = "",
+                                            nickname = setNickname.text.toString(),
+                                            college = "건국대학교",
+                                            department = departmentList
+                                        ), object : ApiCallback {
+                                            override fun apiCallback(flag: Boolean) {
+                                                if (flag) {
+                                                    //닉네임 전달
+                                                    model.setNickname(setNickname.text.toString())
+                                                    //화면 전환
+                                                    (mActivity as SignUpActivity).changeFragment(
+                                                        FinishSignUpFragment(),
+                                                        "회원가입 완료"
+                                                    )
+                                                }
+                                            }
                                         }
-                                    }
+                                    )
                                 }
-                            )
+                            })
                         })
                     }
                 }

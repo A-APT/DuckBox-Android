@@ -37,7 +37,7 @@ class CreateVoteFirstFragment: Fragment()  {
     private lateinit var firstImageRVAdapter: FirstImageRVAdapter
     private var list: ArrayList<Bitmap> = arrayListOf()
     var startDate = ""
-    var lastDate = ""
+    var finishDate = ""
     lateinit var start_Datefor: Date
     lateinit var last_Datefor: Date
     private val IMAGE_REQUEST_CODE = 100
@@ -149,11 +149,11 @@ class CreateVoteFirstFragment: Fragment()  {
                 datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
+                        Log.e("DATEPICKER_BEFORE",date)
                         startDate = date
-                        start_Datefor = Date(year,month,day,hour,min,cal_ampm)
+                        start_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
                         Log.e("DATEPICKER",start_Datefor.toString())
-                        cvFirstStartdateCheck.setText(date)
-
+                        cvFirstStartdateCheck.setText(startDate)
                     }
                 })
                 datePickerDialog.setStyle(BottomSheetDialogFragment.STYLE_NORMAL,R.style.CustomBottomSheetDialog)
@@ -166,17 +166,10 @@ class CreateVoteFirstFragment: Fragment()  {
                 datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
-                        lastDate = date
-                        val last = Calendar.getInstance()
-                        last[Calendar.YEAR] = year
-                        last[Calendar.DAY_OF_MONTH] = day
-                        last[Calendar.MONTH] = month-1 // 0-11 so 1 less
-                        last[Calendar.HOUR] = hour
-                        last[Calendar.MINUTE] = min
-                        last[Calendar.AM_PM] = cal_ampm
-                        last_Datefor = Date(year,month,day,hour,min,cal_ampm)
+                        finishDate = date
+                        last_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
                         Log.e("DATEPICKER",last_Datefor.toString())
-                        cvFirstLastdateCheck.setText(date)
+                        cvFirstLastdateCheck.setText(finishDate)
                     }
                 })
                 datePickerDialog.setStyle(BottomSheetDialogFragment.STYLE_NORMAL,R.style.CustomBottomSheetDialog)
@@ -197,12 +190,13 @@ class CreateVoteFirstFragment: Fragment()  {
                 setIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
+                Log.e("HELLO",cvFirstStartdateCheck.text.toString())
                 checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택" && checkNow(startDate)
                 checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
-                checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택" && checkNow(lastDate)
+                checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택" && checkNow(finishDate)
                 checkValidation[4] = checkTime()
                 setIsActivateBtn()
             }
@@ -230,10 +224,10 @@ class CreateVoteFirstFragment: Fragment()  {
 
     private fun checkTime(): Boolean {
 
-        if (startDate != "" && lastDate != "") {
+        if (startDate != "" && finishDate != "") {
 
             val startarr = startDate.split(":", ".", " ")
-            val finarr = lastDate.split(":", ".", " ")
+            val finarr = finishDate.split(":", ".", " ")
 
             for(i in 0..2){
                 if(finarr[i] < startarr[i])break
@@ -260,6 +254,7 @@ class CreateVoteFirstFragment: Fragment()  {
         if(finampm == "AM" && startampm =="PM") return finday != startday
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
+            if(starthour == 12 && finhour < 12) return true
             if(finhour > starthour ) return true
             if(!isNow){
                 if(finhour == starthour) {
@@ -278,6 +273,7 @@ class CreateVoteFirstFragment: Fragment()  {
                 mActivity.binding.createVoteNextTv.isEnabled = true
                 mActivity.checkValidation[0] = true
 
+                //bytearray image
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
                 val imageByteArray: OutputStream = ByteArrayOutputStream()
                 for (i in 0 until list.size-1){

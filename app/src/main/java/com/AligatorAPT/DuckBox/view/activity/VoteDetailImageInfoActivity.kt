@@ -25,7 +25,7 @@ class VoteDetailImageInfoActivity : AppCompatActivity() {
 
     fun init(){
         binding.apply {
-            val img_arr = intent.getSerializableExtra("img_arr") as ArrayList<Int>
+            val img_arr = intent.getSerializableExtra("img_arr") as ArrayList<String>
             val position = intent.getIntExtra("position",0)
             vdImageCloseIv.setOnClickListener { finish() }
             val imageAdapter = BannerAdapter(img_arr)
@@ -33,7 +33,7 @@ class VoteDetailImageInfoActivity : AppCompatActivity() {
                 override fun OnItemClick(
                     holder: BannerAdapter.MyViewHolder,
                     view: View,
-                    data: Int,
+                    data: String,
                     position: Int
                 ) {
                 }

@@ -13,36 +13,26 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class HomeViewModel:ViewModel() {
+class SearchViewModel:ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
     //내 그룹 리스트
-    var myGroup = MutableLiveData<List<GroupDetailDto>?>()
+    var groupList = MutableLiveData<List<GroupDetailDto>?>()
 
-    fun setMyGroup(_list: List<GroupDetailDto>){
-        myGroup.value = _list
+    fun setGroupList(_list: List<GroupDetailDto>){
+        groupList.value = _list
     }
 
-    fun getGroupsOfUserGroup(_callback: MyGroupCallback){
+    fun searchGroup(query:String, _callback: MyGroupCallback){
         val hashMap = HashMap<String, String>()
         hashMap.put("token", MyApplication.prefs.getString("token", "notExist"))
 
         viewModelScope.launch {
             withContext(dispatcher){
-                GroupModel.getGroupsOfUser( //컨트랙트 연결 후 getGroupsOfUser로 변경하기
+                GroupModel.searchGroup(
+                    _query = query,
                     callback = _callback,
                 )
             }
         }
-    }
-}
-
-object SingletonGroup  {
-    private var model: HomeViewModel? = null
-
-    fun getInstance(): HomeViewModel? {
-        if (model == null) {
-            model = HomeViewModel()
-        }
-        return model
     }
 }

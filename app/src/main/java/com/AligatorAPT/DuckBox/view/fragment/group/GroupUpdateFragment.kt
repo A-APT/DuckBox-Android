@@ -67,19 +67,26 @@ class GroupUpdateFragment : Fragment() {
             //이미지
             model.profile.observe(viewLifecycleOwner, Observer {
                 if(it != null){
-                    oldProfile = it
-                    val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
-                    groupImage.setImageBitmap(bmp)
-                }else{
-                    groupImage.setImageResource(R.drawable.sub2_color_box_3dp)
+                    if(it.isEmpty()){
+                        groupImage.setImageResource(R.drawable.user_default)
+                    }else{
+                        oldProfile = it
+
+                        val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
+                        groupImage.setImageBitmap(bmp)
+                        newProfile = bmp
+                    }
                 }
             })
 
             model.header.observe(viewLifecycleOwner, Observer {
                 if(it != null){
                     oldHeader = it
+
                     val bmp = BitmapFactory.decodeByteArray(it, 0, it.size)
                     groupBackground.setImageBitmap(bmp)
+                    newHeader = bmp
+
                 }else{
                     groupBackground.setImageResource(R.drawable.sub1_color_box_5dp)
                 }
