@@ -13,12 +13,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
+import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
@@ -35,7 +36,6 @@ class GroupDetailFragment : Fragment() {
 
     private lateinit var paperListAdapter: PaperListAdapter
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,7 +50,7 @@ class GroupDetailFragment : Fragment() {
         init()
     }
 
-    private fun init(){
+    private fun init() {
         val mActivity = activity as GroupActivity
         //그룹 권한 초기화
         model.setAuthority(GroupViewModel.Authority.MASTER)
@@ -67,22 +67,31 @@ class GroupDetailFragment : Fragment() {
             //이미지
             model.header.observe(viewLifecycleOwner, Observer {
                 Log.e("HEADER::", it.toString())
-                if(it == null){
+                if (it == null) {
                     groupBackgroundImg.setImageResource(R.drawable.sub1_color_box_5dp)
-                }else{
+                } else {
                     val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
                     groupBackgroundImg.setImageBitmap(bitmap)
                 }
             })
 
-            //그룹 가입 여부
-            model.authority.observe(viewLifecycleOwner, Observer {
-                if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
-                    joinGroup.visibility = View.GONE
-                    mutualAuthentication.visibility = View.VISIBLE
-                }else{
+            model.status.observe(viewLifecycleOwner, Observer { groupStatus ->
+                if (groupStatus == GroupStatus.PENDING) {
                     joinGroup.visibility = View.VISIBLE
+                    joinGroup.text = "그룹 인증하기"
                     mutualAuthentication.visibility = View.GONE
+                } else {
+                    //그룹 가입 여부
+                    model.authority.observe(viewLifecycleOwner, Observer {
+                        if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
+                            joinGroup.visibility = View.GONE
+                            mutualAuthentication.visibility = View.VISIBLE
+                        } else {
+                            joinGroup.visibility = View.VISIBLE
+                            joinGroup.text = "그룹 가입하기"
+                            mutualAuthentication.visibility = View.GONE
+                        }
+                    })
                 }
             })
 
@@ -96,36 +105,71 @@ class GroupDetailFragment : Fragment() {
             }
 
             joinGroup.setOnClickListener {
-                model.authority.observe(viewLifecycleOwner, Observer {
-                    if (it == GroupViewModel.Authority.OTHER) {
+                model.status.observe(viewLifecycleOwner, Observer { groupStatus ->
+                    if (groupStatus == GroupStatus.PENDING) {
                         //다이얼로그
                         val bundle = Bundle()
-                        bundle.putString("message", "그룹에 가입하시겠습니까?")
+                        bundle.putString("message", "그룹을 인증하시겠습니까?")
                         val modalDialog = ModalDialog()
                         modalDialog.arguments = bundle
-                        modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
-                            override fun OnPositiveClick() {
-                                modalDialog.dismiss()
-                                model.joinGroup(object: ApiCallback {
-                                    override fun apiCallback(flag: Boolean) {
-                                        if(flag){
-                                            //그룹 가입 요청 완료로 화면 전환
-                                            val intent = Intent(mActivity, ResultActivity::class.java)
-                                            intent.putExtra("isType", 0)
-                                            model.name.observe(viewLifecycleOwner, Observer {
-                                                intent.putExtra("groupName", it)
+                        modalDialog.itemClickListener =
+                            object : ModalDialog.OnItemClickListener {
+                                override fun OnPositiveClick() {
+                                    modalDialog.dismiss()
+                                    model.id.observe(viewLifecycleOwner, Observer { groupId ->
+                                        GroupsContract.approveGroupAuthentication(
+                                            groupId = groupId,
+                                            approverDid = MyApplication.prefs.getString("did", "notExist")
+                                        )
+                                    })
+                                    Toast.makeText(mActivity, "그룹 인증이 요청되었습니다.", Toast.LENGTH_LONG).show()
+                                }
+                                override fun OnNegativeClick() {
+                                    modalDialog.dismiss()
+                                }
+                            }
+                        modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+                    } else {
+                        model.authority.observe(viewLifecycleOwner, Observer {
+                            if (it == GroupViewModel.Authority.OTHER) {
+                                //다이얼로그
+                                val bundle = Bundle()
+                                bundle.putString("message", "그룹에 가입하시겠습니까?")
+                                val modalDialog = ModalDialog()
+                                modalDialog.arguments = bundle
+                                modalDialog.itemClickListener =
+                                    object : ModalDialog.OnItemClickListener {
+                                        override fun OnPositiveClick() {
+                                            modalDialog.dismiss()
+                                            model.joinGroup(object : ApiCallback {
+                                                override fun apiCallback(flag: Boolean) {
+                                                    if (flag) {
+                                                        //컨트랙트에 가입 요청 등록
+                                                        model.id.observe(viewLifecycleOwner, Observer { groupId ->
+                                                            GroupsContract.requestMember(
+                                                                groupId = groupId,
+                                                                userDid = MyApplication.prefs.getString( "did","notExist")
+                                                            )
+                                                        })
+                                                        //그룹 가입 요청 완료로 화면 전환
+                                                        val intent = Intent( mActivity, ResultActivity::class.java)
+                                                        intent.putExtra("isType", 0)
+                                                        model.name.observe(viewLifecycleOwner,  Observer {
+                                                                intent.putExtra("groupName", it)
+                                                        })
+                                                        startActivity(intent)
+                                                    }
+                                                }
                                             })
-                                            startActivity(intent)
+                                        }
+
+                                        override fun OnNegativeClick() {
+                                            modalDialog.dismiss()
                                         }
                                     }
-                                })
+                                modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
                             }
-
-                            override fun OnNegativeClick() {
-                                modalDialog.dismiss()
-                            }
-                        }
-                        modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+                        })
                     }
                 })
             }
@@ -145,17 +189,17 @@ class GroupDetailFragment : Fragment() {
 
             //그룹 투표리스트 리사이클러뷰
             voteModel!!.myVote.observe(viewLifecycleOwner, Observer {
-                if(it != null){
-                    Log.e("GROUP_MYVOTE",it.toString())
+                if (it != null) {
+                    Log.e("GROUP_MYVOTE", it.toString())
                     val arr = ArrayList<VoteDetailDto>()
                     arr.addAll(it)
                     paperListAdapter = PaperListAdapter(arr)
 
-                }else{
+                } else {
                     val arr = ArrayList<VoteDetailDto>()
                     paperListAdapter = PaperListAdapter(arr)
                 }
-                paperListAdapter.itemClickListener = object : PaperListAdapter.OnItemClickListener{
+                paperListAdapter.itemClickListener = object : PaperListAdapter.OnItemClickListener {
                     override fun OnItemClick(
                         holder: PaperListAdapter.MyViewHolder,
                         view: View,
@@ -167,36 +211,41 @@ class GroupDetailFragment : Fragment() {
                             if (it == GroupViewModel.Authority.OTHER) {
                                 //다이얼로그
                                 val bundle = Bundle()
-                                bundle.putString("message", "그룹원만 열람할 수 있습니다.\n" +
-                                        "그룹에 가입해주세요.")
+                                bundle.putString(
+                                    "message", "그룹원만 열람할 수 있습니다.\n" +
+                                            "그룹에 가입해주세요."
+                                )
                                 val modalDialog = ModalDialog()
                                 modalDialog.arguments = bundle
-                                modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
-                                    override fun OnPositiveClick() {
-                                        modalDialog.dismiss()
-                                    }
+                                modalDialog.itemClickListener =
+                                    object : ModalDialog.OnItemClickListener {
+                                        override fun OnPositiveClick() {
+                                            modalDialog.dismiss()
+                                        }
 
-                                    override fun OnNegativeClick() {
-                                        modalDialog.dismiss()
+                                        override fun OnNegativeClick() {
+                                            modalDialog.dismiss()
+                                        }
                                     }
-                                }
                                 modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
-                            }else{
+                            } else {
                                 // 투표 및 설문 상세로 화면 전환
-                                val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
-                                val nickname = MyApplication.prefs.getString("nickname","notExist")
-                                if(data.voters != null){
-                                    if(data.voters.contains(studentId) || data.owner == nickname){
-                                        val intent = Intent(activity, VoteDetailActivity::class.java)
-                                        intent.putExtra("position",position)
-                                        intent.putExtra("time",time)
+                                val studentId =
+                                    MyApplication.prefs.getString("studentId", "notExist").toInt()
+                                val nickname = MyApplication.prefs.getString("nickname", "notExist")
+                                if (data.voters != null) {
+                                    if (data.voters.contains(studentId) || data.owner == nickname) {
+                                        val intent =
+                                            Intent(activity, VoteDetailActivity::class.java)
+                                        intent.putExtra("position", position)
+                                        intent.putExtra("time", time)
                                         startActivity(intent)
-                                    }
-                                    else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
-                                }else{
+                                    } else Toast.makeText(context, "유권자가 아닙니다.", Toast.LENGTH_SHORT)
+                                        .show()
+                                } else {
                                     val intent = Intent(activity, VoteDetailActivity::class.java)
-                                    intent.putExtra("position",position)
-                                    intent.putExtra("time",time)
+                                    intent.putExtra("position", position)
+                                    intent.putExtra("time", time)
                                     startActivity(intent)
                                 }
                             }
@@ -206,7 +255,7 @@ class GroupDetailFragment : Fragment() {
                 recyclerView.adapter = paperListAdapter
             })
 
-            groupTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            groupTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     setPaperList(tab!!.position)
                 }
@@ -225,7 +274,7 @@ class GroupDetailFragment : Fragment() {
             fab.setOnClickListener {
                 val args = Bundle()
                 args.putBoolean("isGroup", true)
-                args.putString("groupId",model.id.value)
+                args.putString("groupId", model.id.value)
                 val writeDialog = WriteDialog()
                 writeDialog.arguments = args
                 writeDialog.show(mActivity.supportFragmentManager, "WriteDialog")
@@ -240,28 +289,28 @@ class GroupDetailFragment : Fragment() {
 
     private fun setPaperList(flag: Int) {
         var groupList = arrayListOf<VoteDetailDto>()
-        when(flag){
-            0->{//투표
-                voteModel!!.getAllVote(object: VoteCallback {
+        when (flag) {
+            0 -> {//투표
+                voteModel!!.getAllVote(object : VoteCallback {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
-                        if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                        if (flag && _list != null) {
+                            for (i in 0 until _list.size) {
+                                if (_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }
-                            Log.e("GROUPDETAIL",groupList.toString())
+                            Log.e("GROUPDETAIL", groupList.toString())
                             voteModel.setMyVote(groupList)
                         }
                     }
                 })
             }
-            1->{//설문
-                voteModel!!.getAllVote(object: VoteCallback{
+            1 -> {//설문
+                voteModel!!.getAllVote(object : VoteCallback {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
-                        if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                        if (flag && _list != null) {
+                            for (i in 0 until _list.size) {
+                                if (_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -270,12 +319,12 @@ class GroupDetailFragment : Fragment() {
                     }
                 })
             }
-            2->{//참여 완료
-                voteModel!!.getAllVote(object: VoteCallback{
+            2 -> {//참여 완료
+                voteModel!!.getAllVote(object : VoteCallback {
                     override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
-                        if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                        if (flag && _list != null) {
+                            for (i in 0 until _list.size) {
+                                if (_list[i].isGroup) {
                                     groupList.add(_list[i])
                                 }
                             }

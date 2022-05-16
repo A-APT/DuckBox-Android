@@ -12,6 +12,8 @@ import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupSettingBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.activity.ReportActivity
 import com.AligatorAPT.DuckBox.view.activity.ResultActivity
@@ -119,6 +121,13 @@ class GroupSettingFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
+                                //그룹 삭제 컨트랙트 실행
+                                model.id.observe(viewLifecycleOwner, Observer { groupId ->
+                                    GroupsContract.deleteGroup(
+                                        groupId = groupId,
+                                        ownerDid = MyApplication.prefs.getString("did", "notExist")
+                                    )
+                                })
                                 //그룹 삭제 완료로 화면 전환
                                 val intent = Intent(mActivity, ResultActivity::class.java)
                                 intent.putExtra("isType", 2)
@@ -145,6 +154,13 @@ class GroupSettingFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
+                                //그룹 탈퇴 컨트랙트 실행
+                                model.id.observe(viewLifecycleOwner, Observer { groupId ->
+                                    GroupsContract.exitMember(
+                                        groupId = groupId,
+                                        requesterDid = MyApplication.prefs.getString("did", "notExist")
+                                    )
+                                })
                                 //그룹 탈퇴 완료로 화면 전환
                                 val intent = Intent(mActivity, ResultActivity::class.java)
                                 intent.putExtra("isType", 1)

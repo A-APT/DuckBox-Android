@@ -23,7 +23,7 @@ object GroupsContract {
 
     fun registerGroup(groupId: String, ownerDid: String): Boolean? { //only owner
         Log.d("ADDRESS", contractAddress)
-        ethereumManagement.setCredentials(GanacheAddress.GROUP_OWNER)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
@@ -33,7 +33,7 @@ object GroupsContract {
     }
 
     fun approveGroupAuthentication(groupId: String, approverDid: String): Boolean? {
-        ethereumManagement.setCredentials(GanacheAddress.APPROVER1)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid))
@@ -43,7 +43,7 @@ object GroupsContract {
     }
 
     fun deleteGroup(groupId: String, ownerDid: String): Boolean? { //only owner
-        ethereumManagement.setCredentials(GanacheAddress.GROUP_OWNER)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
@@ -53,7 +53,7 @@ object GroupsContract {
     }
 
     fun requestMember(groupId: String, userDid: String): Boolean? {
-        ethereumManagement.setCredentials(GanacheAddress.USER1)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDid))
@@ -63,7 +63,7 @@ object GroupsContract {
     }
 
     fun approveMember(groupId: String, approverDid: String, requesterDid:String): Boolean? {
-        ethereumManagement.setCredentials(GanacheAddress.APPROVER1)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid)),
@@ -74,7 +74,7 @@ object GroupsContract {
     }
 
     fun exitMember(groupId: String, requesterDid: String): Boolean? {
-        ethereumManagement.setCredentials(GanacheAddress.USER1)
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(requesterDid))

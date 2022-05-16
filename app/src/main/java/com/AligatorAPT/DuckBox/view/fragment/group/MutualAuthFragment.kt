@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentMutualAuthBinding
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
 import com.AligatorAPT.DuckBox.view.data.MutualAuthData
@@ -48,6 +50,14 @@ class MutualAuthFragment : Fragment() {
                 position: Int
             ) {
                 //승인하기 버튼 이벤트
+                model.id.observe(viewLifecycleOwner, Observer {
+                    GroupsContract.approveMember(
+                        groupId = it,
+                        approverDid = MyApplication.prefs.getString("did","notExist"),
+                        requesterDid = data.did
+                    )
+                })
+
                 mutualAuthAdapter.deleteData(position)
             }
         }
@@ -74,12 +84,12 @@ class MutualAuthFragment : Fragment() {
 
     private fun setMutualAuthList(): ArrayList<MutualAuthData>{
         return arrayListOf(
-            MutualAuthData(name="홍길동", email="abc@korea.ac.kr", studentId = 201911111),
-            MutualAuthData(name="김길동", email="abc@korea.ac.kr", studentId = 201911111),
-            MutualAuthData(name="박길동", email="abc@korea.ac.kr", studentId = 201911111),
-            MutualAuthData(name="이길동", email="abc@korea.ac.kr", studentId = 201911111),
-            MutualAuthData(name="최길동", email="abc@korea.ac.kr", studentId = 201911111),
-            MutualAuthData(name="백길동", email="abc@korea.ac.kr", studentId = 201911111),
+            MutualAuthData(name="홍길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
+            MutualAuthData(name="김길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
+            MutualAuthData(name="박길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
+            MutualAuthData(name="이길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
+            MutualAuthData(name="최길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
+            MutualAuthData(name="백길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
         )
     }
 

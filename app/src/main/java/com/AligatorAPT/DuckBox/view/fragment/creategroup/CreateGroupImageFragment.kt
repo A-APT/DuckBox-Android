@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateGroupImageBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.CreateGroupActivity
 import com.AligatorAPT.DuckBox.viewmodel.createvote.CreateGroupViewModel
 import java.lang.Exception
@@ -80,6 +81,11 @@ class CreateGroupImageFragment : Fragment() {
                            if(flag){
                                //id 추가
                                model.setGroupId(id!!)
+                               //컨트랙트에 그룹 등록
+                               model.registerGroupContract(
+                                   groupId = id!!,
+                                   ownerDid = MyApplication.prefs.getString("did", "notExist")
+                               )
                                //화면 전환
                                mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료", 2)
                            }

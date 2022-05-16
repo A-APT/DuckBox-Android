@@ -27,7 +27,7 @@ object EthereumManagement {
     private var credentials: Credentials? = null
 
     private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
-    private val gasLimit: BigInteger = BigInteger.valueOf(800000) // gasLimit
+    private val gasLimit: BigInteger = BigInteger.valueOf(6700000) // gasLimit
 
     fun createWallet(password: String): WalletFile {
         val keyPair: ECKeyPair = Keys.createEcKeyPair()
@@ -124,14 +124,8 @@ object EthereumManagement {
         )
 
         if (ethSend.hasError()){
-            throw Exception(ethSend.error.message)
+            Log.e("EthException", ethSend.error.message)
         }
-
-//        val processor = PollingTransactionReceiptProcessor(
-//            web3j,
-//            TransactionManager.DEFAULT_POLLING_FREQUENCY,
-//            TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH)
-//        val receipt = processor.waitForTransactionReceipt(ethSend.transactionHash)
 
         // decode response
         val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)

@@ -40,7 +40,7 @@ class MutualAuthAdapter(var items: ArrayList<MutualAuthData>):
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.binding.apply {
             userName.text = items[position].name
-            userInfo.text = "${items[position].email} / ${items[position].studentId}"
+            userInfo.text = items[position].email
         }
     }
 }

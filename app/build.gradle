@@ -23,6 +23,9 @@ android {
         buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
         buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
         buildConfigField("String", "ADDRESS_GROUPS", properties.getProperty("contract.address.groups"))
+
+        buildConfigField("String", "USER_ADDRESS", properties.getProperty("ganache.user.address"))
+        buildConfigField("String", "USER_PK", properties.getProperty("ganache.user.private-key"))
     }
 
     buildTypes {
