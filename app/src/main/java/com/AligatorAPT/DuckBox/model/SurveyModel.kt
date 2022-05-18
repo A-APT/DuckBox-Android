@@ -1,30 +1,30 @@
 package com.AligatorAPT.DuckBox.model
 
 import android.util.Log
-import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.dto.vote.SurveyDetailDto
+import com.AligatorAPT.DuckBox.dto.vote.SurveyRegisterDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
+import com.AligatorAPT.DuckBox.retrofit.callback.SurveyCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.dto.vote.VoteDetailDto
-import com.AligatorAPT.DuckBox.dto.vote.VoteRegisterDto
-import retrofit2.Callback
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
-object VoteModel {
-    fun registerVote(_voteRegisterDto: VoteRegisterDto, callback: RegisterCallBack){
+object SurveyModel {
+    fun registerSurvey(_surveyRegisterDto: SurveyRegisterDto, callback: RegisterCallBack){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)
 
         headers["Authorization"] = "Bearer $userToken"
 
-        Log.d("REGISTERDTO", _voteRegisterDto.toString())
+        Log.d("REGISTERDTO", _surveyRegisterDto.toString())
 
-        RetrofitClient.VOTE_INTERFACE_SERVICE.register(
+        RetrofitClient.SURVEY_INTERFACE_SERVICE.register(
             httpHeaders = headers,
-            voteRegisterDto = _voteRegisterDto
-        ).enqueue(object : Callback<String>{
+            surveyRegisterDto = _surveyRegisterDto
+        ).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 Log.d("Response:: ", response.toString())
                 if (response.isSuccessful) {
@@ -40,16 +40,16 @@ object VoteModel {
         })
     }
 
-    fun getAllVote(callback: VoteCallback){
+    fun getAllSurvey(callback: SurveyCallback){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)
 
         headers["Authorization"] = "Bearer $userToken"
 
-        RetrofitClient.VOTE_INTERFACE_SERVICE.getAllVote(httpHeaders = headers)
-            .enqueue(object : Callback<List<VoteDetailDto>>{
-                override fun onResponse(call: Call<List<VoteDetailDto>>, response: Response<List<VoteDetailDto>>) {
+        RetrofitClient.SURVEY_INTERFACE_SERVICE.getAllSurvey(httpHeaders = headers)
+            .enqueue(object : Callback<List<SurveyDetailDto>> {
+                override fun onResponse(call: Call<List<SurveyDetailDto>>, response: Response<List<SurveyDetailDto>>) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
                         callback.apiCallback(true, response.body()!!)
@@ -58,7 +58,7 @@ object VoteModel {
                     }
                 }
 
-                override fun onFailure(call: Call<List<VoteDetailDto>>, t: Throwable) {
+                override fun onFailure(call: Call<List<SurveyDetailDto>>, t: Throwable) {
                     callback.apiCallback(false, null)
                     Log.d("onFailure::", "Failed API call with call: $call + exception: $t")
                 }
@@ -66,19 +66,19 @@ object VoteModel {
             })
     }
 
-    fun findVotesOfGroup(groupId: String, callback: VoteCallback){
+    fun findSurveyOfGroup(groupId: String, callback: SurveyCallback){
         val headers = HashMap<String, String>()
         val userToken = MyApplication.prefs.getString("token", "notExist")
         Log.d("UserToken", userToken)
 
         headers["Authorization"] = "Bearer $userToken"
 
-        RetrofitClient.VOTE_INTERFACE_SERVICE.findVotesOfGroup(
+        RetrofitClient.SURVEY_INTERFACE_SERVICE.findSurveysOfGroup(
             httpHeaders = headers, groupId = groupId)
-            .enqueue(object : Callback<List<VoteDetailDto>>{
+            .enqueue(object : Callback<List<SurveyDetailDto>> {
                 override fun onResponse(
-                    call: Call<List<VoteDetailDto>>,
-                    response: Response<List<VoteDetailDto>>
+                    call: Call<List<SurveyDetailDto>>,
+                    response: Response<List<SurveyDetailDto>>
                 ) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
@@ -88,7 +88,7 @@ object VoteModel {
                     }
                 }
 
-                override fun onFailure(call: Call<List<VoteDetailDto>>, t: Throwable) {
+                override fun onFailure(call: Call<List<SurveyDetailDto>>, t: Throwable) {
                     callback.apiCallback(false, null)
                     Log.d("onFailure::", "Failed API call with call: $call + exception: $t")
                 }

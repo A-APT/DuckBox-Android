@@ -16,10 +16,9 @@ import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.ethereum.BallotContract
-import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.dto.vote.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -34,7 +33,7 @@ class CreateVoteActivity : FragmentActivity() {
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
     var voteRegisterDto = VoteRegisterDto(
-        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), ArrayList<String>(), null,false,false)
+        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), "",ArrayList<String>(), null,false,false)
 
     val viewModel : CreateVoteViewModel by viewModels()
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -43,6 +42,8 @@ class CreateVoteActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateVoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.isVote.value = true
 
         voteRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
         if(voteRegisterDto.isGroup){
@@ -62,8 +63,8 @@ class CreateVoteActivity : FragmentActivity() {
             if(viewPager.currentItem == 2) {
                 val blindsig = BlindSecp256k1()
                 val keyPair = blindsig.generateKeyPair()
-                viewModel.ownerPrivate.value = keyPair.privateKey.toString()
 
+                viewModel.ownerPrivate.value = keyPair.privateKey.toString()
                 viewModel.registerVote(object: RegisterCallBack {
                     override fun registerCallBack(flag: Boolean, id:String?) {
                         if(flag){
@@ -88,6 +89,7 @@ class CreateVoteActivity : FragmentActivity() {
                         }
                     }
                 })
+
             }
 
             viewPager.currentItem = viewPager.currentItem+1
@@ -131,6 +133,7 @@ class CreateVoteActivity : FragmentActivity() {
             tab.setOnTouchListener( { v, event -> true })
         }
     }
+
 
     override fun onBackPressed() {
         val currentItem: Int = viewPager.currentItem

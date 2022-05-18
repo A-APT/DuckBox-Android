@@ -1,19 +1,19 @@
-package com.AligatorAPT.DuckBox.view.data
+package com.AligatorAPT.DuckBox.dto.vote
 
 import java.util.*
-import kotlin.collections.ArrayList
 
 data class VoteRegisterDto(
-    var title: String,
-    var content: String,
+    val title: String,
+    val content: String,
     var isGroup: Boolean,
-    var groupId: String?,
-    var startTime: Date,
-    var finishTime: Date,
-    var images: List<ByteArray>,
-    var candidates: List<String>,
-    var voters: List<Int>?,
-    var reward: Boolean,
+    var groupId: String?, // groupId(ObjectId) if isGroup is true
+    val startTime: Date,
+    val finishTime: Date,
+    var images: List<ByteArray>, // image list
+    var ownerPrivate: String, // private key in radix 16
+    val candidates: List<String>,
+    val voters: List<Int>?, // student id. null if isGroup is false or all group member have right to vote
+    val reward: Boolean,
     var notice: Boolean
 )
 
@@ -23,13 +23,14 @@ data class VoteDetailDto(
     var content: String,
     var isGroup: Boolean,
     var groupId: String?, // groupId(ObjectId) if isGroup is true
-    var owner: String, // owner's nicknam
+    var owner: String, // owner's nickname
     var startTime: Date,
     var finishTime: Date,
     var status: BallotStatus,
     var images: List<ByteArray>, // image list
     var candidates: List<String>,
-    var reward: Boolean
+    val voters: List<Int>?, // student id. null if isGroup is false or all group member have right to vote
+    var reward: Boolean,
 )
 
 enum class BallotStatus {

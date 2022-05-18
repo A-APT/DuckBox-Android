@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.ethereum.DIDContract
 import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
-import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
-import com.AligatorAPT.DuckBox.view.activity.LoginActivity
-import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
-import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.view.activity.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,6 +55,11 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(dispatcher).launch{
                     DIDContract.registerDid(GanacheAddress.USER1,"user1")
                 }
+            }
+
+            SURVEY.setOnClickListener {
+                val intent = Intent(this@MainActivity, CreateSurveyActivity::class.java)
+                startActivity(intent)
             }
         }
     }

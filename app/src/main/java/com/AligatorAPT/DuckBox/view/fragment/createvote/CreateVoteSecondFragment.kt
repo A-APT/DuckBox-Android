@@ -55,23 +55,20 @@ class CreateVoteSecondFragment: Fragment()  {
             }
         }
 
-        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback (
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT
-        ){
+        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 from: RecyclerView.ViewHolder,
                 to: RecyclerView.ViewHolder
             ): Boolean {
-                val fromPos: Int = from.adapterPosition
-                val toPos: Int = to.adapterPosition
-                secondListRVAdapter.swapData(fromPos,toPos)
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 secondListRVAdapter.removeData(viewHolder.layoutPosition)
-                binding.cvSecondListRv.get(viewHolder.layoutPosition).clearFocus()
+                binding.cvSecondListRv[viewHolder.layoutPosition].clearFocus()
             }
         }
 
@@ -79,27 +76,13 @@ class CreateVoteSecondFragment: Fragment()  {
 
     }
 
-//    private fun initButton() {
-//        binding.apply {
-//
-//            cvSecondTypeRg.setOnCheckedChangeListener { radioGroup, i ->
-//                if(cvSecondTypeRb1.isChecked){
-//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-//                }
-//                if(cvSecondTypeRb2.isChecked){
-//                    cvSecondTypeRb2.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,R.drawable.check_blue,0)
-//                    cvSecondTypeRb1.setCompoundDrawablesRelativeWithIntrinsicBounds(0,0,0,0)
-//                }
-//            }
-//        }
-//    }
-
     private fun check() {
         binding.apply {
             viewModel.data.observe(viewLifecycleOwner,{
                 Log.e("OBSERVER",it!!.size.toString()+"내용:"+it.toString())
                 checkValidation[0] = (it.size>=2 && !it.contains(""))
+                if(it.size == 10) {cvSecondAddTv.visibility = View.GONE}
+                else {cvSecondAddTv.visibility = View.VISIBLE}
                 setIsActivateBtn()
             })
         }

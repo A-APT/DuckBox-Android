@@ -50,6 +50,16 @@ class CreateVoteThirdFragment: Fragment()  {
         viewModel.setReward(false)
         viewModel.setNotice(false)
 
+        if(viewModel.isVote.value == true){
+            //투표
+            binding.cvThirdResultIv.visibility = View.GONE
+            binding.cvThirdResultTv.visibility = View.GONE
+        }else{
+            //설문
+            binding.cvThirdResultIv.visibility = View.VISIBLE
+            binding.cvThirdResultTv.visibility = View.VISIBLE
+        }
+
         initButton()
     }
 
@@ -58,6 +68,7 @@ class CreateVoteThirdFragment: Fragment()  {
             val folder_black = getDrawable(requireContext(), R.drawable.folder_black)!!.constantState
             val bell_black = getDrawable(requireContext(), R.drawable.bell_black)!!.constantState
             val reward_black = getDrawable(requireContext(), R.drawable.reward_black)!!.constantState
+            val result_black = getDrawable(requireContext(), R.drawable.result_black)!!.constantState
 
             cvThirdListTv.setOnClickListener {
 
@@ -105,6 +116,19 @@ class CreateVoteThirdFragment: Fragment()  {
                     cvThirdRewardTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
                     cvThirdRewardTv.setTextColor(resources.getColor(R.color.black,null))
                     viewModel.setNotice(false)
+                }
+            }
+            cvThirdResultTv.setOnClickListener {
+                if(cvThirdResultIv.drawable.constantState == result_black){
+                    cvThirdResultIv.setImageResource(R.drawable.result_blue)
+                    cvThirdResultTv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
+                    cvThirdResultTv.setTextColor(resources.getColor(R.color.main, null))
+                    viewModel.setResult(true)
+                }else{
+                    cvThirdResultIv.setImageResource(R.drawable.result_black)
+                    cvThirdResultTv.setBackgroundResource(R.drawable.gray_color_box_5dp)
+                    cvThirdResultTv.setTextColor(resources.getColor(R.color.black,null))
+                    viewModel.setResult(false)
                 }
             }
         }
