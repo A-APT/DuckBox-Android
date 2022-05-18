@@ -34,6 +34,6 @@ object DIDContract {
     fun getOwner(): String? {
         val inputParams = listOf<Type<*>>()
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Address>() {})
-        return ethereumManagement.ethCall(contractAddress, "owner", inputParams, outputParams) as String?
+        return ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, "owner", inputParams, outputParams) as String?
     }
 }

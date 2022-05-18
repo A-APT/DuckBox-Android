@@ -50,6 +50,7 @@ object EthereumManagement {
     }
 
     fun ethCall(
+        userAddress: String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -62,16 +63,16 @@ object EthereumManagement {
 
         // call function
         // createFunctionCallTransaction BigInteger
-        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
         val ethCall: EthCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get()
 
         if (ethCall.hasError()){
-            throw Exception(ethCall.error.message)
+            Log.e("EthException", ethCall.error.message)
         }
 
         // decode response
         val decode = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
-        //print("ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
+//        Log.e("LIST:::","ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
         return if (decode.size > 0) decode[0].value else null
     }
 
