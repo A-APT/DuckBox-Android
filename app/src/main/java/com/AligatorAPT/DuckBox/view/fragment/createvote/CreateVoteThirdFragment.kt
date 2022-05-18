@@ -16,6 +16,7 @@ import android.database.Cursor
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.fragment.app.activityViewModels
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import java.io.FileNotFoundException
 import java.io.InputStream

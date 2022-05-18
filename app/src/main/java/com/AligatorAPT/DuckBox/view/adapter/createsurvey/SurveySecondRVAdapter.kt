@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowSurveyBinding
-import com.AligatorAPT.DuckBox.dto.vote.Question
-import com.AligatorAPT.DuckBox.dto.vote.QuestionType
+import com.AligatorAPT.DuckBox.dto.paper.Question
+import com.AligatorAPT.DuckBox.dto.paper.QuestionType
 import com.AligatorAPT.DuckBox.view.dialog.surveyTypeDialog
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 
@@ -77,24 +77,6 @@ class SurveySecondRVAdapter(val model: CreateVoteViewModel, val childFragmentMan
                     model.setQuestionsData(surveyList)
                 }
             }
-
-            val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(
-                0, ItemTouchHelper.LEFT
-            ) {
-                override fun onMove(
-                    recyclerView: RecyclerView,
-                    from: RecyclerView.ViewHolder,
-                    to: RecyclerView.ViewHolder
-                ): Boolean {
-                    return false
-                }
-
-                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    surveyMultipleRVAdapter.removeData(viewHolder.layoutPosition)
-                    surveyRv[viewHolder.layoutPosition].clearFocus()
-                }
-            }
-            ItemTouchHelper(itemTouchCallback).attachToRecyclerView(surveyRv)
         }
     }
 

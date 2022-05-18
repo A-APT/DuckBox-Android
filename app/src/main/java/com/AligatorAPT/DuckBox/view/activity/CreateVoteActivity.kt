@@ -18,7 +18,7 @@ import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.ethereum.BallotContract
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.dto.vote.VoteRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -33,7 +33,18 @@ class CreateVoteActivity : FragmentActivity() {
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
     var voteRegisterDto = VoteRegisterDto(
-        "","",false,"",Date(), Date(),ArrayList<ByteArray>(), "",ArrayList<String>(), null,false,false)
+        title = "",
+        content = "",
+        isGroup = false,
+        groupId = "",
+        startTime = Date(),
+        finishTime = Date(),
+        images = ArrayList<ByteArray>(),
+        ownerPrivate = "",
+        candidates = ArrayList<String>(),
+        voters = null,
+        reward = false,
+        notice = false)
 
     val viewModel : CreateVoteViewModel by viewModels()
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -63,8 +74,8 @@ class CreateVoteActivity : FragmentActivity() {
             if(viewPager.currentItem == 2) {
                 val blindsig = BlindSecp256k1()
                 val keyPair = blindsig.generateKeyPair()
-
                 viewModel.ownerPrivate.value = keyPair.privateKey.toString()
+
                 viewModel.registerVote(object: RegisterCallBack {
                     override fun registerCallBack(flag: Boolean, id:String?) {
                         if(flag){
@@ -74,13 +85,14 @@ class CreateVoteActivity : FragmentActivity() {
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
 
+
                             CoroutineScope(dispatcher).launch{
                                 val startMillis = viewModel.startTime.value!!.toInstant().toEpochMilli()
                                 val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
                                 Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
                                 val did = MyApplication.prefs.getString("did", "notExist")
-                                BallotContract.registerBallot(
-                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
+//                                BallotContract.registerBallot(
+//                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
                             }
 
                             supportFragmentManager.beginTransaction()
@@ -89,7 +101,6 @@ class CreateVoteActivity : FragmentActivity() {
                         }
                     }
                 })
-
             }
 
             viewPager.currentItem = viewPager.currentItem+1
@@ -133,7 +144,6 @@ class CreateVoteActivity : FragmentActivity() {
             tab.setOnTouchListener( { v, event -> true })
         }
     }
-
 
     override fun onBackPressed() {
         val currentItem: Int = viewPager.currentItem

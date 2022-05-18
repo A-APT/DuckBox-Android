@@ -1,8 +1,8 @@
 package com.AligatorAPT.DuckBox.model
 
 import android.util.Log
-import com.AligatorAPT.DuckBox.dto.vote.SurveyDetailDto
-import com.AligatorAPT.DuckBox.dto.vote.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.SurveyDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.retrofit.callback.SurveyCallback

@@ -3,10 +3,10 @@ package com.AligatorAPT.DuckBox.model
 import android.util.Log
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
-import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.dto.vote.VoteDetailDto
-import com.AligatorAPT.DuckBox.dto.vote.VoteRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import retrofit2.Callback
 import retrofit2.Call
 import retrofit2.Response
@@ -48,8 +48,8 @@ object VoteModel {
         headers["Authorization"] = "Bearer $userToken"
 
         RetrofitClient.VOTE_INTERFACE_SERVICE.getAllVote(httpHeaders = headers)
-            .enqueue(object : Callback<List<VoteDetailDto>>{
-                override fun onResponse(call: Call<List<VoteDetailDto>>, response: Response<List<VoteDetailDto>>) {
+            .enqueue(object : Callback<ArrayList<VoteDetailDto>>{
+                override fun onResponse(call: Call<ArrayList<VoteDetailDto>>, response: Response<ArrayList<VoteDetailDto>>) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
                         callback.apiCallback(true, response.body()!!)
@@ -58,7 +58,7 @@ object VoteModel {
                     }
                 }
 
-                override fun onFailure(call: Call<List<VoteDetailDto>>, t: Throwable) {
+                override fun onFailure(call: Call<ArrayList<VoteDetailDto>>, t: Throwable) {
                     callback.apiCallback(false, null)
                     Log.d("onFailure::", "Failed API call with call: $call + exception: $t")
                 }
@@ -75,10 +75,10 @@ object VoteModel {
 
         RetrofitClient.VOTE_INTERFACE_SERVICE.findVotesOfGroup(
             httpHeaders = headers, groupId = groupId)
-            .enqueue(object : Callback<List<VoteDetailDto>>{
+            .enqueue(object : Callback<ArrayList<VoteDetailDto>>{
                 override fun onResponse(
-                    call: Call<List<VoteDetailDto>>,
-                    response: Response<List<VoteDetailDto>>
+                    call: Call<ArrayList<VoteDetailDto>>,
+                    response: Response<ArrayList<VoteDetailDto>>
                 ) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
@@ -88,7 +88,7 @@ object VoteModel {
                     }
                 }
 
-                override fun onFailure(call: Call<List<VoteDetailDto>>, t: Throwable) {
+                override fun onFailure(call: Call<ArrayList<VoteDetailDto>>, t: Throwable) {
                     callback.apiCallback(false, null)
                     Log.d("onFailure::", "Failed API call with call: $call + exception: $t")
                 }

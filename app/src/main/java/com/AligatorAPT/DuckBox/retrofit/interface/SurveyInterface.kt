@@ -2,8 +2,8 @@ package com.AligatorAPT.DuckBox.retrofit.`interface`
 
 import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigToken
-import com.AligatorAPT.DuckBox.dto.vote.SurveyDetailDto
-import com.AligatorAPT.DuckBox.dto.vote.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.SurveyDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
 import retrofit2.Call
 import retrofit2.http.*
 

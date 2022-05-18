@@ -16,6 +16,21 @@
         android:theme="@style/Theme.DuckBox"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.activity.MyPaperActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.ChangeInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.PolicyActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.AskMasterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.activity.GroupActivity"
             android:exported="false" />
         <activity
@@ -39,8 +54,9 @@
         <activity
             android:name=".view.activity.VoteDetailActivity"
             android:exported="false" />
-        <activity android:name=".view.activity.VoteDetailImageInfoActivity"
-            android:exported="false"/>
+        <activity
+            android:name=".view.activity.VoteDetailImageInfoActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.NavigationActivity"
             android:exported="false" />

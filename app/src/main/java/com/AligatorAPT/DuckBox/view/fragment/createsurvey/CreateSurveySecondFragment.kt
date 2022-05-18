@@ -14,9 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateSurveySecondBinding
-import com.AligatorAPT.DuckBox.dto.vote.QuestionType
+import com.AligatorAPT.DuckBox.dto.paper.QuestionType
 import com.AligatorAPT.DuckBox.view.activity.CreateSurveyActivity
-import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.adapter.createsurvey.SurveySecondRVAdapter
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
 

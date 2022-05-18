@@ -7,18 +7,22 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.PaperListData
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 import com.google.android.material.tabs.TabLayout
 
 class GroupDetailFragment : Fragment() {
@@ -26,8 +30,10 @@ class GroupDetailFragment : Fragment() {
     private val binding: FragmentGroupDetailBinding get() = _binding!!
 
     private val model: GroupViewModel by activityViewModels()
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
 
     private lateinit var paperListAdapter: PaperListAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -132,51 +138,76 @@ class GroupDetailFragment : Fragment() {
                 mActivity.changeFragment(GroupSettingFragment())
             }
 
-            //pager list 매니저 등록
-            paperListAdapter = PaperListAdapter(setPaperList(0))
-            paperListAdapter.itemClickListener = object : PaperListAdapter.OnItemClickListener{
-                override fun OnItemClick(
-                    holder: PaperListAdapter.MyViewHolder,
-                    view: View,
-                    data: PaperListData,
-                    position: Int
-                ) {
-                    model.authority.observe(viewLifecycleOwner, Observer {
-                        if (it == GroupViewModel.Authority.OTHER) {
-                            //다이얼로그
-                            val bundle = Bundle()
-                            bundle.putString("message", "그룹원만 열람할 수 있습니다.\n" +
-                                    "그룹에 가입해주세요.")
-                            val modalDialog = ModalDialog()
-                            modalDialog.arguments = bundle
-                            modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
-                                override fun OnPositiveClick() {
-                                    modalDialog.dismiss()
-                                }
 
-                                override fun OnNegativeClick() {
-                                    modalDialog.dismiss()
+            //그룹 투표 리스트 가져오기
+            setPaperList(0)
+
+            //그룹 투표리스트 리사이클러뷰
+            voteModel!!.myVote.observe(viewLifecycleOwner, Observer {
+                if(it != null){
+                    Log.e("GROUP_MYVOTE",it.toString())
+                    val arr = ArrayList<VoteDetailDto>()
+                    arr.addAll(it)
+                    paperListAdapter = PaperListAdapter(arr)
+
+                }else{
+                    val arr = ArrayList<VoteDetailDto>()
+                    paperListAdapter = PaperListAdapter(arr)
+                }
+                paperListAdapter.itemClickListener = object : PaperListAdapter.OnItemClickListener{
+                    override fun OnItemClick(
+                        holder: PaperListAdapter.MyViewHolder,
+                        view: View,
+                        data: VoteDetailDto,
+                        time: String,
+                        position: Int
+                    ) {
+                        model.authority.observe(viewLifecycleOwner, Observer {
+                            if (it == GroupViewModel.Authority.OTHER) {
+                                //다이얼로그
+                                val bundle = Bundle()
+                                bundle.putString("message", "그룹원만 열람할 수 있습니다.\n" +
+                                        "그룹에 가입해주세요.")
+                                val modalDialog = ModalDialog()
+                                modalDialog.arguments = bundle
+                                modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
+                                    override fun OnPositiveClick() {
+                                        modalDialog.dismiss()
+                                    }
+
+                                    override fun OnNegativeClick() {
+                                        modalDialog.dismiss()
+                                    }
+                                }
+                                modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
+                            }else{
+                                // 투표 및 설문 상세로 화면 전환
+                                val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
+                                val nickname = MyApplication.prefs.getString("nickname","notExist")
+                                if(data.voters != null){
+                                    if(data.voters.contains(studentId) || data.owner == nickname){
+                                        val intent = Intent(activity, VoteDetailActivity::class.java)
+                                        intent.putExtra("position",position)
+                                        intent.putExtra("time",time)
+                                        startActivity(intent)
+                                    }
+                                    else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
+                                }else{
+                                    val intent = Intent(activity, VoteDetailActivity::class.java)
+                                    intent.putExtra("position",position)
+                                    intent.putExtra("time",time)
+                                    startActivity(intent)
                                 }
                             }
-                            modalDialog.show(mActivity.supportFragmentManager, "ModalDialog")
-                        }else{
-                            // 투표 및 설문 상세로 화면 전환
-                            if(data.isVote){
-                                val intent = Intent(mActivity, VoteDetailActivity::class.java)
-                                startActivity(intent)
-                            }else{
-                                val intent = Intent(mActivity, PollDetailActivity::class.java)
-                                startActivity(intent)
-                            }
-                        }
-                    })
+                        })
+                    }
                 }
-            }
-            recyclerView.adapter = paperListAdapter
+                recyclerView.adapter = paperListAdapter
+            })
 
             groupTabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    paperListAdapter.setData(setPaperList(tab!!.position))
+                    setPaperList(tab!!.position)
                 }
 
                 override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -206,29 +237,52 @@ class GroupDetailFragment : Fragment() {
         _binding = null
     }
 
-    private fun setPaperList(flag: Int): ArrayList<PaperListData>{
+    private fun setPaperList(flag: Int) {
+        var groupList = arrayListOf<VoteDetailDto>()
         when(flag){
-            0->{
-                return arrayListOf<PaperListData>(
-                    PaperListData(R.drawable.sub4_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-                    PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-                    PaperListData(R.drawable.sub2_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-                    PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, true, "3일 06:05:03 남음", 100, 50),
-                )
+            0->{//투표
+                voteModel!!.getAllVote(object: VoteCallback {
+                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                        if(flag && _list != null){
+                            for(i in 0 until _list.size){
+                                if(_list[i].isGroup) {
+                                    groupList.add(_list[i])
+                                }
+                            }
+                            Log.e("GROUPDETAIL",groupList.toString())
+                            voteModel.setMyVote(groupList)
+                        }
+                    }
+                })
             }
-            1->{
-                return arrayListOf<PaperListData>(
-                    PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 중간고사 간식어택", "KU총학생회", false, true, "3일 06:05:03 남음", 100, 50),
-                    PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 중간고사 멘토멘티", "KU총학생회", false, true, "3일 06:05:03 남음", 100, 50),
-                )
+            1->{//설문
+                voteModel!!.getAllVote(object: VoteCallback{
+                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                        if(flag && _list != null){
+                            for(i in 0 until _list.size){
+                                if(_list[i].isGroup) {
+                                    groupList.add(_list[i])
+                                }
+                            }
+                            voteModel.setMyVote(groupList)
+                        }
+                    }
+                })
             }
-            2->{
-                return arrayListOf<PaperListData>(
-                    PaperListData(R.drawable.sub5_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
-                    PaperListData(R.drawable.sub1_color_box_3dp, "건국대학교 제47회 공과대학 학생회 투표", "KU총학생회", true, false, "3일 06:05:03 남음", 100, 50),
-                )
+            2->{//참여 완료
+                voteModel!!.getAllVote(object: VoteCallback{
+                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                        if(flag && _list != null){
+                            for(i in 0 until _list.size){
+                                if(_list[i].isGroup) {
+                                    groupList.add(_list[i])
+                                }
+                            }
+                            voteModel.setMyVote(groupList)
+                        }
+                    }
+                })
             }
         }
-        return arrayListOf()
     }
 }

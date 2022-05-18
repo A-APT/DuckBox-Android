@@ -5,12 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 import androidx.lifecycle.viewModelScope
-import com.AligatorAPT.DuckBox.dto.vote.Question
-import com.AligatorAPT.DuckBox.dto.vote.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.Question
+import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
+import com.AligatorAPT.DuckBox.model.SurveyModel
 import com.AligatorAPT.DuckBox.model.VoteModel
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
-import com.AligatorAPT.DuckBox.dto.vote.VoteRegisterDto
-import com.AligatorAPT.DuckBox.model.SurveyModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

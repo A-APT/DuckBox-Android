@@ -80,6 +80,7 @@ class CreateVoteSecondFragment: Fragment()  {
         binding.apply {
             viewModel.data.observe(viewLifecycleOwner,{
                 Log.e("OBSERVER",it!!.size.toString()+"내용:"+it.toString())
+                binding.cvSecondAddTv.isClickable = it.size < 10
                 checkValidation[0] = (it.size>=2 && !it.contains(""))
                 if(it.size == 10) {cvSecondAddTv.visibility = View.GONE}
                 else {cvSecondAddTv.visibility = View.VISIBLE}
@@ -89,7 +90,7 @@ class CreateVoteSecondFragment: Fragment()  {
     }
 
 
-    fun setIsActivateBtn(){
+    private fun setIsActivateBtn(){
         val mActivity = activity as CreateVoteActivity
         binding.apply {
             if(checkValidation[0]){

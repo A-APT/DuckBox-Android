@@ -11,7 +11,7 @@ import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityPollCreateBinding
-import com.AligatorAPT.DuckBox.dto.vote.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.view.adapter.createsurvey.CreateSurveyPagerAdapter
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment

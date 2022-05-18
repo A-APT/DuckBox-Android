@@ -1,6 +1,5 @@
 package com.AligatorAPT.DuckBox.view.fragment.createvote
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +8,6 @@ import androidx.fragment.app.Fragment
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteFinalBinding
 import com.AligatorAPT.DuckBox.view.activity.CreateSurveyActivity
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
-import com.AligatorAPT.DuckBox.view.activity.PollDetailActivity
-import com.AligatorAPT.DuckBox.view.activity.VoteDetailActivity
 
 class CreateVoteFinalFragment: Fragment()  {
     private var _binding : FragmentCreateVoteFinalBinding? = null
@@ -24,6 +21,7 @@ class CreateVoteFinalFragment: Fragment()  {
     ): View {
         _binding = FragmentCreateVoteFinalBinding.inflate(inflater,container,false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,13 +34,9 @@ class CreateVoteFinalFragment: Fragment()  {
         binding.cvFinalCheckTv.setOnClickListener {
             if(isVote){
                 val mActivity = activity as CreateVoteActivity
-//                val intent = Intent(activity, VoteDetailActivity::class.java)
-//                startActivity(intent)
                 mActivity.finish()
             }else{
                 val mActivity = activity as CreateSurveyActivity
-//                val intent = Intent(activity, PollDetailActivity::class.java)
-//                startActivity(intent)
                 mActivity.finish()
             }
         }
