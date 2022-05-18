@@ -19,12 +19,16 @@ import com.google.firebase.messaging.RemoteMessage
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
-        //토큰을 서버로 전송
+        //클라우드 서버에 등록되었을 때 호출되며, p0가 고유 키
     }
 
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
         //수신한 메세지를 처리 (사용자에게 알림을 보내기)
+        Log.e("DATA", p0.data.toString())
+        Log.e("FROM", p0.from.toString())
+        Log.e("NOTIFICATION", p0.notification.toString())
+        Log.e("RAW", p0.rawData.toString())
 
         if (p0.data.isNotEmpty()) {
             Log.e("MESSAGE", p0.data["title"].toString())
@@ -78,7 +82,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH)
+                NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_DEFAULT)
             notificationChannel.setSound(uri, null)
             notificationManager.createNotificationChannel(notificationChannel)
         }

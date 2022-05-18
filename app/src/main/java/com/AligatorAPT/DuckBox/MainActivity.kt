@@ -2,18 +2,27 @@ package com.AligatorAPT.DuckBox
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.view.fragment.group.GroupSettingFragment
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+
+    private val model: GroupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +54,16 @@ class MainActivity : AppCompatActivity() {
             LoginButton.setOnClickListener {
                 val intent = Intent(this@MainActivity, LoginActivity::class.java)
                 startActivity(intent)
+            }
+
+            testFCM.setOnClickListener {
+                model.testNotification(object : ApiCallback {
+                    override fun apiCallback(flag: Boolean) {
+                        if(flag){
+                            Toast.makeText(this@MainActivity, "보내짐!", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                })
             }
         }
     }
