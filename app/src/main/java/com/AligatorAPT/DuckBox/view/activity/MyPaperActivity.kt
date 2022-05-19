@@ -47,7 +47,7 @@ class MyPaperActivity : AppCompatActivity() {
                         val intent = Intent(this@MyPaperActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@MyPaperActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@MyPaperActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -68,7 +68,7 @@ class MyPaperActivity : AppCompatActivity() {
                         val intent = Intent(this@MyPaperActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@MyPaperActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@MyPaperActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }

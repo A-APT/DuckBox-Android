@@ -114,12 +114,12 @@ class CreateSurveySecondFragment: Fragment()  {
         val mActivity = activity as CreateSurveyActivity
         binding.apply {
             if(checkValidation[0]){
-                mActivity.binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
-                mActivity.binding.createPollNextTv.isEnabled = true
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
+                mActivity.binding.createSurveyNextTv.isEnabled = true
                 mActivity.checkValidation[1] = true
             }else{
-                mActivity.binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
-                mActivity.binding.createPollNextTv.isEnabled = false
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+                mActivity.binding.createSurveyNextTv.isEnabled = false
                 mActivity.checkValidation[1] = false
             }
         }

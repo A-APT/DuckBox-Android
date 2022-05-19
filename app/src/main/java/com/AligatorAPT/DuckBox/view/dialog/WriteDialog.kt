@@ -43,7 +43,7 @@ class WriteDialog: DialogFragment() {
                 startActivity(intent)
                 dismiss()
             }
-            pollBtn.setOnClickListener {
+            surveyBtn.setOnClickListener {
                 val intent = Intent(requireActivity(), CreateSurveyActivity::class.java)
                 intent.putExtra("isGroup",isGroup)
                 intent.putExtra("groupId",groupId)

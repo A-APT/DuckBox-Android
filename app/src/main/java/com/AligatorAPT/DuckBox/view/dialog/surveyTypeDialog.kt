@@ -47,6 +47,9 @@ class surveyTypeDialog: DialogFragment() {
                 surveyListner?.onDialogLinearClick()
                 dismiss()
             }
+            dialogSurveyClose.setOnClickListener {
+                dismiss()
+            }
         }
     }
 }

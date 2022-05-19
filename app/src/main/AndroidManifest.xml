@@ -49,9 +49,6 @@
             android:name=".view.activity.CreateSurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.PollDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.activity.VoteDetailActivity"
             android:exported="false" />
         <activity

@@ -10,7 +10,8 @@ import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
-import com.AligatorAPT.DuckBox.databinding.ActivityPollCreateBinding
+import com.AligatorAPT.DuckBox.databinding.ActivitySurveyCreateBinding
+import com.AligatorAPT.DuckBox.dto.paper.Question
 import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.view.adapter.createsurvey.CreateSurveyPagerAdapter
@@ -21,20 +22,31 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class CreateSurveyActivity : AppCompatActivity() {
-    lateinit var binding: ActivityPollCreateBinding
+    lateinit var binding: ActivitySurveyCreateBinding
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
     val viewModel : CreateVoteViewModel by viewModels()
     var surveyRegisterDto = SurveyRegisterDto(
-        "","",false,"", Date(), Date(),ArrayList<ByteArray>(), "", ArrayList(),ArrayList(),false,false)
+            title = "",
+            content = "",
+            isGroup = false,
+            groupId = "",
+            startTime = Date(),
+            finishTime = Date(),
+            images = ArrayList<ByteArray>(),
+            ownerPrivate = "",
+            questions = ArrayList<Question>(),
+            targets = ArrayList<Int>(),
+            reward = false,
+            notice = false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityPollCreateBinding.inflate(layoutInflater)
+        binding = ActivitySurveyCreateBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         viewModel.isVote.value = false
-        binding.createPollLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.create))
+        binding.createSurveyLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.create))
 
         viewModel.isVote.value = false
         surveyRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
@@ -50,7 +62,7 @@ class CreateSurveyActivity : AppCompatActivity() {
     }
 
     private fun initButton() {
-        binding.createPollNextTv.setOnClickListener {
+        binding.createSurveyNextTv.setOnClickListener {
 
             if(viewPager.currentItem == 2){
                 val blindsig = BlindSecp256k1()
@@ -60,47 +72,47 @@ class CreateSurveyActivity : AppCompatActivity() {
                 viewModel.registerSurvey(object: RegisterCallBack {
                     override fun registerCallBack(flag: Boolean, id:String?) {
                         if(flag){
-                            binding.createPollFr.visibility = View.VISIBLE
-                            binding.createPollVp.visibility = View.GONE
-                            binding.createPollNextTv.visibility = View.GONE
-                            binding.createPollTl.visibility = View.GONE
-                            binding.createPollTitle.text = "설문 생성 완료"
+                            binding.createSurveyFr.visibility = View.VISIBLE
+                            binding.createSurveyVp.visibility = View.GONE
+                            binding.createSurveyNextTv.visibility = View.GONE
+                            binding.createSurveyTl.visibility = View.GONE
+                            binding.createSurveyTitle.text = "설문 생성 완료"
 
                             val fragment = CreateVoteFinalFragment()
                             val bundle = Bundle()
                             bundle.putBoolean("isVote",viewModel.isVote.value!!)
                             fragment.arguments = bundle
                             supportFragmentManager.beginTransaction()
-                                .replace(R.id.create_poll_fr, fragment)
+                                .replace(R.id.create_survey_fr, fragment)
                                 .commit()
                         }
                     }
                 })
             }
             viewPager.currentItem = viewPager.currentItem+1
-            if(viewPager.currentItem == 2) binding.createPollNextTv.text = "완료"
-            else binding.createPollNextTv.text = "다음"
+            if(viewPager.currentItem == 2) binding.createSurveyNextTv.text = "완료"
+            else binding.createSurveyNextTv.text = "다음"
 
             if(checkValidation[viewPager.currentItem]){
-                binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
-                binding.createPollNextTv.isEnabled = true
+                binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
+                binding.createSurveyNextTv.isEnabled = true
             }else{
-                binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
-                binding.createPollNextTv.isEnabled = false
+                binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
+                binding.createSurveyNextTv.isEnabled = false
             }
-            binding.createPollCloseIv.setOnClickListener {
-                finish()
-            }
+        }
+        binding.createSurveyCloseIv.setOnClickListener {
+            finish()
         }
     }
 
     private fun initViewPager() {
-        viewPager = binding.createPollVp
+        viewPager = binding.createSurveyVp
         viewPager.isUserInputEnabled = false
         viewPager.adapter = CreateSurveyPagerAdapter(this)
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        val tablayout = binding.createPollTl
+        val tablayout = binding.createSurveyTl
         TabLayoutMediator(tablayout, viewPager){ tab, position ->
         }.attach()
 
@@ -124,13 +136,13 @@ class CreateSurveyActivity : AppCompatActivity() {
             if(viewPager.visibility == View.GONE)finish()
 
             viewPager.setCurrentItem(currentItem - 1, true)
-            if(viewPager.currentItem != 2) binding.createPollNextTv.text = "다음"
+            if(viewPager.currentItem != 2) binding.createSurveyNextTv.text = "다음"
             if(checkValidation[viewPager.currentItem]){
-                binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
-                binding.createPollNextTv.isEnabled = true
+                binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(this,R.color.main))
+                binding.createSurveyNextTv.isEnabled = true
             }else{
-                binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
-                binding.createPollNextTv.isEnabled = false
+                binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(this, R.color.darkgray))
+                binding.createSurveyNextTv.isEnabled = false
             }
         } else{
             super.onBackPressed()

@@ -88,7 +88,7 @@ class SearchActivity : AppCompatActivity() {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@SearchActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@SearchActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -109,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@SearchActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@SearchActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }

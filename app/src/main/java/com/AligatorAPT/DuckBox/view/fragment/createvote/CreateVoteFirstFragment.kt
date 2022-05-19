@@ -145,7 +145,7 @@ class CreateVoteFirstFragment: Fragment()  {
 
             if(viewModel.isVote.value == true){
                 setVoteIsActivateBtn()
-            }else setPollIsActivateBtn()
+            }else setSurveyIsActivateBtn()
         }
     }
 
@@ -195,13 +195,13 @@ class CreateVoteFirstFragment: Fragment()  {
                 checkValidation[0] = cvFirstTitleEt.text.toString() != ""
                 if(viewModel.isVote.value == true){
                     setVoteIsActivateBtn()
-                }else setPollIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstContentEt.doAfterTextChanged {
                 checkValidation[1] = cvFirstContentEt.text.toString() != ""
                 if(viewModel.isVote.value == true){
                     setVoteIsActivateBtn()
-                }else setPollIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
                 Log.e("HELLO",cvFirstStartdateCheck.text.toString())
@@ -209,14 +209,14 @@ class CreateVoteFirstFragment: Fragment()  {
                 checkValidation[4] = checkTime()
                 if(viewModel.isVote.value == true){
                     setVoteIsActivateBtn()
-                }else setPollIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
                 checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택" && checkNow(finishDate)
                 checkValidation[4] = checkTime()
                 if(viewModel.isVote.value == true){
                     setVoteIsActivateBtn()
-                }else setPollIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
         }
     }
@@ -307,13 +307,13 @@ class CreateVoteFirstFragment: Fragment()  {
         }
     }
 
-    fun setPollIsActivateBtn(){
+    fun setSurveyIsActivateBtn(){
         binding.apply {
             val mActivity = activity as CreateSurveyActivity
 
             if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4] && list.size>1){
-                mActivity.binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
-                mActivity.binding.createPollNextTv.isEnabled = true
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
+                mActivity.binding.createSurveyNextTv.isEnabled = true
                 mActivity.checkValidation[0] = true
 
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
@@ -324,8 +324,8 @@ class CreateVoteFirstFragment: Fragment()  {
                 }
                 viewModel.setFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
             }else{
-                mActivity.binding.createPollNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
-                mActivity.binding.createPollNextTv.isEnabled = false
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+                mActivity.binding.createSurveyNextTv.isEnabled = false
                 mActivity.checkValidation[0] = false
             }
         }
