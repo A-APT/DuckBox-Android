@@ -1,7 +1,9 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.AligatorAPT.DuckBox.dto.ethereum.Requester
 import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -10,6 +12,8 @@ import kotlinx.coroutines.withContext
 
 class GroupsContractViewModel : ViewModel(){
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    var requester = MutableLiveData<List<Requester>?>()
 
     fun registerGroup(groupId: String, ownerDid: String){
         viewModelScope.launch {
@@ -62,7 +66,7 @@ class GroupsContractViewModel : ViewModel(){
     fun getRequesterList(groupId: String){
         viewModelScope.launch {
             withContext(dispatcher){
-                GroupsContract.getRequesterList(groupId)
+                requester.value = GroupsContract.getRequesterList(groupId)
             }
         }
     }

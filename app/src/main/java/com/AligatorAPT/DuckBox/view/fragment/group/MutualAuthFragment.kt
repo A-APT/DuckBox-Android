@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.databinding.FragmentMutualAuthBinding
+import com.AligatorAPT.DuckBox.dto.ethereum.Requester
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
-import com.AligatorAPT.DuckBox.view.data.MutualAuthData
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
 
@@ -41,13 +41,18 @@ class MutualAuthFragment : Fragment() {
     private fun init(){
         val mActivity = activity as GroupActivity
 
+        //데이터 가져오기
+        model.id.observe(viewLifecycleOwner, Observer {
+            contractModel?.getRequesterList(it)
+        })
+
         //list 어뎁터 등록
-        mutualAuthAdapter = MutualAuthAdapter(setMutualAuthList())
+        mutualAuthAdapter = MutualAuthAdapter(arrayListOf())
         mutualAuthAdapter.itemClickListener = object: MutualAuthAdapter.OnItemClickListener{
             override fun OnItemClick(
                 holder: MutualAuthAdapter.MyViewHolder,
                 view: View,
-                data: MutualAuthData,
+                data: Requester,
                 position: Int
             ) {
                 //승인하기 버튼 이벤트
@@ -62,6 +67,15 @@ class MutualAuthFragment : Fragment() {
                 mutualAuthAdapter.deleteData(position)
             }
         }
+
+        //데이터 등록
+        contractModel?.requester?.observe(viewLifecycleOwner, Observer {
+            val arrayList = ArrayList<Requester>()
+            if (it != null) {
+                arrayList.addAll(it.toTypedArray())
+            }
+            mutualAuthAdapter.setData(arrayList)
+        })
 
         binding.apply {
             recyclerView.adapter = mutualAuthAdapter
@@ -81,17 +95,6 @@ class MutualAuthFragment : Fragment() {
                 mActivity.onBackPressed()
             }
         }
-    }
-
-    private fun setMutualAuthList(): ArrayList<MutualAuthData>{
-        return arrayListOf(
-            MutualAuthData(name="홍길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-            MutualAuthData(name="김길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-            MutualAuthData(name="박길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-            MutualAuthData(name="이길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-            MutualAuthData(name="최길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-            MutualAuthData(name="백길동", email="abc@korea.ac.kr", did = "adffdd", isValid = false),
-        )
     }
 
     override fun onDestroy() {
