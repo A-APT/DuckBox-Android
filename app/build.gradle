@@ -24,6 +24,9 @@ android {
         buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
         buildConfigField("String", "ADDRESS_GROUPS", properties.getProperty("contract.address.groups"))
 
+        buildConfigField("String", "OWNER_ADDRESS", properties.getProperty("ganache.owner.address"))
+        buildConfigField("String", "OWNER_PK", properties.getProperty("ganache.owner.private-key"))
+
         buildConfigField("String", "USER_ADDRESS", properties.getProperty("ganache.user.address"))
         buildConfigField("String", "USER_PK", properties.getProperty("ganache.user.private-key"))
     }

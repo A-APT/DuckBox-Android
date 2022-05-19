@@ -9,6 +9,7 @@ import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
 import com.AligatorAPT.DuckBox.model.GroupModel
 import com.AligatorAPT.DuckBox.model.UserModel
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.retrofit.callback.SingleGroupCallback
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -94,6 +95,17 @@ class GroupViewModel: ViewModel() {
                         profile = profile.value
                     ),
                     callback = _callback,
+                )
+            }
+        }
+    }
+
+    fun findGroupById(groupId: String, _callback: SingleGroupCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                GroupModel.findGroupById(
+                    _groupId = groupId,
+                    callback = _callback
                 )
             }
         }

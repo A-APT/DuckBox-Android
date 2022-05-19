@@ -22,13 +22,13 @@ object DIDContract {
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(did))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSend(GanacheAddress.CONTRACT_OWNER, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSend(BuildConfig.OWNER_ADDRESS, contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
     fun removeDid(address: String) {
         val inputParams = listOf<Type<*>>(Address(address))
         val outputParams = listOf<TypeReference<*>>()
-        ethereumManagement.ethSend(GanacheAddress.CONTRACT_OWNER, contractAddress, UNREGISTER, inputParams, outputParams)
+        ethereumManagement.ethSend(BuildConfig.OWNER_ADDRESS, contractAddress, UNREGISTER, inputParams, outputParams)
     }
 
     fun getOwner(): String? {
