@@ -55,7 +55,7 @@ object EthereumManagement {
         functionName: String,
         inputParams: List<Type<*>>,
         outputParams: List<TypeReference<*>>
-    ): Any? {
+    ): List<Type<*>>? {
 
         // generate function
         val function = org.web3j.abi.datatypes.Function(functionName, inputParams, outputParams)
@@ -71,9 +71,9 @@ object EthereumManagement {
         }
 
         // decode response
-        val decode = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
+        val decode: List<Type<*>> = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
 //        Log.e("LIST:::","ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
-        return if (decode.size > 0) decode[0].value else null
+        return decode.ifEmpty { null }
     }
 
     fun ethSend(

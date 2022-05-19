@@ -95,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             getList.setOnClickListener {
-                val list = GroupsContract.getRequesterList("duck")
+                val list = GroupsContract.getRequesterList("a")
                 Log.e("List::", list.toString())
             }
         }

@@ -4,8 +4,7 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.dto.ethereum.Requester
 import org.web3j.abi.TypeReference
-import org.web3j.abi.datatypes.Type
-import org.web3j.abi.datatypes.Utf8String
+import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
 
 object GroupsContract {
@@ -85,11 +84,45 @@ object GroupsContract {
         return ethereumManagement.ethSendRaw(contractAddress, EXITMEMBER, inputParams, outputParams) as Boolean?
     }
 
-    fun getRequesterList(groupId: String): ArrayList<Requester>? {
+    fun getRequesterList(groupId: String): List<Requester> {
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId)
         )
-        val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETREQUESTERLIST, inputParams, outputParams) as ArrayList<Requester>?
+        val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Bytes32>>() {}, object: TypeReference<DynamicArray<Bool>>() {}, object: TypeReference<DynamicArray<Utf8String>>() {}, object: TypeReference<DynamicArray<Utf8String>>() {})
+
+        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETREQUESTERLIST, inputParams, outputParams)!!
+
+        val did: MutableList<String> = mutableListOf()
+        val isValid: MutableList<Boolean> = mutableListOf()
+        val name: MutableList<String> = mutableListOf()
+        val email: MutableList<String> = mutableListOf()
+
+        (decoded[0].value as List<Bytes32>).forEach {
+            did.add(it.value.toString())
+        }
+        (decoded[1].value as List<Bool>).forEach {
+            isValid.add(it.value)
+        }
+        (decoded[2].value as List<Utf8String>).forEach {
+            name.add(it.value)
+        }
+        (decoded[3].value as List<Utf8String>).forEach {
+            email.add(it.value)
+        }
+
+        val result: MutableList<Requester> = mutableListOf()
+
+        for( i in 0 until did.size){
+            result.add(
+                Requester(
+                    did = did[i],
+                    isValid = isValid[i],
+                    name = name[i],
+                    email = email[i]
+                )
+            )
+        }
+
+        return result
     }
 }
