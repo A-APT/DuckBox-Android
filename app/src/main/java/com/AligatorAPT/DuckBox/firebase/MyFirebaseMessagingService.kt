@@ -27,35 +27,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //수신한 메세지를 처리 (사용자에게 알림을 보내기)
         Log.e("DATA", p0.data.toString())
         Log.e("FROM", p0.from.toString())
-        Log.e("NOTIFICATION", p0.notification.toString())
-        Log.e("RAW", p0.rawData.toString())
 
         if (p0.data.isNotEmpty()) {
-            Log.e("MESSAGE", p0.data["title"].toString())
             showNotification(
-                p0.data["title"],
-                p0.data["message"]
-            )
-        }
-
-        if (p0.notification != null) {
-            Log.e("MESSAGE", p0.notification!!.title.toString())
-            showNotification(
-                p0.notification!!.title,
-                p0.notification!!.body
+                p0.data["id"]!!, // group or vote or survey id
+                p0.data["title"]!!, // group name
+                p0.data["type"]!!.toInt() // group(0) or vote(1) or survey(2)
             )
         }
     }
 
     @SuppressLint("RemoteViewLayout")
-    private fun getCustomDesign(title: String?, message: String?): RemoteViews? {
+    private fun getCustomDesign(title: String, message: String): RemoteViews? {
         val remoteViews = RemoteViews(applicationContext.packageName, R.layout.notification)
         remoteViews.setTextViewText(R.id.noti_title, title)
         remoteViews.setTextViewText(R.id.noti_message, message)
         return remoteViews
     }
 
-    private fun showNotification(title: String?, message: String?) {
+    private fun showNotification(id: String, title: String, type: Int) {
         val intent = Intent(this, MainActivity::class.java)
         val channel_id = "channel"
 
@@ -70,6 +60,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
 
+        val message: String = when(type) {
+            0 -> "그룹에 가입했습니다."
+            1 -> "투표가 생성되었습니다."
+            2 -> "설문이 생성되었습니다."
+            else -> "DUCK BOX"
+        }
         builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             builder.setContent(getCustomDesign(title, message));
         } else {
@@ -88,5 +84,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0, builder.build())
+
+        // TODO store id, type
     }
 }
