@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.data
+package com.AligatorAPT.DuckBox.dto.alarm
 
 import java.util.*
 
