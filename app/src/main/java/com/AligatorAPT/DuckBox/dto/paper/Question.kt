@@ -1,9 +1,9 @@
 package com.AligatorAPT.DuckBox.dto.paper
 
 data class Question (
-    val type: QuestionType,
-    val question: String,
-    val candidates: List<String>?
+    var type: QuestionType?,
+    var question: String,
+    var candidates: List<String>?
 )
 
 enum class QuestionType {

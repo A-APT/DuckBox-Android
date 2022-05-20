@@ -20,6 +20,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCreateVoteFirstBinding
+import com.AligatorAPT.DuckBox.view.activity.CreateSurveyActivity
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.adapter.createvote.FirstImageRVAdapter
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
@@ -104,10 +105,16 @@ class CreateVoteFirstFragment: Fragment()  {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        val mActivity = activity as CreateVoteActivity
         if(requestCode == IMAGE_REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            list.removeAt(list.size-1)
 
+            lateinit var mActivity: Activity
+            if(viewModel.isVote.value == true){
+                mActivity = activity as CreateVoteActivity
+            }else{
+                mActivity = activity as CreateSurveyActivity
+            }
+
+            list.removeAt(list.size-1)
             //사진 여러개 선택한 경우
             if(data?.clipData != null){
                 val count = data.clipData!!.itemCount
@@ -135,7 +142,10 @@ class CreateVoteFirstFragment: Fragment()  {
             list.add(createBitmap(1,1))
             Log.e("List",list.toString())
             firstImageRVAdapter.notifyDataSetChanged()
-            setIsActivateBtn()
+
+            if(viewModel.isVote.value == true){
+                setVoteIsActivateBtn()
+            }else setSurveyIsActivateBtn()
         }
     }
 
@@ -183,22 +193,30 @@ class CreateVoteFirstFragment: Fragment()  {
         binding.apply {
             cvFirstTitleEt.doAfterTextChanged {
                 checkValidation[0] = cvFirstTitleEt.text.toString() != ""
-                setIsActivateBtn()
+                if(viewModel.isVote.value == true){
+                    setVoteIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstContentEt.doAfterTextChanged {
                 checkValidation[1] = cvFirstContentEt.text.toString() != ""
-                setIsActivateBtn()
+                if(viewModel.isVote.value == true){
+                    setVoteIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
                 Log.e("HELLO",cvFirstStartdateCheck.text.toString())
                 checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택" && checkNow(startDate)
                 checkValidation[4] = checkTime()
-                setIsActivateBtn()
+                if(viewModel.isVote.value == true){
+                    setVoteIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
             cvFirstLastdateCheck.doAfterTextChanged {
                 checkValidation[3] = cvFirstLastdateCheck.text.toString() != "선택" && checkNow(finishDate)
                 checkValidation[4] = checkTime()
-                setIsActivateBtn()
+                if(viewModel.isVote.value == true){
+                    setVoteIsActivateBtn()
+                }else setSurveyIsActivateBtn()
             }
         }
     }
@@ -264,7 +282,7 @@ class CreateVoteFirstFragment: Fragment()  {
         return false
     }
 
-    fun setIsActivateBtn(){
+    fun setVoteIsActivateBtn(){
         binding.apply {
             val mActivity = activity as CreateVoteActivity
 
@@ -280,10 +298,34 @@ class CreateVoteFirstFragment: Fragment()  {
                     list[i].compress(Bitmap.CompressFormat.PNG, 2, imageByteArray)
                     bytearr.add(list[i].toString().toByteArray())
                 }
-                viewModel.setVoteFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
+                viewModel.setFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
             }else{
                 mActivity.binding.createVoteNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
                 mActivity.binding.createVoteNextTv.isEnabled = false
+                mActivity.checkValidation[0] = false
+            }
+        }
+    }
+
+    fun setSurveyIsActivateBtn(){
+        binding.apply {
+            val mActivity = activity as CreateSurveyActivity
+
+            if(checkValidation[0] && checkValidation[1] && checkValidation[2] && checkValidation[3] && checkValidation[4] && list.size>1){
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.main))
+                mActivity.binding.createSurveyNextTv.isEnabled = true
+                mActivity.checkValidation[0] = true
+
+                val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
+                val imageByteArray: OutputStream = ByteArrayOutputStream()
+                for (i in 0 until list.size-1){
+                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imageByteArray)
+                    bytearr.add(list[i].toString().toByteArray())
+                }
+                viewModel.setFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
+            }else{
+                mActivity.binding.createSurveyNextTv.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.darkgray))
+                mActivity.binding.createSurveyNextTv.isEnabled = false
                 mActivity.checkValidation[0] = false
             }
         }

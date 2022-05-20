@@ -22,6 +22,7 @@ android {
         buildConfigField("String", "ETH_NETWORK_LOCAL", properties.getProperty("ethereum.network-local"))
         buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
         buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
+        buildConfigField("String", "ADDRESS_BALLOTS", properties.getProperty("contract.address.ballots"))
     }
 
     buildTypes {
@@ -82,6 +83,9 @@ dependencies {
     implementation("org.web3j:core:4.5.11")
     // Log
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
-    //blind signature
+
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    //Blindsignature
     implementation 'com.github.A-APT:BlindSignature:2.0.0'
 }

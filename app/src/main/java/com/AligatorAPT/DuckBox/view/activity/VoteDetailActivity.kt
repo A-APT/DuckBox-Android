@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVoteDetailBinding
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.viewmodel.VoteDetailViewModel
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 import java.util.*
@@ -73,9 +73,9 @@ class VoteDetailActivity : AppCompatActivity() {
     private fun initToolbar() {
         binding.vdToolbar.apply { 
             vdTooblarBackIv.setOnClickListener{
-                onBackPressed()  
-            } 
-            vdToolbarShareTv.setOnClickListener { 
+                onBackPressed()
+            }
+            vdToolbarShareTv.setOnClickListener {
                 //공유하기 버튼 클릭
             }
         }

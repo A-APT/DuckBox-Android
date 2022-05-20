@@ -5,9 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.*
 import androidx.lifecycle.viewModelScope
+import com.AligatorAPT.DuckBox.dto.paper.Question
+import com.AligatorAPT.DuckBox.dto.paper.SurveyRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
+import com.AligatorAPT.DuckBox.model.SurveyModel
 import com.AligatorAPT.DuckBox.model.VoteModel
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
-import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,14 +27,22 @@ class CreateVoteViewModel : ViewModel() {
     val finishTime = MutableLiveData<Date>()
     val images = MutableLiveData<ArrayList<ByteArray>>()
     val ownerPrivate = MutableLiveData<String>()
-    val candidates = MutableLiveData<ArrayList<String>>()
-    val voters = MutableLiveData<ArrayList<Int>?>()
+    val voters = MutableLiveData<ArrayList<Int>?>() // 유권자 리스트
     val reward = MutableLiveData<Boolean>()
     val notice = MutableLiveData<Boolean>()
 
-    val data get() = candidates
+    //vote
+    val candidates = MutableLiveData<ArrayList<String>>()   //후보자 리스트
 
-    fun setVoteFirst(_title: String, _content: String, _startTime: Date, _finalTime: Date, _images: ArrayList<ByteArray>){
+    //survey
+    val questions = MutableLiveData<ArrayList<Question>>()  // 설문 리스트
+    val result = MutableLiveData<Boolean>() // 설문 결과 공개 여부
+
+    val data get() = candidates
+    val questionData get() = questions
+    var isVote = MutableLiveData<Boolean>()
+
+    fun setFirst(_title: String, _content: String, _startTime: Date, _finalTime: Date, _images: ArrayList<ByteArray>){
         title.value = _title
         content.value = _content
         startTime.value = _startTime
@@ -61,42 +72,58 @@ class CreateVoteViewModel : ViewModel() {
         groupId.value = _groupId
     }
 
-    fun getVoteDto():VoteRegisterDto{
-        return VoteRegisterDto(
-            title = title.value!!,
-            content = content.value!!,
-            isGroup = isGroup.value!!,
-            groupId = groupId.value,
-            startTime = startTime.value!!,
-            finishTime = finishTime.value!!,
-            images = images.value!!,
-            ownerPrivate = ownerPrivate.value!!,
-            candidates = candidates.value!!,
-            voters = voters.value,
-            reward = reward.value!!,
-            notice = notice.value!!)
+    fun setQuestionsData(arr: ArrayList<Question>){
+        questions.value = arr
+    }
+
+    fun setResult(_result: Boolean){
+        result.value = _result
     }
 
     fun registerVote(callback: RegisterCallBack){
+
         viewModelScope.launch {
             withContext(dispatcher){
-                VoteModel.registerVote(
-                    _voteRegisterDto = VoteRegisterDto(
-                        title = title.value!!,
-                        content = content.value!!,
-                        isGroup = isGroup.value!!,
-                        groupId = groupId.value,
-                        startTime = startTime.value!!,
-                        finishTime = finishTime.value!!,
-                        images = images.value!!,
-                        ownerPrivate = ownerPrivate.value!!,
-                        candidates = candidates.value!!,
-                        voters = voters.value,
-                        reward = reward.value!!,
-                        notice = notice.value!!
-                    ),
-                    callback
+                val data = VoteRegisterDto(
+                    title = title.value!!,
+                    content = content.value!!,
+                    isGroup = isGroup.value!!,
+                    groupId = groupId.value,
+                    startTime = startTime.value!!,
+                    finishTime = finishTime.value!!,
+                    images = images.value!!,
+                    ownerPrivate = ownerPrivate.value!!,
+                    candidates = candidates.value!!,
+                    voters = voters.value,
+                    reward = reward.value!!,
+                    notice = notice.value!!
                 )
+                Log.e("VOTEDATA",data.toString())
+                VoteModel.registerVote(data, callback)
+            }
+        }
+    }
+
+    fun registerSurvey(callback: RegisterCallBack){
+
+        viewModelScope.launch {
+            withContext(dispatcher){
+                val data = SurveyRegisterDto(
+                    title = title.value!!,
+                    content = content.value!!,
+                    isGroup = isGroup.value!!,
+                    groupId = groupId.value,
+                    startTime = startTime.value!!,
+                    finishTime = finishTime.value!!,
+                    images = images.value!!,
+                    ownerPrivate = ownerPrivate.value!!,
+                    questions = questions.value!!,
+                    targets = voters.value,
+                    reward = reward.value!!,
+                    notice = notice.value!!
+                )
+                Log.e("SURVEYDATA",data.toString())
+                SurveyModel.registerSurvey(data, callback)
             }
         }
     }

@@ -55,23 +55,20 @@ class CreateVoteSecondFragment: Fragment()  {
             }
         }
 
-        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback (
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT
-        ){
+        val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+            0, ItemTouchHelper.LEFT
+        ) {
             override fun onMove(
                 recyclerView: RecyclerView,
                 from: RecyclerView.ViewHolder,
                 to: RecyclerView.ViewHolder
             ): Boolean {
-                val fromPos: Int = from.adapterPosition
-                val toPos: Int = to.adapterPosition
-                secondListRVAdapter.swapData(fromPos,toPos)
-                return true
+                return false
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 secondListRVAdapter.removeData(viewHolder.layoutPosition)
-                binding.cvSecondListRv.get(viewHolder.layoutPosition).clearFocus()
+                binding.cvSecondListRv[viewHolder.layoutPosition].clearFocus()
             }
         }
 
@@ -85,6 +82,8 @@ class CreateVoteSecondFragment: Fragment()  {
                 Log.e("OBSERVER",it!!.size.toString()+"내용:"+it.toString())
                 binding.cvSecondAddTv.isClickable = it.size < 10
                 checkValidation[0] = (it.size>=2 && !it.contains(""))
+                if(it.size == 10) {cvSecondAddTv.visibility = View.GONE}
+                else {cvSecondAddTv.visibility = View.VISIBLE}
                 setIsActivateBtn()
             })
         }

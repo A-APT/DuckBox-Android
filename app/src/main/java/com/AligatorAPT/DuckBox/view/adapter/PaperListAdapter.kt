@@ -10,7 +10,7 @@ import android.util.Base64
 import android.util.Log
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowPaperBinding
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import java.util.*
 import kotlin.collections.ArrayList
 

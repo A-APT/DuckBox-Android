@@ -56,14 +56,6 @@ class SecondListRVAdapter(val model: CreateVoteViewModel)
         Log.e("mList",mList.toString())
     }
 
-    fun swapData(fromPos : Int, toPos: Int){
-        val swap = mList[fromPos]
-        mList[fromPos] = mList[toPos]
-        mList[toPos] = swap
-        notifyDataSetChanged()
-        Log.e("mList",mList.toString())
-    }
-
     fun removeData(pos: Int){
         mList.removeAt(pos)
         notifyDataSetChanged()

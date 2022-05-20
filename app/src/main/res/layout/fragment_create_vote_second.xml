@@ -24,7 +24,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="드래그로 삭제하거나 순서 수정이 가능합니다."
+            android:text="왼쪽 드래그로 삭제가 가능합니다."
             android:textColor="@color/main"
             android:textSize="10sp"
             android:layout_marginEnd="30dp"

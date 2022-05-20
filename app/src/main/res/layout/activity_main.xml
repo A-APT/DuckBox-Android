@@ -30,4 +30,16 @@
         android:layout_height="wrap_content"
         android:text="LoginButton" />
 
+    <Button
+        android:id="@+id/DID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DID" />
+
+    <Button
+        android:id="@+id/SURVEY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SURVEY" />
+
 </LinearLayout>

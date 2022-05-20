@@ -15,7 +15,7 @@ object DIDContract {
     private const val UNREGISTER = "removeId"
 
     fun registerDid(address: String, did: String): Boolean? {
-        val inputParams = listOf<Type<*>>(Address(address), Bytes32(did.toByteArray()))
+        val inputParams = listOf<Type<*>>(Address(address), Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(did)))
         val outputParams = listOf<TypeReference<*>>()
         return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
