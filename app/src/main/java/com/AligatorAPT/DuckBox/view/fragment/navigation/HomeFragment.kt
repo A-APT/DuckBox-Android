@@ -206,7 +206,7 @@ class HomeFragment : Fragment() {
 
     private fun setPaperList(toggleFlag : Boolean){
         voteModel!!.getAllVote(object: VoteCallback{
-            override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+            override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                 if(flag && _list != null){
                     Log.e("HOME",_list.toString())
                     for(i in 0 until _list.size){

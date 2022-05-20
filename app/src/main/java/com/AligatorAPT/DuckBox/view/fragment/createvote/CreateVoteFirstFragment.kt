@@ -4,10 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
-import android.net.Uri
+import android.graphics.ImageDecoder
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -120,27 +119,27 @@ class CreateVoteFirstFragment: Fragment()  {
                 val count = data.clipData!!.itemCount
                 for(i in 0 until count){
                     val imageUri = data.clipData!!.getItemAt(i).uri
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        mActivity.contentResolver,
-                        imageUri
-                    )
+                    val source =
+                        ImageDecoder.createSource(
+                            mActivity.contentResolver,
+                            imageUri
+                        )
+                    val bitmap = ImageDecoder.decodeBitmap(source)
                     list.add(bitmap)
-                    Log.e("BIMAP",list.toString())
                 }
             }else{
-                data?.data?.let{
-                    val imageUri : Uri? = data.data
-                    val bitmap = MediaStore.Images.Media.getBitmap(
-                        mActivity.contentResolver,
-                        imageUri
-                    )
-                    if(imageUri != null){
-                        list.add(bitmap)
-                    }
+                val currentImageUri = data?.data
+                currentImageUri?.let {
+                    val source =
+                        ImageDecoder.createSource(
+                            mActivity.contentResolver,
+                            currentImageUri
+                        )
+                    val bitmap = ImageDecoder.decodeBitmap(source)
+                    list.add(bitmap)
                 }
             }
             list.add(createBitmap(1,1))
-            Log.e("List",list.toString())
             firstImageRVAdapter.notifyDataSetChanged()
 
             if(viewModel.isVote.value == true){
@@ -159,10 +158,8 @@ class CreateVoteFirstFragment: Fragment()  {
                 datePickerDialog.setDatePickerClickListener(object: DatePickerFragment.DatePickerClickListener{
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
-                        Log.e("DATEPICKER_BEFORE",date)
                         startDate = date
                         start_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
-                        Log.e("DATEPICKER",start_Datefor.toString())
                         cvFirstStartdateCheck.setText(startDate)
                     }
                 })
@@ -178,7 +175,6 @@ class CreateVoteFirstFragment: Fragment()  {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         finishDate = date
                         last_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
-                        Log.e("DATEPICKER",last_Datefor.toString())
                         cvFirstLastdateCheck.setText(finishDate)
                     }
                 })
@@ -204,7 +200,6 @@ class CreateVoteFirstFragment: Fragment()  {
                 }else setSurveyIsActivateBtn()
             }
             cvFirstStartdateCheck.doAfterTextChanged {
-                Log.e("HELLO",cvFirstStartdateCheck.text.toString())
                 checkValidation[2] = cvFirstStartdateCheck.text.toString() != "선택" && checkNow(startDate)
                 checkValidation[4] = checkTime()
                 if(viewModel.isVote.value == true){
@@ -293,10 +288,12 @@ class CreateVoteFirstFragment: Fragment()  {
 
                 //bytearray image
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
-                val imageByteArray: OutputStream = ByteArrayOutputStream()
                 for (i in 0 until list.size-1){
-                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imageByteArray)
-                    bytearr.add(list[i].toString().toByteArray())
+                    val imgByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imgByteArray)
+                    if (imgByteArray != null) {
+                        bytearr.add(imgByteArray.toByteArray())
+                    }
                 }
                 viewModel.setFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
             }else{
@@ -317,10 +314,12 @@ class CreateVoteFirstFragment: Fragment()  {
                 mActivity.checkValidation[0] = true
 
                 val bytearr : ArrayList<ByteArray> = arrayListOf<ByteArray>()
-                val imageByteArray: OutputStream = ByteArrayOutputStream()
                 for (i in 0 until list.size-1){
-                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imageByteArray)
-                    bytearr.add(list[i].toString().toByteArray())
+                    val imgByteArray: ByteArrayOutputStream? = ByteArrayOutputStream()
+                    list[i].compress(Bitmap.CompressFormat.PNG, 2, imgByteArray)
+                    if (imgByteArray != null) {
+                        bytearr.add(imgByteArray.toByteArray())
+                    }
                 }
                 viewModel.setFirst(cvFirstTitleEt.text.toString(),cvFirstContentEt.text.toString(),start_Datefor,last_Datefor, bytearr)
             }else{

@@ -143,7 +143,7 @@ class CommunityFragment : Fragment() {
         //투표 리스트 가져오기
         voteModel!!.getAllVote(object: VoteCallback{
             val voteList = arrayListOf<VoteDetailDto>()
-            override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+            override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                 if(flag && _list != null){
                     Log.e("COMMUNITY",_list.toString())
                     for(i in 0 until _list.size){
