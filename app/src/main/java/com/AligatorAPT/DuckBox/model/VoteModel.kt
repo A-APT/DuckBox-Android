@@ -52,7 +52,7 @@ object VoteModel {
                 override fun onResponse(call: Call<ArrayList<VoteDetailDto>>, response: Response<ArrayList<VoteDetailDto>>) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
-                        callback.apiCallback(true, response.body()!!)
+                        callback.apiCallback(true, response.body())
                     } else {
                         callback.apiCallback(false, null)
                     }
