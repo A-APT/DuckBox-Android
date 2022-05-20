@@ -146,8 +146,8 @@ class CommunityFragment : Fragment() {
             override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                 if(flag && _list != null){
                     Log.e("COMMUNITY",_list.toString())
-                    for(i in 0 until _list.size){
-                        if(!_list[i].isGroup){
+                    for(i in _list.indices){
+                        if(_list[i].groupId == null) {
                             if(toggleFlag){
                                 //참여함
                             }else{

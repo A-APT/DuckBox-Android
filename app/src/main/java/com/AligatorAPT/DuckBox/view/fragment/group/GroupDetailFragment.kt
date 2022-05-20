@@ -242,10 +242,10 @@ class GroupDetailFragment : Fragment() {
         when(flag){
             0->{//투표
                 voteModel!!.getAllVote(object: VoteCallback {
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -257,10 +257,10 @@ class GroupDetailFragment : Fragment() {
             }
             1->{//설문
                 voteModel!!.getAllVote(object: VoteCallback{
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -271,10 +271,10 @@ class GroupDetailFragment : Fragment() {
             }
             2->{//참여 완료
                 voteModel!!.getAllVote(object: VoteCallback{
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
