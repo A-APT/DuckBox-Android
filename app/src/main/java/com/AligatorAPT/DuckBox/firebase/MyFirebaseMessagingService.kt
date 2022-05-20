@@ -1,6 +1,5 @@
 package com.AligatorAPT.DuckBox.firebase
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,13 +7,14 @@ import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.AligatorAPT.DuckBox.MainActivity
 import com.AligatorAPT.DuckBox.R
+import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
@@ -27,29 +27,33 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //수신한 메세지를 처리 (사용자에게 알림을 보내기)
         Log.e("DATA", p0.data.toString())
         Log.e("FROM", p0.from.toString())
-        Log.e("NOTIFICATION", p0.notification.toString())
-        Log.e("RAW", p0.rawData.toString())
+
+        showNotification("id", "타이틀", 0)
 
         if (p0.data.isNotEmpty()) {
-            Log.e("MESSAGE", p0.data["title"].toString())
             showNotification(
-                p0.data["title"],
-                p0.data["message"]
-            )
-        }
-
-        if (p0.notification != null) {
-            Log.e("MESSAGE", p0.notification!!.title.toString())
-            showNotification(
-                p0.notification!!.title,
-                p0.notification!!.body
+                p0.data["id"]!!, // group or vote or survey id
+                p0.data["title"]!!, // group name
+                p0.data["type"]!!.toInt() // group(0) or vote(1) or survey(2)
             )
         }
     }
 
-    private fun showNotification(title: String?, message: String?) {
-        val intent = Intent(this, MainActivity::class.java)
+    private fun showNotification(id: String, title: String, type: Int) {
+        val intent = Intent(this, NavigationActivity::class.java)
+        val bundle = Bundle()
+        bundle.putBoolean("isAlarm", true)
+        intent.putExtras(bundle)
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
         val channel_id = "channel"
+
+        val message: String = when(type) {
+            0 -> "그룹에 가입했습니다."
+            1 -> "투표가 생성되었습니다."
+            2 -> "설문이 생성되었습니다."
+            else -> "DUCK BOX"
+        }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
@@ -75,5 +79,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         notificationManager.notify(0, builder.build())
+
+        // TODO store id, type
     }
 }
