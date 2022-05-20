@@ -48,7 +48,6 @@ class CreateSurveyActivity : AppCompatActivity() {
         viewModel.isVote.value = false
         binding.createSurveyLayout.setBackgroundColor(ContextCompat.getColor(this,R.color.create))
 
-        viewModel.isVote.value = false
         surveyRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
         if(surveyRegisterDto.isGroup){
             viewModel.setGroup(surveyRegisterDto.isGroup, intent.getStringExtra("groupId"))
