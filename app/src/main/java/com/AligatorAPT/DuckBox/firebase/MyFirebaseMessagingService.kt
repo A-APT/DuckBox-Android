@@ -47,14 +47,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    @SuppressLint("RemoteViewLayout")
-    private fun getCustomDesign(title: String?, message: String?): RemoteViews? {
-        val remoteViews = RemoteViews(applicationContext.packageName, R.layout.notification)
-        remoteViews.setTextViewText(R.id.noti_title, title)
-        remoteViews.setTextViewText(R.id.noti_message, message)
-        return remoteViews
-    }
-
     private fun showNotification(title: String?, message: String?) {
         val intent = Intent(this, MainActivity::class.java)
         val channel_id = "channel"
@@ -63,26 +55,21 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         var builder = NotificationCompat.Builder(applicationContext, channel_id)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSmallIcon(R.drawable.duck_main)
             .setSound(uri)
             .setAutoCancel(true)
             .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
             .setOnlyAlertOnce(true)
             .setContentIntent(pendingIntent)
-
-        builder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            builder.setContent(getCustomDesign(title, message));
-        } else {
-            builder.setContentTitle(title)
-                .setContentText(message)
-                .setSmallIcon(R.mipmap.ic_launcher)
-        }
+            .setContentTitle(title)
+            .setContentText(message)
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel =
-                NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_DEFAULT)
+                NotificationChannel(channel_id, "duckbox", NotificationManager.IMPORTANCE_HIGH)
             notificationChannel.setSound(uri, null)
             notificationManager.createNotificationChannel(notificationChannel)
         }

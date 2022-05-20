@@ -1,20 +1,24 @@
 package com.AligatorAPT.DuckBox
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.activityViewModels
+import androidx.core.app.NotificationCompat
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
-import com.AligatorAPT.DuckBox.view.fragment.group.GroupSettingFragment
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
-import com.google.firebase.messaging.FirebaseMessaging
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
@@ -64,6 +68,36 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                 })
+            }
+
+            alarm.setOnClickListener {
+                val intent = Intent(this@MainActivity, NavigationActivity::class.java)
+                val channel_id = "channel"
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                val pendingIntent = PendingIntent.getActivity(this@MainActivity, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+                val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                var builder = NotificationCompat.Builder(applicationContext, channel_id)
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setSmallIcon(R.drawable.duck_main)
+                    .setSound(uri)
+                    .setAutoCancel(true)
+                    .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
+                    .setOnlyAlertOnce(true)
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle("알림!!")
+                    .setContentText("알림이 왔어요.")
+
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val notificationChannel =
+                        NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH)
+                    notificationChannel.setSound(uri, null)
+                    notificationManager.createNotificationChannel(notificationChannel)
+                }
+
+                notificationManager.notify(0, builder.build())
             }
         }
     }
