@@ -15,7 +15,6 @@ import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
@@ -27,8 +26,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         //수신한 메세지를 처리 (사용자에게 알림을 보내기)
         Log.e("DATA", p0.data.toString())
         Log.e("FROM", p0.from.toString())
-
-        showNotification("id", "타이틀", 0)
 
         if (p0.data.isNotEmpty()) {
             showNotification(

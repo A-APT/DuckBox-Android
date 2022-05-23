@@ -69,36 +69,6 @@ class MainActivity : AppCompatActivity() {
                     }
                 })
             }
-
-            alarm.setOnClickListener {
-                val intent = Intent(this@MainActivity, NavigationActivity::class.java)
-                val channel_id = "channel"
-
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                val pendingIntent = PendingIntent.getActivity(this@MainActivity, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-                val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-                var builder = NotificationCompat.Builder(applicationContext, channel_id)
-                    .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setSmallIcon(R.drawable.duck_main)
-                    .setSound(uri)
-                    .setAutoCancel(true)
-                    .setVibrate(longArrayOf(1000, 1000, 1000, 1000, 1000))
-                    .setOnlyAlertOnce(true)
-                    .setContentIntent(pendingIntent)
-                    .setContentTitle("알림!!")
-                    .setContentText("알림이 왔어요.")
-
-                val notificationManager =
-                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    val notificationChannel =
-                        NotificationChannel(channel_id, "web_app", NotificationManager.IMPORTANCE_HIGH)
-                    notificationChannel.setSound(uri, null)
-                    notificationManager.createNotificationChannel(notificationChannel)
-                }
-
-                notificationManager.notify(0, builder.build())
-            }
         }
     }
 
