@@ -32,8 +32,6 @@ class MoreInfoFragment : Fragment() {
 
     private val model: RegisterViewModel by activityViewModels()
 
-    private var fcmToken = ""
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -107,9 +105,6 @@ class MoreInfoFragment : Fragment() {
     private fun init() {
         val mActivity = context as Activity
         binding.apply {
-            //토큰 생성
-            fcmToken = FirebaseMessaging.getInstance().token.result
-
             model.isNew.observe(viewLifecycleOwner, Observer {
                 if (it) {
                     title1.visibility = View.VISIBLE
@@ -174,34 +169,37 @@ class MoreInfoFragment : Fragment() {
                                 Toast.makeText(mActivity, "변경되었습니다.", Toast.LENGTH_LONG).show()
                                 mActivity.onBackPressed()
                             }
-                            model.email.observe(viewLifecycleOwner, Observer {
+                            model.email.observe(viewLifecycleOwner, Observer { email ->
                                 if (flag) {
-                                    model.registser(
-                                        RegisterDto(
-                                            studentId = setStudentId.text.toString().toInt(),
-                                            name = setName.text.toString(),
-                                            password = setPassword.text.toString(),
-                                            email = it,
-                                            phoneNumber = "",
-                                            nickname = setNickname.text.toString(),
-                                            college = "건국대학교",
-                                            department = departmentList,
-                                            fcmToken = fcmToken,
-                                            address = BuildConfig.ADDRESS_DID
-                                        ), object : ApiCallback {
-                                            override fun apiCallback(flag: Boolean) {
-                                                if (flag) {
-                                                    //닉네임 전달
-                                                    model.setNickname(setNickname.text.toString())
-                                                    //화면 전환
-                                                    (mActivity as SignUpActivity).changeFragment(
-                                                        FinishSignUpFragment(),
-                                                        "회원가입 완료"
-                                                    )
+                                    //토큰 생성
+                                    FirebaseMessaging.getInstance().token.addOnCompleteListener { fcmToken ->
+                                        model.registser(
+                                            RegisterDto(
+                                                studentId = setStudentId.text.toString().toInt(),
+                                                name = setName.text.toString(),
+                                                password = setPassword.text.toString(),
+                                                email = email,
+                                                phoneNumber = "",
+                                                nickname = setNickname.text.toString(),
+                                                college = "건국대학교",
+                                                department = departmentList,
+                                                fcmToken = fcmToken.result,
+                                                address = BuildConfig.ADDRESS_DID
+                                            ), object : ApiCallback {
+                                                override fun apiCallback(flag: Boolean) {
+                                                    if (flag) {
+                                                        //닉네임 전달
+                                                        model.setNickname(setNickname.text.toString())
+                                                        //화면 전환
+                                                        (mActivity as SignUpActivity).changeFragment(
+                                                            FinishSignUpFragment(),
+                                                            "회원가입 완료"
+                                                        )
+                                                    }
                                                 }
                                             }
-                                        }
-                                    )
+                                        )
+                                    }
                                 }
                             })
                         })
