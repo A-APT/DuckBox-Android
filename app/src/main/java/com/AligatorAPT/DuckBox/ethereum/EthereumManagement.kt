@@ -29,6 +29,11 @@ object EthereumManagement {
     private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
     private val gasLimit: BigInteger = BigInteger.valueOf(80000) // gasLimit
 
+    fun createNewCredentials(password: String): Credentials {
+        val keyPair: ECKeyPair = Keys.createEcKeyPair()
+        return Credentials.create(keyPair)
+    }
+
     fun createWallet(password: String): WalletFile {
         val keyPair: ECKeyPair = Keys.createEcKeyPair()
         return Wallet.createLight(password, keyPair)
@@ -96,6 +101,7 @@ object EthereumManagement {
         return if (decode.size > 0) decode[0].value else null
     }
 
+    /* use user account's credentials (default) */
     fun ethSendRaw(
         contractAddress: String,
         functionName: String,
@@ -127,6 +133,39 @@ object EthereumManagement {
 //            TransactionManager.DEFAULT_POLLING_FREQUENCY,
 //            TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH)
 //        val receipt = processor.waitForTransactionReceipt(ethSend.transactionHash)
+
+        // decode response
+        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
+        return if (decode.size > 0) decode[0].value else null
+    }
+
+    /* to use pseudoCredentials */
+    fun ethSendRaw(
+        contractAddress: String,
+        functionName: String,
+        inputParams: List<Type<*>>,
+        outputParams: List<TypeReference<*>>,
+        credentials: Credentials /* credentials */
+    ): Any? {
+        // * Have to unlock account
+
+        // generate function
+        val function = org.web3j.abi.datatypes.Function(functionName, inputParams, outputParams)
+        val encodedFunction = FunctionEncoder.encode(function)
+
+        // send raw transaction
+        val manager = RawTransactionManager(web3j, credentials)
+        val ethSend: EthSendTransaction = manager.sendTransaction(
+            gasPrice,
+            gasLimit,
+            contractAddress, // to
+            encodedFunction, // data
+            BigInteger.ZERO // value
+        )
+
+        if (ethSend.hasError()){
+            throw Exception(ethSend.error.message)
+        }
 
         // decode response
         val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
