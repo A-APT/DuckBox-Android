@@ -32,7 +32,6 @@ object BallotContract {
                        endTime: Long // milliseconds
     ): Boolean? {
         Log.d("REGISTER_VOTE_ADDRESS", contractAddress)
-        ethereumManagement.setCredentials(BuildConfig.BALLOT_PK)
         val candidateList: List<Utf8String> = candidateNames.stream().map {
             Utf8String(it)
         }.toList()
@@ -84,15 +83,15 @@ object BallotContract {
         pseudoCredentials: Credentials,
     ){
         Log.d("VOTE_ADDRESS", contractAddress)
-        ethereumManagement.setCredentials(BuildConfig.BALLOT_PK)
         val RList: List<Uint256> = R.stream().map {
             Uint256(it)
         }.toList()
-
+        val bytearray = DatatypeConverter.parseHexBinary(_m)
         val rListDynamicArray = DynamicArray(Uint256::class.java, RList)
         val inputParams = listOf<Type<*>>(
             Utf8String(_ballotId),
-            Bytes32(DatatypeConverter.parseHexBinary(_m)),
+//            StaticArray(bytearray.size, bytearray),
+            Bytes32(bytearray),
             Uint256(_serverSig),
             Uint256(_ownerSig),
             rListDynamicArray)

@@ -3,26 +3,25 @@ package com.AligatorAPT.DuckBox.view.activity
 import BlindSecp256k1
 import BlindedData
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.graphics.Point
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVoteDetailBinding
-import com.AligatorAPT.DuckBox.dto.ethereum.Candidate
 import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
 import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
-import com.AligatorAPT.DuckBox.dto.user.BlindSigToken
 import com.AligatorAPT.DuckBox.ethereum.BallotContract
-import com.AligatorAPT.DuckBox.ethereum.EthereumManagement
-import com.AligatorAPT.DuckBox.retrofit.callback.TokenCallback
-import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteResultListAdapter
@@ -32,12 +31,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.web3j.crypto.Credentials
-import org.web3j.crypto.WalletFile
-import org.web3j.crypto.WalletUtils
 import java.math.BigInteger
-import java.util.*
-import java.nio.charset.StandardCharsets
 import kotlin.collections.ArrayList
 
 class VoteDetailActivity : AppCompatActivity() {
@@ -76,9 +70,8 @@ class VoteDetailActivity : AppCompatActivity() {
 
         Log.e("status_VoteDETAIL",status.toString())
         if(status == BallotStatus.CLOSE){
-            binding.apply {
-                initResultRV()
-            }
+            binding.vdFinalTv.visibility = View.GONE
+            initResultRV()
         }else{
             model.isSelected.observe(this){
                 if(it){
@@ -122,14 +115,21 @@ class VoteDetailActivity : AppCompatActivity() {
                 val arr_can: List<BigInteger> = BallotContract.resultOfBallot(ballotId = voteList.id)
                 var max = 0
                 var allCount = BigInteger("0")
-                for(i in 0..arr_can.size){
+                for(i in arr_can.indices){
                     allCount += arr_can[i]
                     if(arr_can[max] < arr_can[i]){
                         max = i
                     }
                 }
-                val voteResultAdapter = VoteResultListAdapter(candidate,
-                    arr_can as ArrayList<BigInteger>, max, allCount)
+
+                //디바이스 크기
+                val windowManager = this@VoteDetailActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                val display = windowManager.defaultDisplay
+                val size = Point()
+                display.getSize(size)
+                val deviceWidth = size.x
+
+                val voteResultAdapter = VoteResultListAdapter(candidate, arr_can, max, allCount, deviceWidth)
                 vdListRv.adapter = voteResultAdapter
             }
         }
@@ -151,10 +151,9 @@ class VoteDetailActivity : AppCompatActivity() {
                 data: String,
                 position: Int
             ) {
-                val intent = Intent(applicationContext, VoteDetailImageInfoActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                intent.putExtra("img_arr",img_arr)
-                intent.putExtra("position",position)
+                val intent = Intent(this@VoteDetailActivity, VoteDetailImageInfoActivity::class.java)
+//                intent.putExtra("img_arr",img_arr)
+//                intent.putExtra("position",position)
                 startActivity(intent)
             }
         }
@@ -188,41 +187,47 @@ class VoteDetailActivity : AppCompatActivity() {
                 val blindedData: BlindedData = blindSecp256k1.blind(R_,message)
                 val blindSigRequestDto = BlindSigRequestDto(voteList.id, blindedData.blindM.toString(16))
 
-                voteModel!!.generateVoteToken(blindSigRequestDto, object: TokenCallback{
-                    override fun tokenCallback(flag: Boolean, _blindsigToken: BlindSigToken?) {
-                        if(flag){
-                            vdListLayout.visibility = View.GONE
-                            vdAfterVoteLayout.visibility = View.VISIBLE
-                            vdFinalTv.setBackgroundResource(R.color.darkgray)
-                            vdFinalTv.setText("제출 완료")
-                            ListAdapter.isClickable = false
+                vdListLayout.visibility = View.GONE
+                vdAfterVoteLayout.visibility = View.VISIBLE
+                vdFinalTv.setBackgroundResource(R.color.darkgray)
+                vdFinalTv.setText("제출 완료")
+                ListAdapter.isClickable = false
 
-                            CoroutineScope(dispatcher).launch{
-                                val r = arrayListOf(R_.x, R_.y)
-                                val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
-                                val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
-                                val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
-                                val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
-
-
-                                val blindsig = BlindSecp256k1()
-                                val keyPair = blindsig.generateKeyPair()
-                                // create new account
-                                //val pseudoCred18entials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
-                                 val pseudoCredentials: Credentials = Credentials.create(keyPair.privateKey.toString(), ) /* Ganache */
-
-                                BallotContract.vote(
-                                    _ballotId = voteList.id,
-                                    _m = model.num.toString(),
-                                    _serverSig = serverSig,
-                                    _ownerSig = voteOwnerSig,
-                                    R = r,
-                                    pseudoCredentials = pseudoCredentials
-                                )
-                            }
-                        }
-                    }
-                })
+//                voteModel!!.generateVoteToken(blindSigRequestDto, object: TokenCallback{
+//                    override fun tokenCallback(flag: Boolean, _blindsigToken: BlindSigToken?) {
+//                        if(flag){
+//                            vdListLayout.visibility = View.GONE
+//                            vdAfterVoteLayout.visibility = View.VISIBLE
+//                            vdFinalTv.setBackgroundResource(R.color.darkgray)
+//                            vdFinalTv.setText("제출 완료")
+//                            ListAdapter.isClickable = false
+//
+//                            CoroutineScope(dispatcher).launch{
+//                                val r = arrayListOf(R_.x, R_.y)
+//                                val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
+//                                val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
+//                                val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
+//                                val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
+//
+//
+//                                val blindsig = BlindSecp256k1()
+//                                val keyPair = blindsig.generateKeyPair()
+//                                // create new account
+//                                //val pseudoCred18entials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+//                                 val pseudoCredentials: Credentials = Credentials.create(keyPair.privateKey.toString(), ) /* Ganache */
+//
+//                                BallotContract.vote(
+//                                    _ballotId = voteList.id,
+//                                    _m = model.num.toString(),
+//                                    _serverSig = serverSig,
+//                                    _ownerSig = voteOwnerSig,
+//                                    R = r,
+//                                    pseudoCredentials = pseudoCredentials
+//                                )
+//                            }
+//                        }
+//                    }
+//                })
             }
         }
     }
