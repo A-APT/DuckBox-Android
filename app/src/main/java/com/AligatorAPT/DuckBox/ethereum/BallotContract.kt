@@ -21,6 +21,7 @@ object BallotContract {
     private final val OPEN = "open"
     private final val CLOSE = "close"
     private final val RESULT = "resultOfBallot"
+    private final val VOTE = "vote"
 
     fun registerBallot(did: String,
                        ballotId: String,
@@ -65,5 +66,21 @@ object BallotContract {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>()
         return EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams) as ArrayList<Candidate>?
+    }
+
+    fun vote(
+        _ballotId: String,
+        _m: String,
+        _serverSig: BigInteger,
+        _ownerSig: BigInteger,
+        R: ArrayList<BigInteger>
+    ){
+        val RList: List<Uint256> = R.stream().map {
+            Uint256(it)
+        }.toList()
+        val rListDynamicArray = DynamicArray(Uint256::class.java, RList)
+        val inputParams = listOf<Type<*>>(Utf8String(_ballotId), Utf8String(_m), Uint256(_serverSig), Uint256(_ownerSig), rListDynamicArray)
+        val outputParams = listOf<TypeReference<*>>()
+        EthereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams)
     }
 }

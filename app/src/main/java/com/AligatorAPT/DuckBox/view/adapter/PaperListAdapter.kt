@@ -10,6 +10,7 @@ import android.util.Base64
 import android.util.Log
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowPaperBinding
+import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
 import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import java.util.*
 import kotlin.collections.ArrayList
@@ -55,13 +56,19 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
             val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
             holder.binding.paperListImage.setImageBitmap(bitmap)
 
-            paperListCanParticipate.text = "참여 가능"
-            paperListCanParticipate.setBackgroundResource(R.drawable.sub1_color_box_3dp)
-            paperListIsVote.text = "투표"
-            paperListIsVote.setBackgroundResource(R.drawable.sub4_color_box_3dp)
+            if(items[position].status == BallotStatus.CLOSE){
+                paperListCanParticipate.visibility = View.GONE
+                paperListTime.text = "종료"
+            }
+            else{
+                paperListCanParticipate.text = "참여 가능"
+                paperListCanParticipate.setBackgroundResource(R.drawable.sub1_color_box_3dp)
+                paperListIsVote.text = "투표"
+                paperListIsVote.setBackgroundResource(R.drawable.sub4_color_box_3dp)
 
-            paperListTime.text = compareDate(items[position].startTime,items[position].finishTime)
-            paperListTitle.text = items[position].title
+                paperListTime.text = compareDate(items[position].startTime,items[position].finishTime)
+                paperListTitle.text = items[position].title
+            }
         }
     }
 
