@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentMoreInfoBinding
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
@@ -186,7 +187,8 @@ class MoreInfoFragment : Fragment() {
                                             nickname = setNickname.text.toString(),
                                             college = "건국대학교",
                                             department = departmentList,
-                                            fcmToken = fcmToken
+                                            fcmToken = fcmToken,
+                                            address = BuildConfig.ADDRESS_DID
                                         ), object : ApiCallback {
                                             override fun apiCallback(flag: Boolean) {
                                                 if (flag) {
