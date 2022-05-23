@@ -61,16 +61,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-            testFCM.setOnClickListener {
-                model.testNotification(object : ApiCallback {
-                    override fun apiCallback(flag: Boolean) {
-                        if (flag) {
-                            Toast.makeText(this@MainActivity, "보내짐!", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                })
-            }
-
             DID.setOnClickListener {
                 CoroutineScope(dispatcher).launch {
                     DIDContract.registerDid(GanacheAddress.USER1, "user1")

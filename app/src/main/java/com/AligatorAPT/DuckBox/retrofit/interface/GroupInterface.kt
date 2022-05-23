@@ -35,9 +35,4 @@ interface GroupInterface {
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Path("query") query: String
     ): Call<ArrayList<GroupDetailDto>>
-
-    @GET("/api/v1/group/member/notification")
-    fun testNotification(
-        @HeaderMap httpHeaders: HashMap<String, String>
-    ): Call<ResponseBody>
 }

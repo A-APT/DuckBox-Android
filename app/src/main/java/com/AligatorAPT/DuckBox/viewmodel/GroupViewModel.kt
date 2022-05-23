@@ -98,12 +98,4 @@ class GroupViewModel: ViewModel() {
             }
         }
     }
-
-    fun testNotification(_callback: ApiCallback){
-        viewModelScope.launch {
-            withContext(dispatcher){
-                GroupModel.testNotification(_callback)
-            }
-        }
-    }
 }

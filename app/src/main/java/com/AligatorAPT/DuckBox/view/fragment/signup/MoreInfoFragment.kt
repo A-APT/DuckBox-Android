@@ -109,7 +109,6 @@ class MoreInfoFragment : Fragment() {
         binding.apply {
             //토큰 생성
             fcmToken = FirebaseMessaging.getInstance().token.result
-            Toast.makeText(mActivity, fcmToken, Toast.LENGTH_LONG).show()
 
             model.isNew.observe(viewLifecycleOwner, Observer {
                 if (it) {

@@ -174,31 +174,4 @@ object GroupModel {
             }
         })
     }
-
-    fun testNotification(callback: ApiCallback) {
-        val headers = HashMap<String, String>()
-        val userToken = MyApplication.prefs.getString("token", "notExist")
-
-        headers["Authorization"] = "Bearer $userToken"
-
-        RetrofitClient.GROUP_INTERFACE_SERVICE.testNotification(
-            httpHeaders = headers
-        ).enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                if (response.isSuccessful) {
-                    callback.apiCallback(true)
-                } else {
-                    callback.apiCallback(false)
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                callback.apiCallback(false)
-                Log.d(
-                    "onFailure::", "Failed GetAllGroup API call with call: " + call +
-                            " + exception: " + t
-                )
-            }
-        })
-    }
 }
