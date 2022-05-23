@@ -121,8 +121,7 @@
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@id/cv_third_alarm_tv"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
             android:id="@+id/cv_third_reward_iv"
@@ -133,6 +132,32 @@
             app:layout_constraintEnd_toEndOf="@id/cv_third_reward_tv"
             app:layout_constraintTop_toTopOf="@id/cv_third_reward_tv"
             app:layout_constraintBottom_toBottomOf="@id/cv_third_reward_tv"/>
+
+        <TextView
+            android:id="@+id/cv_third_result_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="설문결과 공개하기"
+            android:background="@drawable/gray_color_box_5dp"
+            android:padding="15dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="30dp"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/cv_third_reward_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ImageView
+            android:id="@+id/cv_third_result_iv"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:src="@drawable/result_black"
+            android:layout_marginEnd="15dp"
+            app:layout_constraintEnd_toEndOf="@id/cv_third_result_tv"
+            app:layout_constraintTop_toTopOf="@id/cv_third_result_tv"
+            app:layout_constraintBottom_toBottomOf="@id/cv_third_result_tv"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

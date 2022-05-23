@@ -1,11 +1,11 @@
-package com.AligatorAPT.DuckBox.view.data
+package com.AligatorAPT.DuckBox.dto.paper
 
 import java.io.Serializable
 import java.util.*
 
 data class VoteRegisterDto(
-    var title: String,
-    var content: String,
+    val title: String,
+    val content: String,
     var isGroup: Boolean,
     var groupId: String?,
     var startTime: Date,
@@ -16,7 +16,7 @@ data class VoteRegisterDto(
     var voters: List<Int>?,
     var reward: Boolean,
     var notice: Boolean,
-):Serializable
+): Serializable
 
 data class VoteDetailDto(
     val id: String, // ObjectId

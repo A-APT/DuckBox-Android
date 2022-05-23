@@ -1,14 +1,11 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
-import android.util.Base64
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.model.VoteModel
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
-import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

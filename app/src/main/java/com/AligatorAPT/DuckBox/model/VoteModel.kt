@@ -3,13 +3,11 @@ package com.AligatorAPT.DuckBox.model
 import android.util.Log
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
-import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
-import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
-import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
+import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import retrofit2.Callback
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 
@@ -54,7 +52,7 @@ object VoteModel {
                 override fun onResponse(call: Call<ArrayList<VoteDetailDto>>, response: Response<ArrayList<VoteDetailDto>>) {
                     if (response.isSuccessful) {
                         Log.d("Response:: ", response.toString())
-                        callback.apiCallback(true, response.body()!!)
+                        callback.apiCallback(true, response.body())
                     } else {
                         callback.apiCallback(false, null)
                     }

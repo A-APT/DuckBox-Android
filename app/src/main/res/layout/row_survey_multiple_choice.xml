@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/multiple_circle"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:src="@drawable/blank_circle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <EditText
+        android:id="@+id/multiple_et"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:hint="항목 입력"
+        android:textSize="14sp"
+        android:paddingVertical="15dp"
+        android:textCursorDrawable="@color/black"
+        android:backgroundTint="@color/black"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/multiple_circle"
+        app:layout_constraintBottom_toBottomOf="@id/multiple_circle"
+        app:layout_constraintStart_toEndOf="@id/multiple_circle"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

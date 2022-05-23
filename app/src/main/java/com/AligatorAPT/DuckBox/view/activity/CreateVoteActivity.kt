@@ -2,6 +2,7 @@ package com.AligatorAPT.DuckBox.view.activity
 
 import BlindSecp256k1
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.widget.ViewPager2
@@ -14,9 +15,15 @@ import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
+import com.AligatorAPT.DuckBox.ethereum.BallotContract
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
-import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -40,11 +47,14 @@ class CreateVoteActivity : FragmentActivity() {
         notice = false)
 
     val viewModel : CreateVoteViewModel by viewModels()
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateVoteBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.isVote.value = true
 
         voteRegisterDto.isGroup = intent.getBooleanExtra("isGroup",false)
         if(voteRegisterDto.isGroup){
@@ -74,6 +84,16 @@ class CreateVoteActivity : FragmentActivity() {
                             binding.createVoteNextTv.visibility = View.GONE
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
+
+
+                            CoroutineScope(dispatcher).launch{
+                                val startMillis = viewModel.startTime.value!!.toInstant().toEpochMilli()
+                                val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
+                                Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
+                                val did = MyApplication.prefs.getString("did", "notExist")
+//                                BallotContract.registerBallot(
+//                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
+                            }
 
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.create_vote_fr, CreateVoteFinalFragment())

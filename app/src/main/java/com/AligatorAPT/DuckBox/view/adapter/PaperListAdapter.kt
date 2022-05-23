@@ -10,7 +10,7 @@ import android.util.Base64
 import android.util.Log
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowPaperBinding
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -51,14 +51,9 @@ class PaperListAdapter(var items: ArrayList<VoteDetailDto>) :
             Log.e("PAPERLISTADPATER",items[position].toString())
             paperListWriter.text = items[position].owner
 
-            if(items[position].images.isEmpty()){
-                //기본 이미지 설정
-                holder.binding.paperListImage.setImageResource(R.drawable.sub1_color_box_5dp)
-            }else{
-                val decodedImageBytes: ByteArray = Base64.decode(items[position].images[0], Base64.DEFAULT)
-                val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
-                holder.binding.paperListImage.setImageBitmap(bitmap)
-            }
+            val decodedImageBytes: ByteArray = Base64.decode(items[position].images[0], Base64.DEFAULT)
+            val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
+            holder.binding.paperListImage.setImageBitmap(bitmap)
 
             paperListCanParticipate.text = "참여 가능"
             paperListCanParticipate.setBackgroundResource(R.drawable.sub1_color_box_3dp)

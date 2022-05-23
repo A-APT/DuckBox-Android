@@ -1,6 +1,6 @@
 package com.AligatorAPT.DuckBox.dto.paper
 
-import com.AligatorAPT.DuckBox.view.data.BallotStatus
+import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
 import java.util.*
 
 data class SurveyDetailDto (

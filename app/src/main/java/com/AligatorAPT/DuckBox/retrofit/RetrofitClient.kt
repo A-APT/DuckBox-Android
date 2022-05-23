@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
+
     private const val BASE_URL:String = "http://192.168.219.103:8080"
 
     var gson = GsonBuilder()
@@ -31,7 +32,7 @@ object RetrofitClient {
             .baseUrl(BASE_URL)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create(gson))
-//            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
     }
 
     val EMAIL_INTERFACE_SERVICE: EmailInterface by lazy{
@@ -51,6 +52,10 @@ object RetrofitClient {
     }
 
     val VOTE_INTERFACE_SERVICE: VoteInterface by lazy{
-        retrofit.build().create(VoteInterface::class.java)
+        retrofit.client(client).build().create(VoteInterface::class.java)
+    }
+
+    val SURVEY_INTERFACE_SERVICE: SurveyInterface by lazy{
+        retrofit.client(client).build().create(SurveyInterface::class.java)
     }
 }

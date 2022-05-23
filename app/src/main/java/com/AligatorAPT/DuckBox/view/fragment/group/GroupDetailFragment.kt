@@ -13,13 +13,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupDetailBinding
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.PaperListData
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.ModalDialog
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
@@ -243,10 +242,10 @@ class GroupDetailFragment : Fragment() {
         when(flag){
             0->{//투표
                 voteModel!!.getAllVote(object: VoteCallback {
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -258,10 +257,10 @@ class GroupDetailFragment : Fragment() {
             }
             1->{//설문
                 voteModel!!.getAllVote(object: VoteCallback{
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -272,10 +271,10 @@ class GroupDetailFragment : Fragment() {
             }
             2->{//참여 완료
                 voteModel!!.getAllVote(object: VoteCallback{
-                    override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+                    override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
-                            for(i in 0 until _list.size){
-                                if(_list[i].isGroup) {
+                            for(i in _list.indices){
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }

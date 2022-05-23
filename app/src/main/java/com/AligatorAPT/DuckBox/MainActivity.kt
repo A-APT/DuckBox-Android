@@ -1,17 +1,10 @@
 package com.AligatorAPT.DuckBox
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
-import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
@@ -19,12 +12,20 @@ import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
+import com.AligatorAPT.DuckBox.ethereum.DIDContract
+import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
+import com.AligatorAPT.DuckBox.view.activity.*
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Provider
 import java.security.Security
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
+    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
 
     private val model: GroupViewModel by viewModels()
 
@@ -63,11 +64,22 @@ class MainActivity : AppCompatActivity() {
             testFCM.setOnClickListener {
                 model.testNotification(object : ApiCallback {
                     override fun apiCallback(flag: Boolean) {
-                        if(flag){
+                        if (flag) {
                             Toast.makeText(this@MainActivity, "보내짐!", Toast.LENGTH_LONG).show()
                         }
                     }
                 })
+            }
+
+            DID.setOnClickListener {
+                CoroutineScope(dispatcher).launch {
+                    DIDContract.registerDid(GanacheAddress.USER1, "user1")
+                }
+            }
+
+            SURVEY.setOnClickListener {
+                val intent = Intent(this@MainActivity, CreateSurveyActivity::class.java)
+                startActivity(intent)
             }
         }
     }
@@ -87,5 +99,4 @@ class MainActivity : AppCompatActivity() {
         Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
         Security.insertProviderAt(BouncyCastleProvider(), 1)
     }
-
 }

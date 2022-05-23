@@ -11,15 +11,14 @@ import android.widget.Toast
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentCommunityBinding
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.*
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.dialog.WriteDialog
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
-import java.util.*
 import kotlin.collections.ArrayList
 
 class CommunityFragment : Fragment() {
@@ -144,11 +143,11 @@ class CommunityFragment : Fragment() {
         //투표 리스트 가져오기
         voteModel!!.getAllVote(object: VoteCallback{
             val voteList = arrayListOf<VoteDetailDto>()
-            override fun apiCallback(flag: Boolean, _list: ArrayList<VoteDetailDto>?) {
+            override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                 if(flag && _list != null){
                     Log.e("COMMUNITY",_list.toString())
-                    for(i in 0 until _list.size){
-                        if(!_list[i].isGroup){
+                    for(i in _list.indices){
+                        if(_list[i].groupId == null) {
                             if(toggleFlag){
                                 //참여함
                             }else{

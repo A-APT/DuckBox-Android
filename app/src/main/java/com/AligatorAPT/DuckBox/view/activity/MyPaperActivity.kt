@@ -5,9 +5,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import com.AligatorAPT.DuckBox.databinding.ActivityMyPaperBinding
+import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.BallotStatus
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.google.android.material.tabs.TabLayout
 import java.util.*
 import kotlin.collections.ArrayList
@@ -47,7 +47,7 @@ class MyPaperActivity : AppCompatActivity() {
                         val intent = Intent(this@MyPaperActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@MyPaperActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@MyPaperActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -68,7 +68,7 @@ class MyPaperActivity : AppCompatActivity() {
                         val intent = Intent(this@MyPaperActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@MyPaperActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@MyPaperActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }

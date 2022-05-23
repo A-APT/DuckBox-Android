@@ -7,11 +7,11 @@ import android.view.View
 import androidx.activity.viewModels
 import com.AligatorAPT.DuckBox.databinding.ActivitySearchBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.view.adapter.GroupListAdapter
 import com.AligatorAPT.DuckBox.view.adapter.PaperListAdapter
-import com.AligatorAPT.DuckBox.view.data.BallotStatus
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
 import com.AligatorAPT.DuckBox.viewmodel.SearchViewModel
 import com.google.android.material.tabs.TabLayout
 import java.util.*
@@ -88,7 +88,7 @@ class SearchActivity : AppCompatActivity() {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@SearchActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@SearchActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }
@@ -109,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
                         val intent = Intent(this@SearchActivity, VoteDetailActivity::class.java)
                         startActivity(intent)
                     } else {
-                        val intent = Intent(this@SearchActivity, PollDetailActivity::class.java)
+                        val intent = Intent(this@SearchActivity, SurveyDetailActivity::class.java)
                         startActivity(intent)
                     }
                 }

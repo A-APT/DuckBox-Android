@@ -52,10 +52,7 @@
             android:name=".view.activity.CreateGroupActivity"
             android:exported="false" />
         <activity
-            android:name=".view.activity.PollCreateActivity"
-            android:exported="false" />
-        <activity
-            android:name=".view.activity.PollDetailActivity"
+            android:name=".view.activity.CreateSurveyActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.VoteDetailActivity"

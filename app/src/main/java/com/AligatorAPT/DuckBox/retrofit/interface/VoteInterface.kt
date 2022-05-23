@@ -1,9 +1,8 @@
 package com.AligatorAPT.DuckBox.retrofit.`interface`
 
-import com.AligatorAPT.DuckBox.view.data.VoteDetailDto
-import com.AligatorAPT.DuckBox.view.data.VoteRegisterDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
 import retrofit2.Call
-import okhttp3.ResponseBody
 import retrofit2.http.*
 
 interface VoteInterface {

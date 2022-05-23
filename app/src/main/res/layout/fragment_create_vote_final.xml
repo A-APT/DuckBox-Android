@@ -38,7 +38,7 @@
             android:id="@+id/cv_final_check_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="투표 리스트 보러가기"
+            android:text="투표 / 설문 목록 보러가기"
             android:gravity="center"
             android:background="@drawable/main_color_box_5dp"
             android:paddingVertical="12dp"
