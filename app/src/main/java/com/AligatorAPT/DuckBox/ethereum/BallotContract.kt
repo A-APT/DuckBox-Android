@@ -3,10 +3,7 @@ package com.AligatorAPT.DuckBox.ethereum
 import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.dto.ethereum.Candidate
 import org.web3j.abi.TypeReference
-import org.web3j.abi.datatypes.Bool
-import org.web3j.abi.datatypes.DynamicArray
-import org.web3j.abi.datatypes.Type
-import org.web3j.abi.datatypes.Utf8String
+import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
 import org.web3j.abi.datatypes.generated.Uint256
 import java.math.BigInteger
@@ -56,16 +53,21 @@ object BallotContract {
         EthereumManagement.ethSendRaw(contractAddress, OPEN, inputParams, outputParams)
     }
 
-    fun close(ballotId: String, totalNum: Int): String? {
+    fun close(ballotId: String, totalNum: Int) {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId), Uint256(totalNum.toLong()))
         val outputParams = listOf<TypeReference<*>>()
-        return EthereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams) as String?
+        EthereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams)
     }
 
-    fun resultOfBallot(ballotId: String):  ArrayList<Candidate>? {
+    fun resultOfBallot(ballotId: String): List<BigInteger> {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
-        val outputParams = listOf<TypeReference<*>>()
-        return EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams) as ArrayList<Candidate>?
+        val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Uint>>() {})
+        val decoded: List<Type<*>> = EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams)!!
+        val result: MutableList<BigInteger> = mutableListOf()
+        (decoded[0].value as List<Uint>).forEach {
+            result.add(it.value)
+        }
+        return result
     }
 
     fun vote(
