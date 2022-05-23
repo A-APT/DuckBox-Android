@@ -61,7 +61,7 @@ class VoteDetailActivity : AppCompatActivity() {
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        blindSecp256k1 = BlindSecp256k1()
         val position = intent.getIntExtra("position", 0)
         time = intent.getStringExtra("time").toString()
         status = intent.getSerializableExtra("status") as BallotStatus
@@ -106,7 +106,7 @@ class VoteDetailActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        binding.vdToolbar.apply { 
+        binding.vdToolbar.apply {
             vdTooblarBackIv.setOnClickListener{
                 onBackPressed()
             }
@@ -119,18 +119,19 @@ class VoteDetailActivity : AppCompatActivity() {
     private fun initResultRV() {
         binding.apply {
             CoroutineScope(dispatcher).launch{
-                val arr_can: ArrayList<Candidate>? = BallotContract.resultOfBallot(ballotId = voteList.id)
+                val arr_can: List<BigInteger> = BallotContract.resultOfBallot(ballotId = voteList.id)
                 var max = 0
-                var allCount = 0
-                for(i in 0..arr_can!!.size){
-                    allCount += arr_can[i].voteCount
-                    if(max < arr_can[i].voteCount){
+                var allCount = BigInteger("0")
+                for(i in 0..arr_can.size){
+                    allCount += arr_can[i]
+                    if(arr_can[max] < arr_can[i]){
                         max = i
                     }
                 }
-                val voteResultAdapter = VoteResultListAdapter(arr_can, max, allCount)
+                val voteResultAdapter = VoteResultListAdapter(candidate,
+                    arr_can as ArrayList<BigInteger>, max, allCount)
+                vdListRv.adapter = voteResultAdapter
             }
-
         }
     }
 
@@ -202,15 +203,17 @@ class VoteDetailActivity : AppCompatActivity() {
                                 val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
                                 val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
                                 val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
-                                val encodedMessage = String(message, StandardCharsets.UTF_8)
 
+
+                                val blindsig = BlindSecp256k1()
+                                val keyPair = blindsig.generateKeyPair()
                                 // create new account
-                                val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
-                                // val pseudoCredentials: Credentials = Credentials.create(SK, PK) /* Ganache */
+                                //val pseudoCred18entials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+                                 val pseudoCredentials: Credentials = Credentials.create(keyPair.privateKey.toString(), ) /* Ganache */
 
                                 BallotContract.vote(
                                     _ballotId = voteList.id,
-                                    _m = encodedMessage,
+                                    _m = model.num.toString(),
                                     _serverSig = serverSig,
                                     _ownerSig = voteOwnerSig,
                                     R = r,

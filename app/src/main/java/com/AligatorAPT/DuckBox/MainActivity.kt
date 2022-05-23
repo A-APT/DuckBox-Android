@@ -1,11 +1,15 @@
 package com.AligatorAPT.DuckBox
 
+import BlindSecp256k1
+import BlindedData
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
+import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
+import com.AligatorAPT.DuckBox.ethereum.BallotContract
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
 import com.AligatorAPT.DuckBox.view.activity.LoginActivity
@@ -15,11 +19,14 @@ import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.AligatorAPT.DuckBox.ethereum.DIDContract
 import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
 import com.AligatorAPT.DuckBox.view.activity.*
+import com.fasterxml.jackson.databind.node.BigIntegerNode
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import org.web3j.crypto.Credentials
+import java.math.BigInteger
 import java.security.Provider
 import java.security.Security
 
@@ -67,9 +74,32 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            SURVEY.setOnClickListener {
-                val intent = Intent(this@MainActivity, CreateSurveyActivity::class.java)
-                startActivity(intent)
+            VOTECONTRACT.setOnClickListener {
+                CoroutineScope(dispatcher).launch{
+                    val blindSecp256k1 = BlindSecp256k1()
+                    val message = "0".encodeToByteArray()
+                    val R_ = blindSecp256k1.newRequestParameters().second
+                    val blindedData: BlindedData = blindSecp256k1.blind(R_,message)
+
+                    val r = arrayListOf(R_.x, R_.y)
+                    val serverBsig = BigInteger("6786868686786")
+                    val ownerBsig = BigInteger("412423412432423423423424")
+                    val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
+                    val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
+                    val keyPair = blindSecp256k1.generateKeyPair()
+                    // create new account
+                    //val pseudoCred18entials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+                    val pseudoCredentials: Credentials = Credentials.create(keyPair.privateKey.toString(), ) /* Ganache */
+
+                    BallotContract.vote(
+                        _ballotId = "ballot id",
+                        _m = "0",
+                        _serverSig = serverSig,
+                        _ownerSig = voteOwnerSig,
+                        R = r,
+                        pseudoCredentials = pseudoCredentials
+                    )
+                }
             }
         }
     }

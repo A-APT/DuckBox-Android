@@ -21,8 +21,15 @@ android {
         // local properties
         buildConfigField("String", "ETH_NETWORK_LOCAL", properties.getProperty("ethereum.network-local"))
         buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
-        buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
-        buildConfigField("String", "ADDRESS_BALLOTS", properties.getProperty("contract.address.ballots"))
+
+        buildConfigField("String", "OWNER_ADDRESS", properties.getProperty("ganache.owner.address"))
+        buildConfigField("String", "OWNER_PK", properties.getProperty("ganache.owner.private-key"))
+
+        buildConfigField("String", "USER_ADDRESS", properties.getProperty("ganache.user.address"))
+        buildConfigField("String", "USER_PK", properties.getProperty("ganache.user.private-key"))
+
+        buildConfigField("String", "BALLOT_ADDRESS", properties.getProperty("ganache.ballot.address"))
+        buildConfigField("String", "BALLOT_PK", properties.getProperty("ganache.ballot.private-key"))
     }
 
     buildTypes {

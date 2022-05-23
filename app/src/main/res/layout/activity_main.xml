@@ -37,9 +37,9 @@
         android:text="DID" />
 
     <Button
-        android:id="@+id/SURVEY"
+        android:id="@+id/VOTECONTRACT"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SURVEY" />
+        android:text="VOTECONTRACT" />
 
 </LinearLayout>

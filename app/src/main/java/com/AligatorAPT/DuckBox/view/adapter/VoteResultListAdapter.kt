@@ -6,11 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.databinding.RowVoteResultBinding
 import com.AligatorAPT.DuckBox.dto.ethereum.Candidate
+import java.math.BigInteger
 
 class VoteResultListAdapter (
-    private var items: ArrayList<Candidate>,
+    private var candidate: ArrayList<String>,
+    private var items: ArrayList<BigInteger>,
     private var best: Int,
-    private var allCount: Int
+    private var allCount: BigInteger
 ): RecyclerView.Adapter<VoteResultListAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(
@@ -28,9 +30,10 @@ class VoteResultListAdapter (
             }else {
                 rowResultCrown.visibility = View.GONE
             }
-            rowResultText.text = (position+1).toString()+". "+items[position].name
+            val percentage = items[position] / allCount
+            rowResultText.text = (position+1).toString()+". "+candidate[position] + " "+items[position] + " percentage: "+ percentage
             //수정하기 - 투표 결과 라인
-            rowResultBlueline.width
+
         }
     }
 

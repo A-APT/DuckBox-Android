@@ -50,6 +50,10 @@ object EthereumManagement {
         credentials = WalletUtils.loadCredentials(password, walletPath)
     }
 
+    fun setCredentials(password: String){
+        credentials = Credentials.create(password)
+    }
+
     fun ethCall(
         contractAddress: String,
         functionName: String,

@@ -31,7 +31,7 @@ interface VoteInterface {
         @Path ("groupId") groupId: String
     ): Call<ArrayList<VoteDetailDto>>
 
-    @GET("/api/v1/vote/signatures")
+    @POST("/api/v1/vote/signatures")
     fun generateVoteToken(
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Body blindSigRequestDto: BlindSigRequestDto

@@ -1,7 +1,7 @@
 package com.AligatorAPT.DuckBox.ethereum
 
+import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
-import com.AligatorAPT.DuckBox.dto.ethereum.Candidate
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
@@ -13,7 +13,8 @@ import kotlin.streams.toList
 
 object BallotContract {
 
-    private const val contractAddress: String = BuildConfig.ADDRESS_BALLOTS
+    private val ethereumManagement: EthereumManagement = EthereumManagement
+    private const val contractAddress: String = BuildConfig.BALLOT_ADDRESS
 
     private final val REGISTER = "registerBallot"
     private final val OPEN = "open"
@@ -30,6 +31,8 @@ object BallotContract {
                        startTime: Long, // milliseconds
                        endTime: Long // milliseconds
     ): Boolean? {
+        Log.d("REGISTER_VOTE_ADDRESS", contractAddress)
+        ethereumManagement.setCredentials(BuildConfig.BALLOT_PK)
         val candidateList: List<Utf8String> = candidateNames.stream().map {
             Utf8String(it)
         }.toList()
@@ -45,22 +48,23 @@ object BallotContract {
             Uint256(endTime)
         )
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Bool>() {})
-        return EthereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
     }
 
     fun open(ballotId: String) {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>()
-        EthereumManagement.ethSendRaw(contractAddress, OPEN, inputParams, outputParams)
+        ethereumManagement.ethSendRaw(contractAddress, OPEN, inputParams, outputParams)
     }
 
     fun close(ballotId: String, totalNum: Int) {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId), Uint256(totalNum.toLong()))
         val outputParams = listOf<TypeReference<*>>()
-        EthereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams)
+        ethereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams)
     }
 
     fun resultOfBallot(ballotId: String): List<BigInteger> {
+        Log.d("RESULT_ADDRESS", contractAddress)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Uint>>() {})
         val decoded: List<Type<*>> = EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams)!!
@@ -79,12 +83,20 @@ object BallotContract {
         R: ArrayList<BigInteger>,
         pseudoCredentials: Credentials,
     ){
+        Log.d("VOTE_ADDRESS", contractAddress)
+        ethereumManagement.setCredentials(BuildConfig.BALLOT_PK)
         val RList: List<Uint256> = R.stream().map {
             Uint256(it)
         }.toList()
+
         val rListDynamicArray = DynamicArray(Uint256::class.java, RList)
-        val inputParams = listOf<Type<*>>(Utf8String(_ballotId), Utf8String(_m), Uint256(_serverSig), Uint256(_ownerSig), rListDynamicArray)
+        val inputParams = listOf<Type<*>>(
+            Utf8String(_ballotId),
+            Bytes32(DatatypeConverter.parseHexBinary(_m)),
+            Uint256(_serverSig),
+            Uint256(_ownerSig),
+            rListDynamicArray)
         val outputParams = listOf<TypeReference<*>>()
-        EthereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams, pseudoCredentials)
+        ethereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams, pseudoCredentials)
     }
 }

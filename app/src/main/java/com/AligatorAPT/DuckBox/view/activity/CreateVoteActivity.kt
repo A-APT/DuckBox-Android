@@ -91,8 +91,8 @@ class CreateVoteActivity : FragmentActivity() {
                                 val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
                                 Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
                                 val did = MyApplication.prefs.getString("did", "notExist")
-//                                BallotContract.registerBallot(
-//                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
+                                BallotContract.registerBallot(
+                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
                             }
 
                             supportFragmentManager.beginTransaction()
