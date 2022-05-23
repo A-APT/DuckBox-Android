@@ -6,6 +6,7 @@ import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
 import org.web3j.abi.datatypes.generated.Uint256
+import org.web3j.crypto.Credentials
 import java.math.BigInteger
 import javax.xml.bind.DatatypeConverter
 import kotlin.streams.toList
@@ -75,7 +76,8 @@ object BallotContract {
         _m: String,
         _serverSig: BigInteger,
         _ownerSig: BigInteger,
-        R: ArrayList<BigInteger>
+        R: ArrayList<BigInteger>,
+        pseudoCredentials: Credentials,
     ){
         val RList: List<Uint256> = R.stream().map {
             Uint256(it)
@@ -83,6 +85,6 @@ object BallotContract {
         val rListDynamicArray = DynamicArray(Uint256::class.java, RList)
         val inputParams = listOf<Type<*>>(Utf8String(_ballotId), Utf8String(_m), Uint256(_serverSig), Uint256(_ownerSig), rListDynamicArray)
         val outputParams = listOf<TypeReference<*>>()
-        EthereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams)
+        EthereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams, pseudoCredentials)
     }
 }

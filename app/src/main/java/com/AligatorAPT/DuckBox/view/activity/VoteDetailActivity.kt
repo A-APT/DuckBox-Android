@@ -20,6 +20,7 @@ import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigToken
 import com.AligatorAPT.DuckBox.ethereum.BallotContract
+import com.AligatorAPT.DuckBox.ethereum.EthereumManagement
 import com.AligatorAPT.DuckBox.retrofit.callback.TokenCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
@@ -31,6 +32,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.web3j.crypto.Credentials
+import org.web3j.crypto.WalletFile
+import org.web3j.crypto.WalletUtils
 import java.math.BigInteger
 import java.util.*
 import java.nio.charset.StandardCharsets
@@ -200,12 +204,18 @@ class VoteDetailActivity : AppCompatActivity() {
                                 val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
                                 val encodedMessage = String(message, StandardCharsets.UTF_8)
 
+                                // create new account
+                                val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+                                // val pseudoCredentials: Credentials = Credentials.create(SK, PK) /* Ganache */
+
                                 BallotContract.vote(
                                     _ballotId = voteList.id,
                                     _m = encodedMessage,
                                     _serverSig = serverSig,
                                     _ownerSig = voteOwnerSig,
-                                    R = r)
+                                    R = r,
+                                    pseudoCredentials = pseudoCredentials
+                                )
                             }
                         }
                     }
