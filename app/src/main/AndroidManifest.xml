@@ -15,6 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DuckBox"
         android:usesCleartextTraffic="true">
+        <service android:name=".firebase.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
         <activity
             android:name=".view.activity.MyPaperActivity"
             android:exported="false" />

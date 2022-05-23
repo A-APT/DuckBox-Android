@@ -13,12 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentMoreInfoBinding
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.regex.Pattern
 
 class MoreInfoFragment : Fragment() {
@@ -29,6 +31,8 @@ class MoreInfoFragment : Fragment() {
     private var isActivateBtn = false
 
     private val model: RegisterViewModel by activityViewModels()
+
+    private var fcmToken = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,6 +107,9 @@ class MoreInfoFragment : Fragment() {
     private fun init() {
         val mActivity = context as Activity
         binding.apply {
+            //토큰 생성
+            fcmToken = FirebaseMessaging.getInstance().token.result
+
             model.isNew.observe(viewLifecycleOwner, Observer {
                 if (it) {
                     title1.visibility = View.VISIBLE
@@ -178,7 +185,9 @@ class MoreInfoFragment : Fragment() {
                                             phoneNumber = "",
                                             nickname = setNickname.text.toString(),
                                             college = "건국대학교",
-                                            department = departmentList
+                                            department = departmentList,
+                                            fcmToken = fcmToken,
+                                            address = BuildConfig.ADDRESS_DID
                                         ), object : ApiCallback {
                                             override fun apiCallback(flag: Boolean) {
                                                 if (flag) {

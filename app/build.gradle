@@ -88,4 +88,13 @@ dependencies {
 
     //Blindsignature
     implementation 'com.github.A-APT:BlindSignature:2.0.0'
+    //Firebase
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.4'
+    //PendingIntent for version 31
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    //noinspection GradleCompatible
+    implementation "com.android.support:support-compat:28.0.0"
 }
+
+apply plugin: 'com.google.gms.google-services'

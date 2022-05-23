@@ -2,8 +2,16 @@ package com.AligatorAPT.DuckBox
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.AligatorAPT.DuckBox.databinding.ActivityMainBinding
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.view.activity.CreateVoteActivity
+import com.AligatorAPT.DuckBox.view.activity.LoginActivity
+import com.AligatorAPT.DuckBox.view.activity.NavigationActivity
+import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
+import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.AligatorAPT.DuckBox.ethereum.DIDContract
 import com.AligatorAPT.DuckBox.ethereum.GanacheAddress
 import com.AligatorAPT.DuckBox.view.activity.*
@@ -18,6 +26,8 @@ import java.security.Security
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
+
+    private val model: GroupViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +62,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             DID.setOnClickListener {
-                CoroutineScope(dispatcher).launch{
-                    DIDContract.registerDid(GanacheAddress.USER1,"user1")
+                CoroutineScope(dispatcher).launch {
+                    DIDContract.registerDid(GanacheAddress.USER1, "user1")
                 }
             }
 
@@ -79,5 +89,4 @@ class MainActivity : AppCompatActivity() {
         Security.removeProvider(BouncyCastleProvider.PROVIDER_NAME)
         Security.insertProviderAt(BouncyCastleProvider(), 1)
     }
-
 }
