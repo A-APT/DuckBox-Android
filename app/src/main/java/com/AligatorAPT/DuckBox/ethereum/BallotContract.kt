@@ -31,6 +31,7 @@ object BallotContract {
                        startTime: Long, // milliseconds
                        endTime: Long // milliseconds
     ): Boolean? {
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("REGISTER_VOTE_ADDRESS", contractAddress)
         val candidateList: List<Utf8String> = candidateNames.stream().map {
             Utf8String(it)
@@ -51,18 +52,21 @@ object BallotContract {
     }
 
     fun open(ballotId: String) {
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>()
         ethereumManagement.ethSendRaw(contractAddress, OPEN, inputParams, outputParams)
     }
 
     fun close(ballotId: String, totalNum: Int) {
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId), Uint256(totalNum.toLong()))
         val outputParams = listOf<TypeReference<*>>()
         ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, CLOSE, inputParams, outputParams)
     }
 
     fun resultOfBallot(ballotId: String): List<BigInteger> {
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("RESULT_ADDRESS", contractAddress)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Uint>>() {})
@@ -82,6 +86,7 @@ object BallotContract {
         R: ArrayList<BigInteger>,
         pseudoCredentials: Credentials,
     ){
+        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("VOTE_ADDRESS", contractAddress)
         val RList: List<Uint256> = R.stream().map {
             Uint256(it)
