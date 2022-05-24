@@ -126,6 +126,10 @@ class GroupDetailFragment : Fragment() {
                                             groupId = groupId,
                                             approverDid = MyApplication.prefs.getString("did", "notExist")
                                         )
+                                        model.joinGroup(object: ApiCallback{
+                                            override fun apiCallback(flag: Boolean) {
+                                            }
+                                        })
                                     })
                                     Toast.makeText(mActivity, "그룹 인증이 요청되었습니다.", Toast.LENGTH_LONG).show()
                                 }
