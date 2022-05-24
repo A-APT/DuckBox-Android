@@ -159,7 +159,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         startDate = date
-                        start_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
+                        start_Datefor = Date(year-1900,month-1,day,hour,min,cal_ampm)
                         cvFirstStartdateCheck.setText(startDate)
                     }
                 })
@@ -174,7 +174,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         finishDate = date
-                        last_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
+                        last_Datefor = Date(year-1900,month-1,day,hour,min,cal_ampm)
                         cvFirstLastdateCheck.setText(finishDate)
                     }
                 })

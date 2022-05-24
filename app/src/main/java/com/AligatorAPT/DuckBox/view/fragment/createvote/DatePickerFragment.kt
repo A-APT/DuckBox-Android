@@ -12,7 +12,6 @@ import java.util.*
 
 class DatePickerFragment : BottomSheetDialogFragment() {
     lateinit var binding: DialogTimedatepickerBinding
-    var arr : List<String> = listOf()
     val calendar = GregorianCalendar.getInstance()
 
     companion object {
