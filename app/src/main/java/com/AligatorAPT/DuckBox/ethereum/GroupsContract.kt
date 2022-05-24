@@ -19,6 +19,7 @@ object GroupsContract {
     private const val EXITMEMBER = "exitMember"
     private const val APPROVEGROUP = "approveGroupAuthentication"
     private const val GETREQUESTERLIST = "getRequesterList"
+    private const val GETMEMBERSTATUS = "getMemberStatus"
 
     fun registerGroup(groupId: String, ownerDid: String): Boolean? { //only owner
         Log.d("ADDRESS", contractAddress)
@@ -124,5 +125,15 @@ object GroupsContract {
         }
 
         return result
+    }
+
+    fun getMemberStatus(groupId: String, userDId: String): Boolean {
+        val inputParams = listOf<Type<*>>(
+            Utf8String(groupId),
+            Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDId))
+        )
+        val outputParams = listOf<TypeReference<*>>(object: TypeReference<Bool>() {})
+        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETMEMBERSTATUS, inputParams, outputParams)!!
+        return decoded[0].value as Boolean
     }
 }
