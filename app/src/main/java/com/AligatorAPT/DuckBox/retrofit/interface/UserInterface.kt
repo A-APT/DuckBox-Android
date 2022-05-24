@@ -26,7 +26,7 @@ interface UserInterface {
         @Body registerDto: RegisterDto
     ): Call<String>
 
-    @POST("/api/v1/user/group")
+    @POST("/api/v1/group/member")
     fun joinGroup(
         @Body groupId: RequestBody,
         @HeaderMap httpHeaders: HashMap<String, String>
