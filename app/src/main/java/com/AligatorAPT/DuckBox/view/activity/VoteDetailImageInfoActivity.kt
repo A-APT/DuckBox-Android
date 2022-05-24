@@ -10,9 +10,11 @@ import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVotedetailImageinfoBinding
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
+import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 
 class VoteDetailImageInfoActivity : AppCompatActivity() {
     lateinit var binding: ActivityVotedetailImageinfoBinding
+    private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +27,14 @@ class VoteDetailImageInfoActivity : AppCompatActivity() {
 
     fun init(){
         binding.apply {
-            val img_arr = intent.getSerializableExtra("img_arr") as ArrayList<String>
+
             val position = intent.getIntExtra("position",0)
+            val img_arr = voteModel!!.myVote.value!![position].images as ArrayList<String>
+
             vdImageCloseIv.setOnClickListener { finish() }
             val imageAdapter = BannerAdapter(img_arr)
             imageAdapter.itemClickListener = object: BannerAdapter.OnItemClickListener{
                 override fun OnItemClick(
-                    holder: BannerAdapter.MyViewHolder,
-                    view: View,
                     data: String,
                     position: Int
                 ) {

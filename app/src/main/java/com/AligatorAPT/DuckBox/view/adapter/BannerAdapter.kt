@@ -12,16 +12,13 @@ class BannerAdapter (var items:ArrayList<String>)
     : RecyclerView.Adapter<BannerAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(holder: MyViewHolder, view: View, data: String, position: Int)
+        fun OnItemClick(data: String, position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null
 
     inner class MyViewHolder(val binding: RowBannerBinding): RecyclerView.ViewHolder(binding.root) {
         init{
-            binding.banner.setOnClickListener {
-                itemClickListener?.OnItemClick(this, it, items[adapterPosition], adapterPosition)
-            }
         }
     }
 
@@ -38,5 +35,8 @@ class BannerAdapter (var items:ArrayList<String>)
         val decodedImageBytes: ByteArray = Base64.decode(items[position], Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
         holder.binding.bannerImage.setImageBitmap(bitmap)
+        holder.binding.banner.setOnClickListener {
+            itemClickListener?.OnItemClick(items[position], position)
+        }
     }
 }

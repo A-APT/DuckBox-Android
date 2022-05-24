@@ -184,11 +184,13 @@ class GroupDetailFragment : Fragment() {
                                 // 투표 및 설문 상세로 화면 전환
                                 val studentId = MyApplication.prefs.getString("studentId", "notExist").toInt()
                                 val nickname = MyApplication.prefs.getString("nickname","notExist")
+                                val status = data.status
                                 if(data.voters != null){
                                     if(data.voters.contains(studentId) || data.owner == nickname){
                                         val intent = Intent(activity, VoteDetailActivity::class.java)
                                         intent.putExtra("position",position)
                                         intent.putExtra("time",time)
+                                        intent.putExtra("status",status)
                                         startActivity(intent)
                                     }
                                     else Toast.makeText(context,"유권자가 아닙니다.", Toast.LENGTH_SHORT).show()
@@ -196,6 +198,7 @@ class GroupDetailFragment : Fragment() {
                                     val intent = Intent(activity, VoteDetailActivity::class.java)
                                     intent.putExtra("position",position)
                                     intent.putExtra("time",time)
+                                    intent.putExtra("status",status)
                                     startActivity(intent)
                                 }
                             }

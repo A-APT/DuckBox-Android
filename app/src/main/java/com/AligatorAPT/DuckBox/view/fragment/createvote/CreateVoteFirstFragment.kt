@@ -232,7 +232,8 @@ class CreateVoteFirstFragment: Fragment()  {
             }
         }
         Toast.makeText(context, "현재 시간 1시간 이후로 설정해주세요.", Toast.LENGTH_SHORT).show()
-        return false
+        //TODO 투표 생성 시연할 때 return true
+        return true
     }
 
     private fun checkTime(): Boolean {

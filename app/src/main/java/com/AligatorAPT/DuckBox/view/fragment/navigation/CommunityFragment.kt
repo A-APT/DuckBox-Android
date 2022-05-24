@@ -54,13 +54,8 @@ class CommunityFragment : Fragment() {
             //배너
             bannerAdapter = BannerAdapter(arrayListOf("YW5kcm9pZC5ncmFwaGljcy5CaXRtYXBAYjk3MTQ2"))
             bannerAdapter.itemClickListener = object :BannerAdapter.OnItemClickListener{
-                override fun OnItemClick(
-                    holder: BannerAdapter.MyViewHolder,
-                    view: View,
-                    data: String,
-                    position: Int
-                ) {
-                    //배너 화면으로 전환
+                override fun OnItemClick(data: String, position: Int) {
+
                 }
             }
             viewpagerBanner.adapter = bannerAdapter
