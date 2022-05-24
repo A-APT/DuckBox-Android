@@ -59,9 +59,6 @@ class MutualAuthFragment : Fragment() {
             ) {
                 //승인하기 버튼 이벤트
                 model.id.observe(viewLifecycleOwner, Observer {
-                    Log.e("APPROVERDID", MyApplication.prefs.getString("did","notExist"))
-                    Log.e("REQUESTERDID", data.did)
-                    Log.e("GROUPID", it)
                     contractModel?.approveMember(
                         groupId = it,
                         approverDid = MyApplication.prefs.getString("did","notExist"),
@@ -75,7 +72,6 @@ class MutualAuthFragment : Fragment() {
 
         //데이터 등록
         contractModel?.requester?.observe(viewLifecycleOwner, Observer {
-            Log.e("MUTUAL", it.toString())
             val arrayList = ArrayList<Requester>()
             if (it != null) {
                 arrayList.addAll(it.toTypedArray())

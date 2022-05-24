@@ -70,7 +70,6 @@ class GroupDetailFragment : Fragment() {
 
             //이미지
             model.header.observe(viewLifecycleOwner, Observer {
-                Log.e("HEADER::", it.toString())
                 if (it == null) {
                     groupBackgroundImg.setImageResource(R.drawable.sub1_color_box_5dp)
                 } else {
@@ -87,7 +86,6 @@ class GroupDetailFragment : Fragment() {
                 } else {
                     //그룹 가입 여부
                     model.authority.observe(viewLifecycleOwner, Observer {
-                        Log.e("AUTHORITY", it.toString())
                         if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
                             joinGroup.visibility = View.GONE
                             mutualAuthentication.visibility = View.VISIBLE
@@ -197,7 +195,6 @@ class GroupDetailFragment : Fragment() {
             //그룹 투표리스트 리사이클러뷰
             voteModel!!.myVote.observe(viewLifecycleOwner, Observer {
                 if (it != null) {
-                    Log.e("GROUP_MYVOTE", it.toString())
                     val arr = ArrayList<VoteDetailDto>()
                     arr.addAll(it)
                     paperListAdapter = PaperListAdapter(arr)
@@ -303,11 +300,10 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in _list.indices){
-                                if(_list[i].isGroup) {
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
-                            Log.e("GROUPDETAIL",groupList.toString())
                             voteModel.setMyVote(groupList)
                         }
                     }
@@ -318,7 +314,7 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in _list.indices){
-                                if(_list[i].isGroup) {
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
@@ -332,7 +328,7 @@ class GroupDetailFragment : Fragment() {
                     override fun apiCallback(flag: Boolean, _list: List<VoteDetailDto>?) {
                         if(flag && _list != null){
                             for(i in _list.indices){
-                                if(_list[i].isGroup) {
+                                if(_list[i].groupId != null) {
                                     groupList.add(_list[i])
                                 }
                             }
