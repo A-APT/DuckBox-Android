@@ -85,6 +85,11 @@ class GroupDetailFragment : Fragment() {
                     mutualAuthentication.visibility = View.GONE
                 } else {
                     //그룹 가입 여부
+                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
+                        if(MyApplication.prefs.getString("did","notExist") == leader)
+                            model.setAuthority(GroupViewModel.Authority.MASTER)
+                    })
+
                     model.authority.observe(viewLifecycleOwner, Observer {
                         if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
                             joinGroup.visibility = View.GONE
@@ -124,6 +129,10 @@ class GroupDetailFragment : Fragment() {
                                             groupId = groupId,
                                             approverDid = MyApplication.prefs.getString("did", "notExist")
                                         )
+                                        model.joinGroup(object: ApiCallback{
+                                            override fun apiCallback(flag: Boolean) {
+                                            }
+                                        })
                                     })
                                     Toast.makeText(mActivity, "그룹 인증이 요청되었습니다.", Toast.LENGTH_LONG).show()
                                 }
