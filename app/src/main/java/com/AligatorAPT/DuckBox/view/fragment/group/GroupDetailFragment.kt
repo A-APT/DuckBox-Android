@@ -84,6 +84,7 @@ class GroupDetailFragment : Fragment() {
                 } else {
                     //그룹 가입 여부
                     model.authority.observe(viewLifecycleOwner, Observer {
+                        Log.e("AUTHORITY", it.toString())
                         if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
                             joinGroup.visibility = View.GONE
                             mutualAuthentication.visibility = View.VISIBLE

@@ -66,7 +66,7 @@ class GroupsContractViewModel : ViewModel(){
     fun getRequesterList(groupId: String){
         viewModelScope.launch {
             withContext(dispatcher){
-                requester.value = GroupsContract.getRequesterList(groupId)
+                requester.postValue(GroupsContract.getRequesterList(groupId))
             }
         }
     }

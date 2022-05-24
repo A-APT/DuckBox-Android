@@ -1,6 +1,7 @@
 package com.AligatorAPT.DuckBox.view.fragment.group
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.adapter.MutualAuthAdapter
 import com.AligatorAPT.DuckBox.viewmodel.GroupViewModel
 import com.AligatorAPT.DuckBox.viewmodel.SingletonGroupsContract
+import kotlin.contracts.contract
 
 class MutualAuthFragment : Fragment() {
     private var _binding: FragmentMutualAuthBinding? = null
@@ -57,6 +59,9 @@ class MutualAuthFragment : Fragment() {
             ) {
                 //승인하기 버튼 이벤트
                 model.id.observe(viewLifecycleOwner, Observer {
+                    Log.e("APPROVERDID", MyApplication.prefs.getString("did","notExist"))
+                    Log.e("REQUESTERDID", data.did)
+                    Log.e("GROUPID", it)
                     contractModel?.approveMember(
                         groupId = it,
                         approverDid = MyApplication.prefs.getString("did","notExist"),
@@ -70,6 +75,7 @@ class MutualAuthFragment : Fragment() {
 
         //데이터 등록
         contractModel?.requester?.observe(viewLifecycleOwner, Observer {
+            Log.e("MUTUAL", it.toString())
             val arrayList = ArrayList<Requester>()
             if (it != null) {
                 arrayList.addAll(it.toTypedArray())

@@ -95,8 +95,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             getList.setOnClickListener {
-                val list = GroupsContract.getRequesterList("a")
-                Log.e("List::", list.toString())
+//                val list = GroupsContract.getRequesterList("a")
+//                Log.e("List::", list.toString())
             }
 
             VOTECONTRACT.setOnClickListener {
