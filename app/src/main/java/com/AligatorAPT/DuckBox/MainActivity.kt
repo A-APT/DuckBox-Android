@@ -62,14 +62,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
 
-            DID.setOnClickListener {
-                DIDContract.registerDid(GanacheAddress.GROUP_OWNER,"67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
-                DIDContract.registerDid(GanacheAddress.APPROVER1,"77b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
-                DIDContract.registerDid(GanacheAddress.APPROVER2,"87b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
-                DIDContract.registerDid(GanacheAddress.USER1,"97b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
-                DIDContract.registerDid(GanacheAddress.USER2,"a7b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
-            }
-
             createGroup.setOnClickListener {
                 contractModel?.registerGroup("duck", "67b46dc256ee2d88130098d6309eb40023a02210f919cd03105801d7d50b655a")
             }
