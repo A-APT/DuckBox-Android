@@ -13,26 +13,25 @@ import android.view.View
 import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityVoteDetailBinding
+import com.AligatorAPT.DuckBox.dto.ethereum.VoteData
 import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
 import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigToken
-import com.AligatorAPT.DuckBox.ethereum.BallotContract
-import com.AligatorAPT.DuckBox.ethereum.EthereumManagement
 import com.AligatorAPT.DuckBox.retrofit.callback.TokenCallback
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteResultListAdapter
+import com.AligatorAPT.DuckBox.viewmodel.SingletonBallotsContract
 import com.AligatorAPT.DuckBox.viewmodel.VoteDetailViewModel
 import com.AligatorAPT.DuckBox.viewmodel.VoteViewModel
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import org.web3j.crypto.Credentials
 import java.math.BigInteger
 import kotlin.collections.ArrayList
@@ -51,6 +50,7 @@ class VoteDetailActivity : AppCompatActivity() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
     private lateinit var blindSecp256k1: BlindSecp256k1
 
+    private val contractModel = SingletonBallotsContract.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,27 +114,29 @@ class VoteDetailActivity : AppCompatActivity() {
 
     private fun initResultRV() {
         binding.apply {
-            CoroutineScope(dispatcher).launch{
-                val arr_can: List<BigInteger> = BallotContract.resultOfBallot(ballotId = voteList.id)
+            contractModel?.resultOfBallot(voteList.id)
+
+            contractModel?.resultList?.observe(this@VoteDetailActivity, Observer{
                 var max = 0
                 var allCount = BigInteger("0")
-                for(i in arr_can.indices){
-                    allCount += arr_can[i]
-                    if(arr_can[max] < arr_can[i]){
-                        max = i
+                if (it != null) {
+                    for(i in it.indices){
+                        allCount += it[i]
+                        if(it[max] < it[i]){
+                            max = i
+                        }
                     }
+                    //디바이스 크기
+                    val windowManager = this@VoteDetailActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    val display = windowManager.defaultDisplay
+                    val size = android.graphics.Point()
+                    display.getSize(size)
+                    val deviceWidth = size.x
+
+                    val voteResultAdapter = VoteResultListAdapter(candidate, it, max, allCount, deviceWidth)
+                    vdListRv.adapter = voteResultAdapter
                 }
-
-                //디바이스 크기
-                val windowManager = this@VoteDetailActivity.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                val display = windowManager.defaultDisplay
-                val size = android.graphics.Point()
-                display.getSize(size)
-                val deviceWidth = size.x
-
-                val voteResultAdapter = VoteResultListAdapter(candidate, arr_can, max, allCount, deviceWidth)
-                vdListRv.adapter = voteResultAdapter
-            }
+            })
         }
     }
 
@@ -198,24 +200,25 @@ class VoteDetailActivity : AppCompatActivity() {
                             vdFinalTv.setText("제출 완료")
                             ListAdapter.isClickable = false
 
-                            CoroutineScope(dispatcher).launch{
-                                val r = arrayListOf(blindedData.R.x,blindedData.R.y)
-                                val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
-                                val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
-                                val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
-                                val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
-                                // create new account
-                                val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
-
-                                BallotContract.vote(
-                                    _ballotId = voteList.id,
-                                    _m = model.num.toString(),
-                                    _serverSig = serverSig,
-                                    _ownerSig = voteOwnerSig,
+                            Log.e("BLIND::", _blindsigToken!!.ownerBSig)
+                            val r = arrayListOf(blindedData.R.x,blindedData.R.y)
+                            val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
+                            val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
+                            val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
+                            val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
+                            // create new account
+                            //val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+                            val pseudoCredentials: Credentials = Credentials.create("4c1fb8a2c33e8938e63ee1e7ca261128d1c8183971834829d4c60e4fbb1ad732")
+                            contractModel?.vote(
+                                VoteData(
+                                    ballotId = voteList.id,
+                                    m = model.num.toString(),
+                                    serverSig = serverSig,
+                                    ownerSig = voteOwnerSig,
                                     R = r,
                                     pseudoCredentials = pseudoCredentials
                                 )
-                            }
+                            )
                         }
                     }
                 })
