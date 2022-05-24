@@ -1,5 +1,6 @@
 package com.AligatorAPT.DuckBox.ethereum
 
+import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
 import org.web3j.abi.FunctionEncoder
 import org.web3j.abi.FunctionReturnDecoder
@@ -15,7 +16,6 @@ import org.web3j.protocol.core.methods.response.EthSendTransaction
 import org.web3j.protocol.core.methods.response.TransactionReceipt
 import org.web3j.protocol.http.HttpService
 import org.web3j.tx.RawTransactionManager
-import org.web3j.utils.Convert
 import java.io.File
 import java.math.BigInteger
 
@@ -27,7 +27,7 @@ object EthereumManagement {
     private var credentials: Credentials? = null
 
     private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
-    private val gasLimit: BigInteger = BigInteger.valueOf(80000) // gasLimit
+    private val gasLimit: BigInteger = BigInteger.valueOf(6700000) // gasLimit
 
     fun createNewCredentials(password: String): Credentials {
         val keyPair: ECKeyPair = Keys.createEcKeyPair()
@@ -55,6 +55,7 @@ object EthereumManagement {
     }
 
     fun ethCall(
+        userAddress: String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -67,20 +68,21 @@ object EthereumManagement {
 
         // call function
         // createFunctionCallTransaction BigInteger
-        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
         val ethCall: EthCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get()
 
         if (ethCall.hasError()){
-            throw Exception(ethCall.error.message)
+            Log.e("EthException", ethCall.error.message)
         }
 
         // decode response
         val decode: List<Type<*>> = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
-        //print("ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
+//        Log.e("LIST:::","ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
         return decode.ifEmpty { null }
     }
 
     fun ethSend(
+        userAddress:String,
         contractAddress: String,
         functionName: String,
         inputParams: List<Type<*>>,
@@ -93,11 +95,11 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // create raw transaction (:signed transaction)
-        val transaction = Transaction.createEthCallTransaction(credentials!!.address, contractAddress, encodedFunction)
+        val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
         val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
 
         if (ethSend.hasError()){
-            throw Exception(ethSend.error.message)
+            Log.e("EthException", ethSend.error.message)
         }
 
         // decode response
@@ -129,14 +131,8 @@ object EthereumManagement {
         )
 
         if (ethSend.hasError()){
-            throw Exception(ethSend.error.message)
+            Log.e("EthException", ethSend.error.message)
         }
-
-//        val processor = PollingTransactionReceiptProcessor(
-//            web3j,
-//            TransactionManager.DEFAULT_POLLING_FREQUENCY,
-//            TransactionManager.DEFAULT_POLLING_ATTEMPTS_PER_TX_HASH)
-//        val receipt = processor.waitForTransactionReceipt(ethSend.transactionHash)
 
         // decode response
         val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)

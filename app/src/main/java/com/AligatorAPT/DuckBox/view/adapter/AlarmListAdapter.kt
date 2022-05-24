@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.RowAlarmBinding
-import com.AligatorAPT.DuckBox.view.data.AlarmData
+import com.AligatorAPT.DuckBox.dto.alarm.AlarmData
 import java.util.*
 import kotlin.collections.ArrayList
 

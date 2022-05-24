@@ -35,4 +35,10 @@ interface GroupInterface {
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Path("query") query: String
     ): Call<ArrayList<GroupDetailDto>>
+
+    @GET("/api/v1/group/{groupId}")
+    fun findGroupById(
+        @HeaderMap httpHeaders: HashMap<String, String>,
+        @Path("groupId") groupId: String
+    ): Call<GroupDetailDto>
 }

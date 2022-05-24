@@ -1,4 +1,4 @@
-package com.AligatorAPT.DuckBox.view.data
+package com.AligatorAPT.DuckBox.dto.alarm
 
 import java.util.*
 
@@ -7,4 +7,4 @@ data class AlarmData(
     val content: String,
     val time: Date,
     val isNew: Boolean
-){}
+)

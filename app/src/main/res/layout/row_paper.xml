@@ -24,93 +24,92 @@
         app:layout_constraintBottom_toBottomOf="parent"/>
 
 
-        <TextView
-            android:id="@+id/paperListTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="건국대학교 제47회 공과대학 학생회 투표"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@id/paperListImage"
-            app:layout_constraintTop_toTopOf="@id/paperListImage"/>
+    <TextView
+        android:id="@+id/paperListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="건국대학교 제47회 공과대학 학생회 투표"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/paperListImage"
+        app:layout_constraintTop_toTopOf="@id/paperListImage"/>
 
-        <ImageView
-            android:id="@+id/userImage"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:contentDescription="userImage"
-            app:srcCompat="@drawable/user"
-            android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@id/paperListTitle"
-            app:layout_constraintStart_toStartOf="@id/paperListTitle"/>
+    <ImageView
+        android:id="@+id/userImage"
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:contentDescription="userImage"
+        app:srcCompat="@drawable/user"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/paperListTitle"
+        app:layout_constraintStart_toStartOf="@id/paperListTitle"/>
 
-        <TextView
-            android:id="@+id/paperListWriter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="KU총학생회"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintStart_toEndOf="@id/userImage"
-            app:layout_constraintTop_toTopOf="@id/userImage"
-            app:layout_constraintBottom_toBottomOf="@id/userImage"/>
+    <TextView
+        android:id="@+id/paperListWriter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="KU총학생회"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/userImage"
+        app:layout_constraintTop_toTopOf="@id/userImage"
+        app:layout_constraintBottom_toBottomOf="@id/userImage"/>
 
-        <TextView
-            android:id="@+id/paperListIsVote"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/sub4_color_box_3dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
-            android:text="투표"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toEndOf="@id/paperListImage"
-            app:layout_constraintBottom_toBottomOf="@id/paperListImage"/>
+    <TextView
+        android:id="@+id/paperListIsVote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/sub4_color_box_3dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="4dp"
+        android:text="투표"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/paperListImage"
+        app:layout_constraintBottom_toBottomOf="@id/paperListImage"/>
 
-        <TextView
-            android:id="@+id/paperListCanParticipate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="@drawable/sub1_color_box_3dp"
-            android:paddingHorizontal="6dp"
-            android:paddingVertical="4dp"
-            android:text="참여 가능"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            android:layout_marginStart="5dp"
-            app:layout_constraintStart_toEndOf="@id/paperListIsVote"
-            app:layout_constraintTop_toTopOf="@id/paperListIsVote"/>
+    <TextView
+        android:id="@+id/paperListCanParticipate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@drawable/sub1_color_box_3dp"
+        android:paddingHorizontal="6dp"
+        android:paddingVertical="4dp"
+        android:text="참여 가능"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        android:layout_marginStart="5dp"
+        app:layout_constraintStart_toEndOf="@id/paperListIsVote"
+        app:layout_constraintTop_toTopOf="@id/paperListIsVote"/>
 
-        <ImageView
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginEnd="4dp"
-            android:contentDescription="time"
-            app:srcCompat="@drawable/time"
-            app:layout_constraintEnd_toStartOf="@id/paperListTime"
-            app:layout_constraintTop_toTopOf="@id/paperListTime"
-            app:layout_constraintBottom_toBottomOf="@id/paperListTime"
-            app:layout_goneMarginEnd="5dp"/>
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="time"
+        app:srcCompat="@drawable/time"
+        app:layout_constraintEnd_toStartOf="@id/paperListTime"
+        app:layout_constraintTop_toTopOf="@id/paperListTime"
+        app:layout_constraintBottom_toBottomOf="@id/paperListTime"
+        app:layout_goneMarginEnd="5dp"/>
 
-        <TextView
-            android:id="@+id/paperListTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3일 06:05:03 남음"
-            android:textColor="@color/darkgray"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
+    <TextView
+        android:id="@+id/paperListTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3일 06:05:03 남음"
+        android:textColor="@color/darkgray"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

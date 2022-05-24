@@ -59,14 +59,14 @@ object BallotContract {
     fun close(ballotId: String, totalNum: Int) {
         val inputParams = listOf<Type<*>>(Utf8String(ballotId), Uint256(totalNum.toLong()))
         val outputParams = listOf<TypeReference<*>>()
-        ethereumManagement.ethCall(contractAddress, CLOSE, inputParams, outputParams)
+        ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, CLOSE, inputParams, outputParams)
     }
 
     fun resultOfBallot(ballotId: String): List<BigInteger> {
         Log.d("RESULT_ADDRESS", contractAddress)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Uint>>() {})
-        val decoded: List<Type<*>> = EthereumManagement.ethCall(contractAddress, RESULT, inputParams, outputParams)!!
+        val decoded: List<Type<*>> = EthereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, RESULT, inputParams, outputParams)!!
         val result: MutableList<BigInteger> = mutableListOf()
         (decoded[0].value as List<Uint>).forEach {
             result.add(it.value)
@@ -90,7 +90,6 @@ object BallotContract {
         val rListDynamicArray = DynamicArray(Uint256::class.java, RList)
         val inputParams = listOf<Type<*>>(
             Utf8String(_ballotId),
-//            StaticArray(bytearray.size, bytearray),
             Bytes32(bytearray),
             Uint256(_serverSig),
             Uint256(_ownerSig),

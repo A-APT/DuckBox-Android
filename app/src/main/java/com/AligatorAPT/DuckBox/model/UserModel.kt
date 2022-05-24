@@ -1,9 +1,11 @@
 package com.AligatorAPT.DuckBox.model
 
 import android.util.Log
+import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
 import com.AligatorAPT.DuckBox.dto.user.LoginResponseDto
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
+import com.AligatorAPT.DuckBox.ethereum.DIDContract
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
@@ -25,6 +27,10 @@ object UserModel{
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("did", response.body()!!)
                     Log.d("DID", response.body()!!)
+
+                    //add did for test
+                    DIDContract.registerDid(BuildConfig.USER_ADDRESS, response.body()!!)
+
                     callback.apiCallback(true)
                 }else{
                     callback.apiCallback(false)
@@ -96,5 +102,4 @@ object UserModel{
             }
         })
     }
-
 }

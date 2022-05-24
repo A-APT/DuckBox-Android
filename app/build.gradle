@@ -21,6 +21,8 @@ android {
         // local properties
         buildConfigField("String", "ETH_NETWORK_LOCAL", properties.getProperty("ethereum.network-local"))
         buildConfigField("String", "ETH_NETWORK_ROPSTEN", properties.getProperty("ethereum.network-ropsten"))
+        buildConfigField("String", "ADDRESS_DID", properties.getProperty("contract.address.did"))
+        buildConfigField("String", "ADDRESS_GROUPS", properties.getProperty("contract.address.groups"))
 
         buildConfigField("String", "OWNER_ADDRESS", properties.getProperty("ganache.owner.address"))
         buildConfigField("String", "OWNER_PK", properties.getProperty("ganache.owner.private-key"))
