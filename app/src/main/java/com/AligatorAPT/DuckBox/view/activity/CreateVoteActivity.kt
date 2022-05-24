@@ -87,8 +87,9 @@ class CreateVoteActivity : FragmentActivity() {
 
 
                             CoroutineScope(dispatcher).launch{
-                                val startMillis = viewModel.startTime.value!!.toInstant().toEpochMilli()
-                                val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
+                                Log.e("Date","start: ${viewModel.startTime.value.toString()}, finish: ${viewModel.finishTime.value.toString()}")
+                                val startMillis = viewModel.startTime.value!!.time
+                                val finishMillis = viewModel.finishTime.value!!.time
                                 Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
                                 val did = MyApplication.prefs.getString("did", "notExist")
                                 BallotContract.registerBallot(
