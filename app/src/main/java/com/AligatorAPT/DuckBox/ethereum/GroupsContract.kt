@@ -6,6 +6,8 @@ import com.AligatorAPT.DuckBox.dto.ethereum.Requester
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
+import javax.xml.bind.DatatypeConverter
+
 
 object GroupsContract {
 
@@ -99,7 +101,7 @@ object GroupsContract {
         val email: MutableList<String> = mutableListOf()
 
         (decoded[0].value as List<Bytes32>).forEach {
-            did.add(it.value.toString())
+            did.add(DatatypeConverter.printHexBinary(it.value))
         }
         (decoded[1].value as List<Bool>).forEach {
             isValid.add(it.value)
@@ -113,7 +115,7 @@ object GroupsContract {
 
         val result: MutableList<Requester> = mutableListOf()
 
-        for( i in 0 until did.size){
+        for( i in 1 until did.size){
             result.add(
                 Requester(
                     did = did[i],
