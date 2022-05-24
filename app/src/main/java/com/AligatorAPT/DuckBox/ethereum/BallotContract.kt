@@ -14,7 +14,7 @@ import kotlin.streams.toList
 object BallotContract {
 
     private val ethereumManagement: EthereumManagement = EthereumManagement
-    private const val contractAddress: String = BuildConfig.BALLOT_ADDRESS
+    private const val contractAddress: String = BuildConfig.ADDRESS_BALLOTS
 
     private final val REGISTER = "registerBallot"
     private final val OPEN = "open"

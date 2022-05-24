@@ -28,9 +28,6 @@ object UserModel{
                     MyApplication.prefs.setString("did", response.body()!!)
                     Log.d("DID", response.body()!!)
 
-                    //add did for test
-                    DIDContract.registerDid(BuildConfig.USER_ADDRESS, response.body()!!)
-
                     callback.apiCallback(true)
                 }else{
                     callback.apiCallback(false)
