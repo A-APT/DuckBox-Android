@@ -50,7 +50,6 @@ class VoteDetailActivity : AppCompatActivity() {
 
     private val model: VoteDetailViewModel by viewModels()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
-    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
     private lateinit var blindSecp256k1: BlindSecp256k1
 
     private val contractModel = SingletonBallotsContract.getInstance()
@@ -189,7 +188,7 @@ class VoteDetailActivity : AppCompatActivity() {
         binding.apply {
             vdFinalTv.setOnClickListener {
                 //투표 완료
-                val message = model.num.toString().encodeToByteArray()
+                val message = model.num.value.toString().encodeToByteArray()
                 val R_ = Point(
                     BigInteger("d80387d2861da050c1a8ae11c9a1ef5ed93572bd6537d50984c1dea2f2db912b", 16),
                     BigInteger("edcef3840df9cd47256996c460f0ce045ccb4fac5e914f619c44ad642779011", 16)
@@ -221,7 +220,7 @@ class VoteDetailActivity : AppCompatActivity() {
                             contractModel?.vote(
                                 VoteData(
                                     ballotId = voteList.id,
-                                    m = model.num.toString(),
+                                    m = model.num.value.toString(),
                                     serverSig = serverSig,
                                     ownerSig = voteOwnerSig,
                                     R = r,
