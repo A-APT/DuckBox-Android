@@ -117,14 +117,14 @@ class MainActivity : AppCompatActivity() {
                     // create new account
                     val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
 
-                    BallotContract.vote(
-                        _ballotId = "ballot id",
-                        _m = "0",
-                        _serverSig = serverSig,
-                        _ownerSig = voteOwnerSig,
-                        R = r,
-                        pseudoCredentials = pseudoCredentials
-                    )
+//                    BallotContract.vote(
+//                        _ballotId = "ballot id",
+//                        _m = "0",
+//                        _serverSig = serverSig,
+//                        _ownerSig = voteOwnerSig,
+//                        R = r,
+//                        pseudoCredentials = pseudoCredentials
+//                    )
                 }
             }
         }
