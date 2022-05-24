@@ -53,8 +53,11 @@ class GroupDetailFragment : Fragment() {
 
     private fun init() {
         val mActivity = activity as GroupActivity
+
         //그룹 권한 초기화
-        model.setAuthority(GroupViewModel.Authority.MASTER)
+        model.id.observe(viewLifecycleOwner, Observer {
+            model.setAuthorityOfGroup(it)
+        })
 
         binding.apply {
             //그룹 정보 추가

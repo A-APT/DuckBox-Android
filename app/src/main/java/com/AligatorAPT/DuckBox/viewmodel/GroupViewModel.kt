@@ -1,19 +1,23 @@
 package com.AligatorAPT.DuckBox.viewmodel
 
 import android.util.Base64
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
 import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
+import com.AligatorAPT.DuckBox.ethereum.GroupsContract
 import com.AligatorAPT.DuckBox.model.GroupModel
 import com.AligatorAPT.DuckBox.model.UserModel
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.SingleGroupCallback
+import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.web3j.abi.datatypes.Bool
 
 class GroupViewModel: ViewModel() {
     private var dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -57,6 +61,15 @@ class GroupViewModel: ViewModel() {
         header.value = headerByte
         id.value = _id
         status.value = _status
+    }
+
+    fun setAuthorityOfGroup(groupId: String){
+        val userDid: String = MyApplication.prefs.getString("did","notExist")
+        val userStatus: Boolean = GroupsContract.getMemberStatus(groupId, userDid)
+        authority.value = when(userStatus) {
+            true -> Authority.MEMBER
+            false -> Authority.OTHER
+        }
     }
 
     fun setAuthority(_authority: Authority){
