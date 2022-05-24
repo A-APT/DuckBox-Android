@@ -44,6 +44,7 @@ class VoteDetailActivity : AppCompatActivity() {
     private lateinit var voteList : VoteDetailDto
     private lateinit var time: String
     private lateinit var status: BallotStatus
+    private var position: Int = 0
 
     private val model: VoteDetailViewModel by viewModels()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
@@ -59,9 +60,10 @@ class VoteDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         blindSecp256k1 = BlindSecp256k1()
-        val position = intent.getIntExtra("position", 0)
+        position = intent.getIntExtra("position", 0)
         time = intent.getStringExtra("time").toString()
         status = intent.getSerializableExtra("status") as BallotStatus
+        Log.e("IMAGEINFO",position.toString())
 
         voteList = voteModel!!.myVote.value!![position]
         img_arr = voteList.images as ArrayList<String>
@@ -152,10 +154,11 @@ class VoteDetailActivity : AppCompatActivity() {
         imageAdapter.itemClickListener = object: BannerAdapter.OnItemClickListener{
             override fun OnItemClick(
                 data: String,
-                position: Int
+                selected_position: Int
             ) {
                 val intent = Intent(this@VoteDetailActivity, VoteDetailImageInfoActivity::class.java)
                 intent.putExtra("position",position)
+                intent.putExtra("selected_position",selected_position)
                 startActivity(intent)
             }
         }

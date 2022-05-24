@@ -5,6 +5,7 @@ import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.AligatorAPT.DuckBox.databinding.RowBannerBinding
 
@@ -12,7 +13,7 @@ class BannerAdapter (var items:ArrayList<String>)
     : RecyclerView.Adapter<BannerAdapter.MyViewHolder>(){
 
     interface OnItemClickListener{
-        fun OnItemClick(data: String, position: Int)
+        fun OnItemClick(data: String, selected_position: Int)
     }
 
     var itemClickListener:OnItemClickListener?= null
@@ -35,6 +36,7 @@ class BannerAdapter (var items:ArrayList<String>)
         val decodedImageBytes: ByteArray = Base64.decode(items[position], Base64.DEFAULT)
         val bitmap = BitmapFactory.decodeByteArray(decodedImageBytes, 0, decodedImageBytes.size)
         holder.binding.bannerImage.setImageBitmap(bitmap)
+        holder.binding.bannerImage.scaleType = ImageView.ScaleType.FIT_CENTER
         holder.binding.banner.setOnClickListener {
             itemClickListener?.OnItemClick(items[position], position)
         }
