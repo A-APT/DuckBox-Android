@@ -184,7 +184,7 @@ class MoreInfoFragment : Fragment() {
                                                 college = "건국대학교",
                                                 department = departmentList,
                                                 fcmToken = fcmToken.result,
-                                                address = BuildConfig.USER_ADDRESS
+                                                address = BuildConfig.ADDRESS_DID
                                             ), object : ApiCallback {
                                                 override fun apiCallback(flag: Boolean) {
                                                     if (flag) {
