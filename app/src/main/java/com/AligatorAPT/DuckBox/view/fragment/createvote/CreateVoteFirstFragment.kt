@@ -247,7 +247,7 @@ class CreateVoteFirstFragment: Fragment()  {
                 if(finarr[i] < startarr[i])break
                 else if(finarr[i] > startarr[i])return true
                 else if(i==2){
-                     if(checkAMPM(finarr, startarr,false))return true
+                    if(checkAMPM(finarr, startarr,false))return true
                 }
             }
             Toast.makeText(context, "시간 설정을 확인해주세요.", Toast.LENGTH_SHORT).show()
@@ -269,12 +269,12 @@ class CreateVoteFirstFragment: Fragment()  {
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
             if(starthour == 12 && finhour < 12) return true
-            if(finhour > starthour ) return true
-            if(!isNow){
-                if(finhour == starthour) {
-                    return finmin>startmin
-                }
+        if(finhour > starthour ) return true
+        if(!isNow){
+            if(finhour == starthour) {
+                return finmin>startmin
             }
+        }
         return false
     }
 
