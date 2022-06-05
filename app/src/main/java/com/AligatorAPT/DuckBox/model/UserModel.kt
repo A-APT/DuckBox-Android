@@ -1,11 +1,9 @@
 package com.AligatorAPT.DuckBox.model
 
 import android.util.Log
-import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.dto.user.LoginRequestDto
 import com.AligatorAPT.DuckBox.dto.user.LoginResponseDto
 import com.AligatorAPT.DuckBox.dto.user.RegisterDto
-import com.AligatorAPT.DuckBox.ethereum.DIDContract
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
