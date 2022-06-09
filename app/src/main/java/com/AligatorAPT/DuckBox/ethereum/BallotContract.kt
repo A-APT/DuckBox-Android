@@ -4,6 +4,7 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.BuildConfig
 import com.AligatorAPT.DuckBox.dto.ethereum.BallotData
 import com.AligatorAPT.DuckBox.dto.ethereum.VoteData
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import org.web3j.abi.TypeReference
 import org.web3j.abi.datatypes.*
 import org.web3j.abi.datatypes.generated.Bytes32
@@ -36,8 +37,8 @@ object BallotContract {
             Utf8String(_ballotData.ballotId),
             candidateDynamicArray,
             Bool(_ballotData.isOfficial),
-            Uint256(_ballotData.startTime),
-            Uint256(_ballotData.endTime)
+            Uint256(_ballotData.startTime/1000),
+            Uint256(_ballotData.endTime/1000)
         )
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Bool>() {})
         return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
@@ -56,7 +57,7 @@ object BallotContract {
         return result
     }
 
-    fun vote(voteData: VoteData){
+    fun vote(voteData: VoteData, callBack:ApiCallback){
         ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("VOTE_ADDRESS", contractAddress)
         val RList: List<Uint256> = voteData.R.stream().map {
@@ -72,5 +73,7 @@ object BallotContract {
             rListDynamicArray)
         val outputParams = listOf<TypeReference<*>>()
         ethereumManagement.ethSendRaw(contractAddress, VOTE, inputParams, outputParams, voteData.pseudoCredentials)
+
+        callBack.apiCallback(true)
     }
 }

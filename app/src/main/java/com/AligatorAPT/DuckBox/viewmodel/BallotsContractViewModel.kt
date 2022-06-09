@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.ethereum.BallotData
 import com.AligatorAPT.DuckBox.dto.ethereum.VoteData
 import com.AligatorAPT.DuckBox.ethereum.BallotContract
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,10 +26,10 @@ class BallotsContractViewModel : ViewModel(){
         }
     }
 
-    fun vote(voteData: VoteData){
+    fun vote(voteData: VoteData, callBack:ApiCallback){
         viewModelScope.launch {
             withContext(dispatcher){
-                BallotContract.vote(voteData)
+                BallotContract.vote(voteData, callBack)
             }
         }
     }

@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
@@ -23,6 +24,7 @@ import com.AligatorAPT.DuckBox.dto.paper.BallotStatus
 import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
 import com.AligatorAPT.DuckBox.dto.user.BlindSigToken
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.TokenCallback
 import com.AligatorAPT.DuckBox.view.adapter.BannerAdapter
 import com.AligatorAPT.DuckBox.view.adapter.VoteDetailListAdapter
@@ -48,7 +50,6 @@ class VoteDetailActivity : AppCompatActivity() {
 
     private val model: VoteDetailViewModel by viewModels()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
-    private var dispatcher: CoroutineDispatcher = Dispatchers.IO
     private lateinit var blindSecp256k1: BlindSecp256k1
 
     private val contractModel = SingletonBallotsContract.getInstance()
@@ -187,7 +188,7 @@ class VoteDetailActivity : AppCompatActivity() {
         binding.apply {
             vdFinalTv.setOnClickListener {
                 //투표 완료
-                val message = model.num.toString().encodeToByteArray()
+                val message = model.num.value.toString().encodeToByteArray()
                 val R_ = Point(
                     BigInteger("d80387d2861da050c1a8ae11c9a1ef5ed93572bd6537d50984c1dea2f2db912b", 16),
                     BigInteger("edcef3840df9cd47256996c460f0ce045ccb4fac5e914f619c44ad642779011", 16)
@@ -203,7 +204,11 @@ class VoteDetailActivity : AppCompatActivity() {
                             vdFinalTv.setText("제출 완료")
                             ListAdapter.isClickable = false
 
-                            Log.e("BLIND::", _blindsigToken!!.ownerBSig)
+                            Log.e("BLIND::Owner::", _blindsigToken!!.ownerBSig)
+                            Log.e("BLIND::server::", _blindsigToken!!.serverBSig)
+                            Log.e("BLIND:x:", blindedData.R.x.toString(16))
+                            Log.e("BLIND::y::", blindedData.R.y.toString(16))
+
                             val r = arrayListOf(blindedData.R.x,blindedData.R.y)
                             val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
                             val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
@@ -215,12 +220,21 @@ class VoteDetailActivity : AppCompatActivity() {
                             contractModel?.vote(
                                 VoteData(
                                     ballotId = voteList.id,
-                                    m = model.num.toString(),
+                                    m = model.num.value.toString(),
                                     serverSig = serverSig,
                                     ownerSig = voteOwnerSig,
                                     R = r,
                                     pseudoCredentials = pseudoCredentials
-                                )
+                                ),
+                                object: ApiCallback{
+                                    override fun apiCallback(flag: Boolean) {
+                                        if(flag){
+
+                                        }else{
+                                            Toast.makeText(this@VoteDetailActivity, "투표가 반영되지 않았습니다.", Toast.LENGTH_LONG).show()
+                                        }
+                                    }
+                                }
                             )
                         }
                     }
