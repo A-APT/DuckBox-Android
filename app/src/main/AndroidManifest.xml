@@ -75,10 +75,6 @@
         <activity
             android:name=".view.activity.CreateVoteActivity"
             android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false">
-        </activity>
     </application>
 
 </manifest>
