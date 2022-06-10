@@ -19,7 +19,7 @@ interface GroupInterface {
         @HeaderMap httpHeaders: HashMap<String, String>
     ): Call<List<GroupDetailDto>>
 
-    @POST("/api/v1/group/detail")
+    @PUT("/api/v1/group")
     fun updateGroup(
         @Body groupUpdateDto: GroupUpdateDto,
         @HeaderMap httpHeaders: HashMap<String, String>
