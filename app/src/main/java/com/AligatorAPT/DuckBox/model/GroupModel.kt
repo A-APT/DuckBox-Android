@@ -4,6 +4,7 @@ import android.util.Log
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
 import com.AligatorAPT.DuckBox.dto.group.GroupRegisterDto
 import com.AligatorAPT.DuckBox.dto.group.GroupUpdateDto
+import com.AligatorAPT.DuckBox.dto.group.ReportRequestDto
 import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
@@ -207,4 +208,26 @@ object GroupModel {
         })
     }
 
+    fun reportGroup(_reportRequestDto: ReportRequestDto, callback: ApiCallback) {
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.reportGroup(
+            httpHeaders = headers, reportRequestDto = _reportRequestDto
+        ).enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    callback.apiCallback(true)
+                } else {
+                    callback.apiCallback(false)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                callback.apiCallback(false)
+            }
+        })
+    }
 }

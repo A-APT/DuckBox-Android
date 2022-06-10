@@ -3,11 +3,15 @@ package com.AligatorAPT.DuckBox.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.RadioGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doAfterTextChanged
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.ActivityReportBinding
+import com.AligatorAPT.DuckBox.dto.group.ReportRequestDto
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
+import com.AligatorAPT.DuckBox.viewmodel.SingletonGroup
 
 class ReportActivity : AppCompatActivity() {
     lateinit var binding: ActivityReportBinding
@@ -15,10 +19,15 @@ class ReportActivity : AppCompatActivity() {
     private var isActivateBtn = false
     private var isChecked = 0
 
+    private var groupId = ""
+
+    private val homeModel = SingletonGroup.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReportBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        groupId = intent.getStringExtra("groupId").toString()
 
         init()
     }
@@ -41,10 +50,21 @@ class ReportActivity : AppCompatActivity() {
             //버튼 이벤트
             reportBtn.setOnClickListener {
                 if(isActivateBtn){
-                    //신고 완료 화면 전환
-                    val intent = Intent(this@ReportActivity, ResultActivity::class.java)
-                    intent.putExtra("isType", 3)
-                    startActivity(intent)
+                    homeModel?.reportGroup(
+                        reportRequestDto = ReportRequestDto(groupId = groupId, reportType = isChecked, reason =  reportReason.text.toString()),
+                        _callback = object: ApiCallback{
+                            override fun apiCallback(flag: Boolean) {
+                                if(flag){
+                                    //신고 완료 화면 전환
+                                    val intent = Intent(this@ReportActivity, ResultActivity::class.java)
+                                    intent.putExtra("isType", 3)
+                                    startActivity(intent)
+                                }else{
+                                    Toast.makeText(this@ReportActivity, "다시 시도해주세요.", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        }
+                    )
                 }
             }
 

@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.group.GroupDetailDto
+import com.AligatorAPT.DuckBox.dto.group.ReportRequestDto
 import com.AligatorAPT.DuckBox.model.GroupModel
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import kotlinx.coroutines.CoroutineDispatcher
@@ -30,6 +32,17 @@ class HomeViewModel:ViewModel() {
             withContext(dispatcher){
                 GroupModel.getGroupsOfUser( //컨트랙트 연결 후 getGroupsOfUser로 변경하기
                     callback = _callback,
+                )
+            }
+        }
+    }
+
+    fun reportGroup(reportRequestDto: ReportRequestDto, _callback: ApiCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                GroupModel.reportGroup(
+                    _reportRequestDto = reportRequestDto,
+                    callback = _callback
                 )
             }
         }

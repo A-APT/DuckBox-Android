@@ -178,8 +178,11 @@ class GroupSettingFragment : Fragment() {
             }
 
             reportGroup.setOnClickListener {
-                val intent = Intent(mActivity, ReportActivity::class.java)
-                startActivity(intent)
+                model.id.observe(viewLifecycleOwner, Observer { groupId ->
+                    val intent = Intent(mActivity, ReportActivity::class.java)
+                    intent.putExtra("groupId", groupId)
+                    startActivity(intent)
+                })
             }
 
             backBtn.setOnClickListener {
