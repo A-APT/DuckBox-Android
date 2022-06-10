@@ -4,7 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.AligatorAPT.DuckBox.dto.paper.VoteDetailDto
+import com.AligatorAPT.DuckBox.dto.user.BlindSigRequestDto
 import com.AligatorAPT.DuckBox.model.VoteModel
+import com.AligatorAPT.DuckBox.retrofit.callback.TokenCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.VoteCallback
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -23,6 +25,17 @@ class VoteViewModel: ViewModel() {
         viewModelScope.launch{
             withContext(dispatcher){
                 VoteModel.getAllVote(
+                    callback = _callback
+                )
+            }
+        }
+    }
+
+    fun generateVoteToken(blindSigRequestDto: BlindSigRequestDto, _callback: TokenCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                VoteModel.generateVoteToken(
+                    blindSigRequestDto = blindSigRequestDto,
                     callback = _callback
                 )
             }

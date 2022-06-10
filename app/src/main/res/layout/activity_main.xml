@@ -37,9 +37,63 @@
         android:text="DID" />
 
     <Button
-        android:id="@+id/SURVEY"
+        android:id="@+id/createGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SURVEY" />
+        android:text="CreateGroup" />
+
+    <Button
+        android:id="@+id/approveGroup1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="approveGroup1" />
+
+    <Button
+        android:id="@+id/approveGroup2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="approveGroup2" />
+
+    <Button
+        android:id="@+id/requestJoinGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="requestJoinGroup" />
+
+    <Button
+        android:id="@+id/approveJoin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="approveJoin1" />
+
+    <Button
+        android:id="@+id/approveJoin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="approveJoin2" />
+
+    <Button
+        android:id="@+id/exitMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="exitMember" />
+
+    <Button
+        android:id="@+id/deleteGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="deleteGroup" />
+
+    <Button
+        android:id="@+id/getList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="getList" />
+
+    <Button
+        android:id="@+id/VOTECONTRACT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="VOTECONTRACT" />
 
 </LinearLayout>

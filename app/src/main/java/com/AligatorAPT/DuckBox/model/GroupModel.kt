@@ -8,6 +8,7 @@ import com.AligatorAPT.DuckBox.retrofit.RetrofitClient
 import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.MyGroupCallback
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
+import com.AligatorAPT.DuckBox.retrofit.callback.SingleGroupCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -174,4 +175,36 @@ object GroupModel {
             }
         })
     }
+
+    fun findGroupById(_groupId: String, callback: SingleGroupCallback) {
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.findGroupById(
+            httpHeaders = headers, groupId = _groupId
+        ).enqueue(object : Callback<GroupDetailDto> {
+            override fun onResponse(
+                call: Call<GroupDetailDto>,
+                response: Response<GroupDetailDto>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("Response:: ", response.body().toString())
+                    callback.apiCallback(true, response.body())
+                } else {
+                    callback.apiCallback(false, null)
+                }
+            }
+
+            override fun onFailure(call: Call<GroupDetailDto>, t: Throwable) {
+                callback.apiCallback(false, null)
+                Log.d(
+                    "onFailure::", "Failed GetAllGroup API call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+        })
+    }
+
 }

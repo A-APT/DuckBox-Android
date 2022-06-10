@@ -37,5 +37,5 @@ data class VoteDetailDto(
 enum class BallotStatus {
     REGISTERED,
     OPEN,
-    FINISHED,
+    CLOSE,
 }

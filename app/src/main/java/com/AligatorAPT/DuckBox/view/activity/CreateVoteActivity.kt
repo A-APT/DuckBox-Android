@@ -15,20 +15,20 @@ import androidx.core.content.ContextCompat
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.view.fragment.createvote.CreateVoteFinalFragment
 import androidx.activity.viewModels
-import com.AligatorAPT.DuckBox.ethereum.BallotContract
+import com.AligatorAPT.DuckBox.dto.ethereum.BallotData
 import com.AligatorAPT.DuckBox.retrofit.callback.RegisterCallBack
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.dto.paper.VoteRegisterDto
 import com.AligatorAPT.DuckBox.viewmodel.CreateVoteViewModel
+import com.AligatorAPT.DuckBox.viewmodel.SingletonBallotsContract
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 class CreateVoteActivity : FragmentActivity() {
+    private val contractModel = SingletonBallotsContract.getInstance()
+
     lateinit var binding: ActivityCreateVoteBinding
     lateinit var viewPager : ViewPager2
     var checkValidation = booleanArrayOf(false,false,true)
@@ -74,7 +74,7 @@ class CreateVoteActivity : FragmentActivity() {
             if(viewPager.currentItem == 2) {
                 val blindsig = BlindSecp256k1()
                 val keyPair = blindsig.generateKeyPair()
-                viewModel.ownerPrivate.value = keyPair.privateKey.toString()
+                viewModel.ownerPrivate.value = keyPair.privateKey.toString(16)
 
                 viewModel.registerVote(object: RegisterCallBack {
                     override fun registerCallBack(flag: Boolean, id:String?) {
@@ -85,15 +85,24 @@ class CreateVoteActivity : FragmentActivity() {
                             binding.createVoteTl.visibility = View.GONE
                             binding.createVoteTitle.text = "투표 생성 완료"
 
+                            Log.e("Date","start: ${viewModel.startTime.value.toString()}, finish: ${viewModel.finishTime.value.toString()}")
+                            val startMillis = viewModel.startTime.value!!.time
+                            val finishMillis = viewModel.finishTime.value!!.time
+                            Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
+                            val did = MyApplication.prefs.getString("did", "notExist")
 
-                            CoroutineScope(dispatcher).launch{
-                                val startMillis = viewModel.startTime.value!!.toInstant().toEpochMilli()
-                                val finishMillis = viewModel.finishTime.value!!.toInstant().toEpochMilli()
-                                Log.e("Millis","start: ${startMillis.toString()}, finish: ${finishMillis.toString()}")
-                                val did = MyApplication.prefs.getString("did", "notExist")
-//                                BallotContract.registerBallot(
-//                                    did,id!!,keyPair.publicKey.x,keyPair.publicKey.y,viewModel.candidates.value!!,viewModel.isGroup.value!!, startMillis, finishMillis)
-                            }
+                            contractModel?.registerBallot(
+                                BallotData(
+                                    did = did,
+                                    ballotId = id!!,
+                                    publicKeyX = keyPair.publicKey.x,
+                                    publicKeyY = keyPair.publicKey.y,
+                                    candidateNames = viewModel.candidates.value!!,
+                                    isOfficial = viewModel.isGroup.value!!,
+                                    startTime = startMillis,
+                                    endTime = finishMillis
+                                )
+                            )
 
                             supportFragmentManager.beginTransaction()
                                 .replace(R.id.create_vote_fr, CreateVoteFinalFragment())

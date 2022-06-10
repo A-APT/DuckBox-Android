@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.AligatorAPT.DuckBox.databinding.FragmentAlarmBinding
 import com.AligatorAPT.DuckBox.view.adapter.AlarmListAdapter
-import com.AligatorAPT.DuckBox.view.data.AlarmData
+import com.AligatorAPT.DuckBox.dto.alarm.AlarmData
 import java.util.*
 
 class AlarmFragment : Fragment() {

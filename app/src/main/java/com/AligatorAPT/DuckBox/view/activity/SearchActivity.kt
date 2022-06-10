@@ -126,7 +126,7 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     //그룹 상세로 화면 전환
                     val intent = Intent(this@SearchActivity, GroupActivity::class.java)
-                    intent.putExtra("groupData", position)
+                    intent.putExtra("groupId", data.id)
                     startActivity(intent)
                 }
             }

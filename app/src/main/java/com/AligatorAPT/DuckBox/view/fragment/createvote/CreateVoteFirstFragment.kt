@@ -159,7 +159,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         startDate = date
-                        start_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
+                        start_Datefor = Date(year-1900,month-1,day,hour,min,cal_ampm)
                         cvFirstStartdateCheck.setText(startDate)
                     }
                 })
@@ -174,7 +174,7 @@ class CreateVoteFirstFragment: Fragment()  {
                     override fun onDatePicked(year: Int,month: Int,day: Int,hour: Int,min: Int,cal_ampm: Int,ampm: String) {
                         val date = "$year.${String.format("%02d", month)}.${String.format("%02d", day)} ${String.format("%02d",hour)}:${String.format("%02d",min)} $ampm"
                         finishDate = date
-                        last_Datefor = Date(year,month-1,day,hour,min,cal_ampm)
+                        last_Datefor = Date(year-1900,month-1,day,hour,min,cal_ampm)
                         cvFirstLastdateCheck.setText(finishDate)
                     }
                 })
@@ -232,7 +232,8 @@ class CreateVoteFirstFragment: Fragment()  {
             }
         }
         Toast.makeText(context, "현재 시간 1시간 이후로 설정해주세요.", Toast.LENGTH_SHORT).show()
-        return false
+        //TODO 투표 생성 시연할 때 return true
+        return true
     }
 
     private fun checkTime(): Boolean {
@@ -246,7 +247,7 @@ class CreateVoteFirstFragment: Fragment()  {
                 if(finarr[i] < startarr[i])break
                 else if(finarr[i] > startarr[i])return true
                 else if(i==2){
-                     if(checkAMPM(finarr, startarr,false))return true
+                    if(checkAMPM(finarr, startarr,false))return true
                 }
             }
             Toast.makeText(context, "시간 설정을 확인해주세요.", Toast.LENGTH_SHORT).show()
@@ -268,12 +269,12 @@ class CreateVoteFirstFragment: Fragment()  {
         else if(finampm == "PM" && startampm == "AM") return true
         else if(finampm == startampm)
             if(starthour == 12 && finhour < 12) return true
-            if(finhour > starthour ) return true
-            if(!isNow){
-                if(finhour == starthour) {
-                    return finmin>startmin
-                }
+        if(finhour > starthour ) return true
+        if(!isNow){
+            if(finhour == starthour) {
+                return finmin>startmin
             }
+        }
         return false
     }
 

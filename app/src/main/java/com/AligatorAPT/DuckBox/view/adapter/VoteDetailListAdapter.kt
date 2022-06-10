@@ -34,7 +34,7 @@ class VoteDetailListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(isClickable && position in items.indices){
-            holder.bind(items[position], position == selectedPosition)
+            holder.bind(items[position], position == selectedPosition, selectedPosition)
             holder.binding.vdTextTv.setOnClickListener { selectedPosition = position }
         }
     }
@@ -43,11 +43,12 @@ class VoteDetailListAdapter(
 
     inner class ViewHolder(val binding : RowVdListBinding): RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: String, selected: Boolean){
+        fun bind(item: String, selected: Boolean, position: Int){
             binding.apply {
                 vdTextTv.text = item
                 if(selected) {
                     model.setIsSelected(true)
+                    model.selectNum(position)
                     vdCheckIv.visibility = View.VISIBLE
                     vdTextCv.setBackgroundResource(R.drawable.main_stroke_sub1_solid_box_5dp)
                 }

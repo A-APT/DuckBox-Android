@@ -25,6 +25,7 @@ object UserModel{
                 if(response.isSuccessful){
                     MyApplication.prefs.setString("did", response.body()!!)
                     Log.d("DID", response.body()!!)
+
                     callback.apiCallback(true)
                 }else{
                     callback.apiCallback(false)
@@ -96,5 +97,4 @@ object UserModel{
             }
         })
     }
-
 }
