@@ -41,4 +41,16 @@ interface GroupInterface {
         @HeaderMap httpHeaders: HashMap<String, String>,
         @Path("groupId") groupId: String
     ): Call<GroupDetailDto>
+
+    @DELETE("/api/v1/group")
+    fun removeGroup(
+        @HeaderMap httpHeaders: HashMap<String, String>,
+        @Body groupId: String
+    ): Call<ResponseBody>
+
+    @DELETE("/api/v1/group/member")
+    fun leaveGroup(
+        @HeaderMap httpHeaders: HashMap<String, String>,
+        @Body groupId: String
+    ): Call<ResponseBody>
 }

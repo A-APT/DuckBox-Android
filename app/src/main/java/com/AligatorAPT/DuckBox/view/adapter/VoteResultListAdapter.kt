@@ -38,23 +38,25 @@ class VoteResultListAdapter(
 
     override fun onBindViewHolder(holder: VoteResultListAdapter.ViewHolder, position: Int) {
         holder.binding.apply {
-            if(position == best){
-                rowResultCrown.visibility = View.VISIBLE
-            }else {
-                rowResultCrown.visibility = View.GONE
-            }
-            val percentage: Double = round((items[position].toDouble() / allCount.toDouble()) * 10) / 10
-            rowResultText.text = (position+1).toString()+". "+candidate[position] + percentage
-            //수정하기 - 투표 결과 라인
-            rowResultBlueline.layoutParams.width = (deviceWidth * percentage).toInt()
-            rowResultBlueline.requestLayout()
+            if(allCount != BigInteger("0") && best != -1){
+                if(position == best){
+                    rowResultCrown.visibility = View.VISIBLE
+                }else {
+                    rowResultCrown.visibility = View.GONE
+                }
+                val percentage: Double = round((items[position].toDouble() / allCount.toDouble()) * 10) / 10
+                rowResultText.text = (position+1).toString()+". "+candidate[position] + percentage
+                //수정하기 - 투표 결과 라인
+                rowResultBlueline.layoutParams.width = (deviceWidth * percentage).toInt()
+                rowResultBlueline.requestLayout()
 
-            val lp = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-            lp.setMargins(0, 0, 0, 40)
-            rowResultLayout.layoutParams = lp
+                val lp = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                lp.setMargins(0, 0, 0, 40)
+                rowResultLayout.layoutParams = lp
+            }
         }
     }
 

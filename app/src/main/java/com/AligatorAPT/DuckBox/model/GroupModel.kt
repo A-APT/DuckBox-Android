@@ -207,4 +207,61 @@ object GroupModel {
         })
     }
 
+    fun removeGroup(_groupId: String, callback: ApiCallback){
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.removeGroup(
+            httpHeaders = headers,
+            groupId = _groupId
+        ).enqueue(object: Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful){
+                    Log.d("Response:: ", response.body().toString())
+                    callback.apiCallback(true)
+                }else{
+                    callback.apiCallback(false)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                callback.apiCallback(false)
+                Log.d(
+                    "onFailure::", "Failed RemoveGroup call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+        })
+    }
+
+    fun leaveGroup(_groupId: String, callback: ApiCallback){
+        val headers = HashMap<String, String>()
+        val userToken = MyApplication.prefs.getString("token", "notExist")
+
+        headers["Authorization"] = "Bearer $userToken"
+
+        RetrofitClient.GROUP_INTERFACE_SERVICE.leaveGroup(
+            httpHeaders = headers,
+            groupId = _groupId
+        ).enqueue(object: Callback<ResponseBody>{
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if(response.isSuccessful){
+                    Log.d("Response:: ", response.body().toString())
+                    callback.apiCallback(true)
+                }else{
+                    callback.apiCallback(false)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                callback.apiCallback(false)
+                Log.d(
+                    "onFailure::", "Failed LeaveGroup call with call: " + call +
+                            " + exception: " + t
+                )
+            }
+        })
+    }
 }

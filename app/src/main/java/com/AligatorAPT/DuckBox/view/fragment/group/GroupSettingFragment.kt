@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.R
 import com.AligatorAPT.DuckBox.databinding.FragmentGroupSettingBinding
 import com.AligatorAPT.DuckBox.dto.group.GroupStatus
+import com.AligatorAPT.DuckBox.retrofit.callback.ApiCallback
 import com.AligatorAPT.DuckBox.sharedpreferences.MyApplication
 import com.AligatorAPT.DuckBox.view.activity.GroupActivity
 import com.AligatorAPT.DuckBox.view.activity.ReportActivity
@@ -122,17 +124,29 @@ class GroupSettingFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
-                                //그룹 삭제 컨트랙트 실행
                                 model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                    contractModel?.deleteGroup(
-                                        groupId = groupId,
-                                        ownerDid = MyApplication.prefs.getString("did", "notExist")
+                                    model.removeGroup(
+                                        groupId = groupId, _callback = object: ApiCallback{
+                                            override fun apiCallback(flag: Boolean) {
+                                                if(flag){
+                                                    //그룹 삭제 컨트랙트 실행
+                                                    contractModel?.deleteGroup(
+                                                        groupId = groupId,
+                                                        ownerDid = MyApplication.prefs.getString("did", "notExist")
+                                                    )
+                                                    //그룹 삭제 완료로 화면 전환
+                                                    val intent = Intent(mActivity, ResultActivity::class.java)
+                                                    intent.putExtra("isType", 2)
+                                                    startActivity(intent)
+                                                }
+                                                else{
+                                                    Toast.makeText(requireContext(),"다시 시도해주세요.",Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                        }
                                     )
+
                                 })
-                                //그룹 삭제 완료로 화면 전환
-                                val intent = Intent(mActivity, ResultActivity::class.java)
-                                intent.putExtra("isType", 2)
-                                startActivity(intent)
                             }
 
                             override fun OnNegativeClick() {
@@ -155,17 +169,27 @@ class GroupSettingFragment : Fragment() {
                         modalDialog.itemClickListener = object : ModalDialog.OnItemClickListener{
                             override fun OnPositiveClick() {
                                 modalDialog.dismiss()
-                                //그룹 탈퇴 컨트랙트 실행
                                 model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                    contractModel?.exitMember(
-                                        groupId = groupId,
-                                        requesterDid = MyApplication.prefs.getString("did", "notExist")
+                                    model.leaveGroup(
+                                        groupId = groupId, _callback = object: ApiCallback{
+                                            override fun apiCallback(flag: Boolean) {
+                                                if(flag){
+                                                    //그룹 탈퇴 컨트랙트 실행
+                                                    contractModel?.exitMember(
+                                                        groupId = groupId,
+                                                        requesterDid = MyApplication.prefs.getString("did", "notExist")
+                                                    )
+                                                    //그룹 탈퇴 완료로 화면 전환
+                                                    val intent = Intent(mActivity, ResultActivity::class.java)
+                                                    intent.putExtra("isType", 1)
+                                                    startActivity(intent)
+                                                }else{
+                                                    Toast.makeText(requireContext(),"다시 시도해주세요.",Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                        }
                                     )
                                 })
-                                //그룹 탈퇴 완료로 화면 전환
-                                val intent = Intent(mActivity, ResultActivity::class.java)
-                                intent.putExtra("isType", 1)
-                                startActivity(intent)
                             }
 
                             override fun OnNegativeClick() {

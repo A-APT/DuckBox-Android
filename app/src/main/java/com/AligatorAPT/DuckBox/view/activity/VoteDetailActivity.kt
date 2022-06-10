@@ -120,7 +120,7 @@ class VoteDetailActivity : AppCompatActivity() {
             contractModel?.resultOfBallot(voteList.id)
 
             contractModel?.resultList?.observe(this@VoteDetailActivity, Observer{
-                var max = 0
+                var max = -1
                 var allCount = BigInteger("0")
                 if (it != null) {
                     for(i in it.indices){

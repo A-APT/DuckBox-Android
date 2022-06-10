@@ -123,4 +123,26 @@ class GroupViewModel: ViewModel() {
             }
         }
     }
+
+    fun leaveGroup(groupId: String, _callback: ApiCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                GroupModel.leaveGroup(
+                    _groupId = groupId,
+                    callback = _callback
+                )
+            }
+        }
+    }
+
+    fun removeGroup(groupId: String, _callback: ApiCallback){
+        viewModelScope.launch {
+            withContext(dispatcher){
+                GroupModel.removeGroup(
+                    _groupId = groupId,
+                    callback = _callback
+                )
+            }
+        }
+    }
 }
