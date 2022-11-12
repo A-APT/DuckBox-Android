@@ -22,7 +22,7 @@ object EmailModel {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                Log.d("Response:: ", response.toString())
+                Log.e("Response:: ", response.toString())
                 if (response.isSuccessful) {
                     callback.apiCallback(true)
                 } else {
@@ -31,7 +31,7 @@ object EmailModel {
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d(
+                Log.e(
                     "onFailure::", "Failed API call with call: " + call +
                             " + exception: " + t
                 )

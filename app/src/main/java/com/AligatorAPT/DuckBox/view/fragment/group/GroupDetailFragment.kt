@@ -33,7 +33,7 @@ class GroupDetailFragment : Fragment() {
 
     private val model: GroupViewModel by activityViewModels()
     private val voteModel = VoteViewModel.VoteSingletonGroup.getInstance()
-    private val contractModel = SingletonGroupsContract.getInstance()
+//    private val contractModel = SingletonGroupsContract.getInstance()
 
     private lateinit var paperListAdapter: PaperListAdapter
 
@@ -125,10 +125,10 @@ class GroupDetailFragment : Fragment() {
                                 override fun OnPositiveClick() {
                                     modalDialog.dismiss()
                                     model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                        contractModel?.approveGroupAuthentication(
-                                            groupId = groupId,
-                                            approverDid = MyApplication.prefs.getString("did", "notExist")
-                                        )
+//                                        contractModel?.approveGroupAuthentication(
+//                                            groupId = groupId,
+//                                            approverDid = MyApplication.prefs.getString("did", "notExist")
+//                                        )
                                         model.joinGroup(object: ApiCallback{
                                             override fun apiCallback(flag: Boolean) {
                                             }
@@ -157,14 +157,14 @@ class GroupDetailFragment : Fragment() {
                                                 override fun apiCallback(flag: Boolean) {
                                                     if (flag) {
                                                         //컨트랙트에 가입 요청 등록
-                                                        model.id.observe(viewLifecycleOwner, Observer { groupId ->
-                                                            contractModel?.requestMember(
-                                                                groupId = groupId,
-                                                                userDid = MyApplication.prefs.getString( "did","notExist"),
-                                                                name = MyApplication.prefs.getString("nickname","notExist"),
-                                                                email = MyApplication.prefs.getString("email", "notExist")
-                                                            )
-                                                        })
+//                                                        model.id.observe(viewLifecycleOwner, Observer { groupId ->
+//                                                            contractModel?.requestMember(
+//                                                                groupId = groupId,
+//                                                                userDid = MyApplication.prefs.getString( "did","notExist"),
+//                                                                name = MyApplication.prefs.getString("nickname","notExist"),
+//                                                                email = MyApplication.prefs.getString("email", "notExist")
+//                                                            )
+//                                                        })
                                                         //그룹 가입 요청 완료로 화면 전환
                                                         val intent = Intent( mActivity, ResultActivity::class.java)
                                                         intent.putExtra("isType", 0)

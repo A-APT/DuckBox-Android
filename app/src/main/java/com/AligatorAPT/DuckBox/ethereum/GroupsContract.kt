@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter
 object GroupsContract {
 
     private val ethereumManagement: EthereumManagement = EthereumManagement
-    private const val contractAddress: String = BuildConfig.ADDRESS_GROUPS
+//    private const val contractAddress: String = BuildConfig.ADDRESS_GROUPS
 
     private const val REGISTER = "registerGroup"
     private const val DELETEGROUP = "deleteGroup"
@@ -24,38 +24,41 @@ object GroupsContract {
     private const val GETMEMBERSTATUS = "getMemberStatus"
 
     fun registerGroup(groupId: String, ownerDid: String): Boolean? { //only owner
-        Log.d("ADDRESS", contractAddress)
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        Log.d("ADDRESS", contractAddress)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, REGISTER, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun approveGroupAuthentication(groupId: String, approverDid: String): Boolean? {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, APPROVEGROUP, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, APPROVEGROUP, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun deleteGroup(groupId: String, ownerDid: String): Boolean? { //only owner
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(ownerDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, DELETEGROUP, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, DELETEGROUP, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun requestMember(groupId: String, userDid: String, name: String, email: String): Boolean? {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDid)),
@@ -63,28 +66,31 @@ object GroupsContract {
             Utf8String(email)
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, REQUESTMEMBER, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, REQUESTMEMBER, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun approveMember(groupId: String, approverDid: String, requesterDid:String): Boolean? {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(approverDid)),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(requesterDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, APPROVEMEMBER, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, APPROVEMEMBER, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun exitMember(groupId: String, requesterDid: String): Boolean? {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         val inputParams = listOf<Type<*>>(
             Utf8String(groupId),
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(requesterDid))
         )
         val outputParams = listOf<TypeReference<*>>()
-        return ethereumManagement.ethSendRaw(contractAddress, EXITMEMBER, inputParams, outputParams) as Boolean?
+//        return ethereumManagement.ethSendRaw(contractAddress, EXITMEMBER, inputParams, outputParams) as Boolean?
+        return null
     }
 
     fun getRequesterList(groupId: String): List<Requester> {
@@ -93,25 +99,25 @@ object GroupsContract {
         )
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Bytes32>>() {}, object: TypeReference<DynamicArray<Bool>>() {}, object: TypeReference<DynamicArray<Utf8String>>() {}, object: TypeReference<DynamicArray<Utf8String>>() {})
 
-        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETREQUESTERLIST, inputParams, outputParams)!!
+//        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETREQUESTERLIST, inputParams, outputParams)!!
 
         val did: MutableList<String> = mutableListOf()
         val isValid: MutableList<Boolean> = mutableListOf()
         val name: MutableList<String> = mutableListOf()
         val email: MutableList<String> = mutableListOf()
 
-        (decoded[0].value as List<Bytes32>).forEach {
-            did.add(DatatypeConverter.printHexBinary(it.value))
-        }
-        (decoded[1].value as List<Bool>).forEach {
-            isValid.add(it.value)
-        }
-        (decoded[2].value as List<Utf8String>).forEach {
-            name.add(it.value)
-        }
-        (decoded[3].value as List<Utf8String>).forEach {
-            email.add(it.value)
-        }
+//        (decoded[0].value as List<Bytes32>).forEach {
+//            did.add(DatatypeConverter.printHexBinary(it.value))
+//        }
+//        (decoded[1].value as List<Bool>).forEach {
+//            isValid.add(it.value)
+//        }
+//        (decoded[2].value as List<Utf8String>).forEach {
+//            name.add(it.value)
+//        }
+//        (decoded[3].value as List<Utf8String>).forEach {
+//            email.add(it.value)
+//        }
 
         val result: MutableList<Requester> = mutableListOf()
 
@@ -135,7 +141,9 @@ object GroupsContract {
             Bytes32(javax.xml.bind.DatatypeConverter.parseHexBinary(userDId))
         )
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<Bool>() {})
-        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETMEMBERSTATUS, inputParams, outputParams)!!
-        return decoded[0].value as Boolean
+//        val decoded: List<Type<*>> = ethereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, GETMEMBERSTATUS, inputParams, outputParams)!!
+//        return decoded[0].value as Boolean
+
+        return true
     }
 }

@@ -21,12 +21,12 @@ import java.math.BigInteger
 
 object EthereumManagement {
 
-    private const val ETH_NETWORK = BuildConfig.ETH_NETWORK_LOCAL
+//    private const val ETH_NETWORK = BuildConfig.ETH_NETWORK_LOCAL
     //private val web3j = Web3j.build(HttpService(ETH_NETWORK))
-    private val web3j = Admin.build(HttpService(ETH_NETWORK))
+//    private val web3j = Admin.build(HttpService(ETH_NETWORK))
     private var credentials: Credentials? = null
 
-    private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
+//    private val gasPrice: BigInteger = web3j.ethGasPrice().sendAsync().get().gasPrice
     private val gasLimit: BigInteger = BigInteger.valueOf(6700000) // gasLimit
 
     fun createNewCredentials(password: String): Credentials {
@@ -69,16 +69,17 @@ object EthereumManagement {
         // call function
         // createFunctionCallTransaction BigInteger
         val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
-        val ethCall: EthCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get()
+//        val ethCall: EthCall = web3j.ethCall(transaction, DefaultBlockParameterName.LATEST).sendAsync().get()
 
-        if (ethCall.hasError()){
-            Log.e("EthException", ethCall.error.message)
-        }
-
-        // decode response
-        val decode: List<Type<*>> = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
+//        if (ethCall.hasError()){
+//            Log.e("EthException", ethCall.error.message)
+//        }
+//
+//        // decode response
+//        val decode: List<Type<*>> = FunctionReturnDecoder.decode(ethCall.result, function.outputParameters)
 //        Log.e("LIST:::","ethcCall result ${ethCall.result} / value: ${decode[0].value} / type: ${decode[0].typeAsString}")
-        return decode.ifEmpty { null }
+//        return decode.ifEmpty { null }
+        return null
     }
 
     fun ethSend(
@@ -96,15 +97,16 @@ object EthereumManagement {
 
         // create raw transaction (:signed transaction)
         val transaction = Transaction.createEthCallTransaction(userAddress, contractAddress, encodedFunction)
-        val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
+//        val ethSend: EthSendTransaction = web3j.ethSendTransaction(transaction).sendAsync().get()
 
-        if (ethSend.hasError()){
-            Log.e("EthException", ethSend.error.message)
-        }
-
-        // decode response
-        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
-        return if (decode.size > 0) decode[0].value else null
+//        if (ethSend.hasError()){
+//            Log.e("EthException", ethSend.error.message)
+//        }
+//
+//        // decode response
+//        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
+//        return if (decode.size > 0) decode[0].value else null
+        return null
     }
 
     /* use user account's credentials (default) */
@@ -121,22 +123,23 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // send raw transaction
-        val manager = RawTransactionManager(web3j, credentials)
-        val ethSend: EthSendTransaction = manager.sendTransaction(
-            gasPrice,
-            gasLimit,
-            contractAddress, // to
-            encodedFunction, // data
-            BigInteger.ZERO // value
-        )
+//        val manager = RawTransactionManager(web3j, credentials)
+//        val ethSend: EthSendTransaction = manager.sendTransaction(
+//            gasPrice,
+//            gasLimit,
+//            contractAddress, // to
+//            encodedFunction, // data
+//            BigInteger.ZERO // value
+//        )
 
-        if (ethSend.hasError()){
-            Log.e("EthException", ethSend.error.message)
-        }
-
-        // decode response
-        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
-        return if (decode.size > 0) decode[0].value else null
+//        if (ethSend.hasError()){
+//            Log.e("EthException", ethSend.error.message)
+//        }
+//
+//        // decode response
+//        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
+//        return if (decode.size > 0) decode[0].value else null
+        return null
     }
 
     /* to use pseudoCredentials */
@@ -154,30 +157,32 @@ object EthereumManagement {
         val encodedFunction = FunctionEncoder.encode(function)
 
         // send raw transaction
-        val manager = RawTransactionManager(web3j, credentials)
-        val ethSend: EthSendTransaction = manager.sendTransaction(
-            gasPrice,
-            gasLimit,
-            contractAddress, // to
-            encodedFunction, // data
-            BigInteger.ZERO // value
-        )
+//        val manager = RawTransactionManager(web3j, credentials)
+//        val ethSend: EthSendTransaction = manager.sendTransaction(
+//            gasPrice,
+//            gasLimit,
+//            contractAddress, // to
+//            encodedFunction, // data
+//            BigInteger.ZERO // value
+//        )
 
-        if (ethSend.hasError()){
-            throw Exception(ethSend.error.message)
-        }
-
-        // decode response
-        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
-        return if (decode.size > 0) decode[0].value else null
+//        if (ethSend.hasError()){
+//            throw Exception(ethSend.error.message)
+//        }
+//
+//        // decode response
+//        val decode = FunctionReturnDecoder.decode(ethSend.result, function.outputParameters)
+//        return if (decode.size > 0) decode[0].value else null
+        return null
     }
 
     fun getReceipt(transactionHash: String): TransactionReceipt? {
-        val transactionReceipt: EthGetTransactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send()
-        return if (transactionReceipt.transactionReceipt.isPresent) {
-            transactionReceipt.result
-        } else {
-            null
-        }
+//        val transactionReceipt: EthGetTransactionReceipt = web3j.ethGetTransactionReceipt(transactionHash).send()
+//        return if (transactionReceipt.transactionReceipt.isPresent) {
+//            transactionReceipt.result
+//        } else {
+//            null
+//        }
+        return null
     }
 }

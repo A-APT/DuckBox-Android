@@ -16,7 +16,8 @@ import kotlin.streams.toList
 object BallotContract {
 
     private val ethereumManagement: EthereumManagement = EthereumManagement
-    private const val contractAddress: String = BuildConfig.ADDRESS_BALLOTS
+//    private const val contractAddress: String = BuildConfig.ADDRESS_BALLOTS
+    private const val contractAddress: String = ""
 
     private const val REGISTER = "registerBallot"
     private const val RESULT = "resultOfBallot"
@@ -24,7 +25,7 @@ object BallotContract {
 
     fun registerBallot(_ballotData: BallotData
     ): Boolean? {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("REGISTER_VOTE_ADDRESS", contractAddress)
         val candidateList: List<Utf8String> = _ballotData.candidateNames.stream().map {
             Utf8String(it)
@@ -45,20 +46,20 @@ object BallotContract {
     }
 
     fun resultOfBallot(ballotId: String): List<BigInteger> {
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("RESULT_ADDRESS", contractAddress)
         val inputParams = listOf<Type<*>>(Utf8String(ballotId))
         val outputParams = listOf<TypeReference<*>>(object: TypeReference<DynamicArray<Uint>>() {})
-        val decoded: List<Type<*>> = EthereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, RESULT, inputParams, outputParams)!!
+//        val decoded: List<Type<*>> = EthereumManagement.ethCall(BuildConfig.USER_ADDRESS, contractAddress, RESULT, inputParams, outputParams)!!
         val result: MutableList<BigInteger> = mutableListOf()
-        (decoded[0].value as List<Uint>).forEach {
-            result.add(it.value)
-        }
+//        (decoded[0].value as List<Uint>).forEach {
+//            result.add(it.value)
+//        }
         return result
     }
 
     fun vote(voteData: VoteData, callBack:ApiCallback){
-        ethereumManagement.setCredentials(BuildConfig.USER_PK)
+//        ethereumManagement.setCredentials(BuildConfig.USER_PK)
         Log.d("VOTE_ADDRESS", contractAddress)
         val RList: List<Uint256> = voteData.R.stream().map {
             Uint256(it)

@@ -22,7 +22,7 @@ class MutualAuthFragment : Fragment() {
     private val binding: FragmentMutualAuthBinding get() = _binding!!
 
     private val model: GroupViewModel by activityViewModels()
-    private val contractModel = SingletonGroupsContract.getInstance()
+//    private val contractModel = SingletonGroupsContract.getInstance()
 
     private lateinit var mutualAuthAdapter : MutualAuthAdapter
 
@@ -45,7 +45,7 @@ class MutualAuthFragment : Fragment() {
 
         //데이터 가져오기
         model.id.observe(viewLifecycleOwner, Observer {
-            contractModel?.getRequesterList(it)
+//            contractModel?.getRequesterList(it)
         })
 
         //list 어뎁터 등록
@@ -59,11 +59,11 @@ class MutualAuthFragment : Fragment() {
             ) {
                 //승인하기 버튼 이벤트
                 model.id.observe(viewLifecycleOwner, Observer {
-                    contractModel?.approveMember(
-                        groupId = it,
-                        approverDid = MyApplication.prefs.getString("did","notExist"),
-                        requesterDid = data.did
-                    )
+//                    contractModel?.approveMember(
+//                        groupId = it,
+//                        approverDid = MyApplication.prefs.getString("did","notExist"),
+//                        requesterDid = data.did
+//                    )
                 })
 
                 mutualAuthAdapter.deleteData(position)
@@ -71,13 +71,13 @@ class MutualAuthFragment : Fragment() {
         }
 
         //데이터 등록
-        contractModel?.requester?.observe(viewLifecycleOwner, Observer {
-            val arrayList = ArrayList<Requester>()
-            if (it != null) {
-                arrayList.addAll(it.toTypedArray())
-            }
-            mutualAuthAdapter.setData(arrayList)
-        })
+//        contractModel?.requester?.observe(viewLifecycleOwner, Observer {
+//            val arrayList = ArrayList<Requester>()
+//            if (it != null) {
+//                arrayList.addAll(it.toTypedArray())
+//            }
+//            mutualAuthAdapter.setData(arrayList)
+//        })
 
         binding.apply {
             recyclerView.adapter = mutualAuthAdapter

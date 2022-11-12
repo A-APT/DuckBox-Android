@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.AligatorAPT.DuckBox.MainActivity
 import com.AligatorAPT.DuckBox.databinding.FragmentFinishSignUpBinding
+import com.AligatorAPT.DuckBox.view.activity.LoginActivity
 import com.AligatorAPT.DuckBox.view.activity.SignUpActivity
 import com.AligatorAPT.DuckBox.viewmodel.RegisterViewModel
 
@@ -42,7 +43,7 @@ class FinishSignUpFragment : Fragment() {
 
             //시작하기 버튼 이벤트
             startHome.setOnClickListener {
-                val intent = Intent(mActivity, MainActivity::class.java)
+                val intent = Intent(mActivity, LoginActivity::class.java)
                 startActivity(intent)
             }
         }

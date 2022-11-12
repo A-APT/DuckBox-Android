@@ -165,41 +165,40 @@ class MoreInfoFragment : Fragment() {
 
 
                         model.isNew.observe(viewLifecycleOwner, Observer { flag ->
-                            if(!flag){
+                            if (!flag) {
                                 Toast.makeText(mActivity, "변경되었습니다.", Toast.LENGTH_LONG).show()
                                 mActivity.onBackPressed()
                             }
                             model.email.observe(viewLifecycleOwner, Observer { email ->
                                 if (flag) {
                                     //토큰 생성
-                                    FirebaseMessaging.getInstance().token.addOnCompleteListener { fcmToken ->
-                                        model.registser(
-                                            RegisterDto(
-                                                studentId = setStudentId.text.toString().toInt(),
-                                                name = setName.text.toString(),
-                                                password = setPassword.text.toString(),
-                                                email = email,
-                                                phoneNumber = "",
-                                                nickname = setNickname.text.toString(),
-                                                college = "건국대학교",
-                                                department = departmentList,
-                                                fcmToken = fcmToken.result,
-                                                address = BuildConfig.USER_ADDRESS
-                                            ), object : ApiCallback {
-                                                override fun apiCallback(flag: Boolean) {
-                                                    if (flag) {
-                                                        //닉네임 전달
-                                                        model.setNickname(setNickname.text.toString())
-                                                        //화면 전환
-                                                        (mActivity as SignUpActivity).changeFragment(
-                                                            FinishSignUpFragment(),
-                                                            "회원가입 완료"
-                                                        )
-                                                    }
+                                    model.registser(
+                                        RegisterDto(
+                                            studentId = setStudentId.text.toString().toInt(),
+                                            name = setName.text.toString(),
+                                            password = setPassword.text.toString(),
+                                            email = email,
+                                            phoneNumber = "",
+                                            nickname = setNickname.text.toString(),
+                                            college = "건국대학교",
+                                            department = departmentList,
+                                            fcmToken = "",
+                                            address = ""
+                                        ), object : ApiCallback {
+                                            override fun apiCallback(flag: Boolean) {
+                                                if (flag) {
+                                                    //닉네임 전달
+                                                    model.setNickname(setNickname.text.toString())
+                                                    //화면 전환
+                                                    (mActivity as SignUpActivity).changeFragment(
+                                                        FinishSignUpFragment(),
+                                                        "회원가입 완료"
+                                                    )
                                                 }
                                             }
-                                        )
-                                    }
+                                        }
+                                    )
+
                                 }
                             })
                         })
