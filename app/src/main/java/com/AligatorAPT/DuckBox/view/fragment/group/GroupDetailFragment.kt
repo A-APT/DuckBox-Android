@@ -81,25 +81,27 @@ class GroupDetailFragment : Fragment() {
             model.status.observe(viewLifecycleOwner, Observer { groupStatus ->
                 if (groupStatus == GroupStatus.PENDING) {
                     joinGroup.visibility = View.VISIBLE
-                    joinGroup.text = "그룹 인증하기"
+                    joinGroup.text = "그룹 가입하기"
                     mutualAuthentication.visibility = View.GONE
                 } else {
-                    //그룹 가입 여부
-                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
-                        if(MyApplication.prefs.getString("did","notExist") == leader)
-                            model.setAuthority(GroupViewModel.Authority.MASTER)
-                    })
+                    joinGroup.visibility = View.GONE
 
-                    model.authority.observe(viewLifecycleOwner, Observer {
-                        if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
-                            joinGroup.visibility = View.GONE
-                            mutualAuthentication.visibility = View.VISIBLE
-                        } else {
-                            joinGroup.visibility = View.VISIBLE
-                            joinGroup.text = "그룹 가입하기"
-                            mutualAuthentication.visibility = View.GONE
-                        }
-                    })
+//                    //그룹 가입 여부
+//                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
+//                        if(MyApplication.prefs.getString("did","notExist") == leader)
+//                            model.setAuthority(GroupViewModel.Authority.MASTER)
+//                    })
+//
+//                    model.authority.observe(viewLifecycleOwner, Observer {
+//                        if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
+//                            joinGroup.visibility = View.GONE
+//                            mutualAuthentication.visibility = View.VISIBLE
+//                        } else {
+//                            joinGroup.visibility = View.VISIBLE
+//                            joinGroup.text = "그룹 가입하기"
+//                            mutualAuthentication.visibility = View.GONE
+//                        }
+//                    })
                 }
             })
 

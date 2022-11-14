@@ -80,17 +80,8 @@ class CreateGroupImageFragment : Fragment() {
                 model.register(
                    object : RegisterCallBack {
                        override fun registerCallBack(flag: Boolean, id: String?) {
-                           if(flag){
-                               //id 추가
-                               model.setGroupId(id!!)
-                               //컨트랙트에 그룹 등록
-//                               contractModel?.registerGroup(
-//                                   groupId = id!!,
-//                                   ownerDid = MyApplication.prefs.getString("did", "notExist")
-//                               )
-                               //화면 전환
-                               mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료", 2)
-                           }
+                           //화면 전환
+                           mActivity.changeFragment(FinishCreateGroupFragment(), "그룹 만들기 완료", 2)
                        }
                    }
                 )

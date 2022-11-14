@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitClient {
 
-    private const val BASE_URL:String = "http://192.168.200.157:8080"
+    private const val BASE_URL:String = "http://172.20.10.3:8080"
 
     var gson = GsonBuilder()
         .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
