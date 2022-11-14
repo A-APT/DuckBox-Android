@@ -188,57 +188,65 @@ class VoteDetailActivity : AppCompatActivity() {
         binding.apply {
             vdFinalTv.setOnClickListener {
                 //투표 완료
-                val message = model.num.value.toString().encodeToByteArray()
-                val R_ = Point(
-                    BigInteger("d80387d2861da050c1a8ae11c9a1ef5ed93572bd6537d50984c1dea2f2db912b", 16),
-                    BigInteger("edcef3840df9cd47256996c460f0ce045ccb4fac5e914f619c44ad642779011", 16)
-                )
-                val blindedData: BlindedData = blindSecp256k1.blind(R_,message)
-                val blindSigRequestDto = BlindSigRequestDto(voteList.id, blindedData.blindM.toString(16))
-                voteModel!!.generateVoteToken(blindSigRequestDto, object: TokenCallback {
-                    override fun tokenCallback(flag: Boolean, _blindsigToken: BlindSigToken?) {
-                        if(flag){
-                            vdListLayout.visibility = View.GONE
-                            vdAfterVoteLayout.visibility = View.VISIBLE
-                            vdFinalTv.setBackgroundResource(R.color.darkgray)
-                            vdFinalTv.setText("제출 완료")
-                            ListAdapter.isClickable = false
+                vdListLayout.visibility = View.GONE
+                vdAfterVoteLayout.visibility = View.VISIBLE
+                vdFinalTv.setBackgroundResource(R.color.darkgray)
+                vdFinalTv.setText("제출 완료")
+                ListAdapter.isClickable = false
 
-                            Log.e("BLIND::Owner::", _blindsigToken!!.ownerBSig)
-                            Log.e("BLIND::server::", _blindsigToken!!.serverBSig)
-                            Log.e("BLIND:x:", blindedData.R.x.toString(16))
-                            Log.e("BLIND::y::", blindedData.R.y.toString(16))
 
-                            val r = arrayListOf(blindedData.R.x,blindedData.R.y)
-                            val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
-                            val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
-                            val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
-                            val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
-                            // create new account
-                            //val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
-                            val pseudoCredentials: Credentials = Credentials.create("4c1fb8a2c33e8938e63ee1e7ca261128d1c8183971834829d4c60e4fbb1ad732")
-                            contractModel?.vote(
-                                VoteData(
-                                    ballotId = voteList.id,
-                                    m = model.num.value.toString(),
-                                    serverSig = serverSig,
-                                    ownerSig = voteOwnerSig,
-                                    R = r,
-                                    pseudoCredentials = pseudoCredentials
-                                ),
-                                object: ApiCallback{
-                                    override fun apiCallback(flag: Boolean) {
-                                        if(flag){
-
-                                        }else{
-                                            Toast.makeText(this@VoteDetailActivity, "투표가 반영되지 않았습니다.", Toast.LENGTH_LONG).show()
-                                        }
-                                    }
-                                }
-                            )
-                        }
-                    }
-                })
+// 2022.11.14 send vote result to ballot contract
+//                val message = model.num.value.toString().encodeToByteArray()
+//                val R_ = Point(
+//                    BigInteger("d80387d2861da050c1a8ae11c9a1ef5ed93572bd6537d50984c1dea2f2db912b", 16),
+//                    BigInteger("edcef3840df9cd47256996c460f0ce045ccb4fac5e914f619c44ad642779011", 16)
+//                )
+//                val blindedData: BlindedData = blindSecp256k1.blind(R_,message)
+//                val blindSigRequestDto = BlindSigRequestDto(voteList.id, blindedData.blindM.toString(16))
+//                voteModel!!.generateVoteToken(blindSigRequestDto, object: TokenCallback {
+//                    override fun tokenCallback(flag: Boolean, _blindsigToken: BlindSigToken?) {
+//                        if(flag){
+//                            vdListLayout.visibility = View.GONE
+//                            vdAfterVoteLayout.visibility = View.VISIBLE
+//                            vdFinalTv.setBackgroundResource(R.color.darkgray)
+//                            vdFinalTv.setText("제출 완료")
+//                            ListAdapter.isClickable = false
+//
+//                            Log.e("BLIND::Owner::", _blindsigToken!!.ownerBSig)
+//                            Log.e("BLIND::server::", _blindsigToken!!.serverBSig)
+//                            Log.e("BLIND:x:", blindedData.R.x.toString(16))
+//                            Log.e("BLIND::y::", blindedData.R.y.toString(16))
+//
+//                            val r = arrayListOf(blindedData.R.x,blindedData.R.y)
+//                            val serverBsig = BigInteger(_blindsigToken!!.serverBSig, 16)
+//                            val ownerBsig = BigInteger(_blindsigToken.ownerBSig, 16)
+//                            val serverSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, serverBsig)
+//                            val voteOwnerSig = blindSecp256k1.unblind(blindedData.a, blindedData.b, ownerBsig)
+//                            // create new account
+//                            //val pseudoCredentials: Credentials = EthereumManagement.createNewCredentials("PASSWORD") // TODO user password
+//                            val pseudoCredentials: Credentials = Credentials.create("4c1fb8a2c33e8938e63ee1e7ca261128d1c8183971834829d4c60e4fbb1ad732")
+//                            contractModel?.vote(
+//                                VoteData(
+//                                    ballotId = voteList.id,
+//                                    m = model.num.value.toString(),
+//                                    serverSig = serverSig,
+//                                    ownerSig = voteOwnerSig,
+//                                    R = r,
+//                                    pseudoCredentials = pseudoCredentials
+//                                ),
+//                                object: ApiCallback{
+//                                    override fun apiCallback(flag: Boolean) {
+//                                        if(flag){
+//
+//                                        }else{
+//                                            Toast.makeText(this@VoteDetailActivity, "투표가 반영되지 않았습니다.", Toast.LENGTH_LONG).show()
+//                                        }
+//                                    }
+//                                }
+//                            )
+//                        }
+//                    }
+//                })
             }
         }
     }
