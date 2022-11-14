@@ -80,28 +80,33 @@ class GroupDetailFragment : Fragment() {
 
             model.status.observe(viewLifecycleOwner, Observer { groupStatus ->
                 if (groupStatus == GroupStatus.PENDING) {
-                    joinGroup.visibility = View.VISIBLE
-                    joinGroup.text = "그룹 가입하기"
-                    mutualAuthentication.visibility = View.GONE
+
+                    //그룹 가입 여부
+                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
+                        if(MyApplication.prefs.getString("did","notExist") == leader)
+                            model.setAuthority(GroupViewModel.Authority.MASTER)
+                        else
+                            model.setAuthority(GroupViewModel.Authority.OTHER)
+                    })
+
+                    model.authority.observe(viewLifecycleOwner, Observer {
+                        if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
+                            joinGroup.visibility = View.GONE
+//                            mutualAuthentication.visibility = View.VISIBLE
+                        } else {
+                            joinGroup.visibility = View.VISIBLE
+                            joinGroup.text = "그룹 가입하기"
+                            mutualAuthentication.visibility = View.GONE
+                        }
+                    })
                 } else {
                     joinGroup.visibility = View.GONE
 
-//                    //그룹 가입 여부
-//                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
-//                        if(MyApplication.prefs.getString("did","notExist") == leader)
-//                            model.setAuthority(GroupViewModel.Authority.MASTER)
-//                    })
-//
-//                    model.authority.observe(viewLifecycleOwner, Observer {
-//                        if (it == GroupViewModel.Authority.MEMBER || it == GroupViewModel.Authority.MASTER) {
-//                            joinGroup.visibility = View.GONE
-//                            mutualAuthentication.visibility = View.VISIBLE
-//                        } else {
-//                            joinGroup.visibility = View.VISIBLE
-//                            joinGroup.text = "그룹 가입하기"
-//                            mutualAuthentication.visibility = View.GONE
-//                        }
-//                    })
+//                   //그룹 가입 여부
+                    model.leader.observe(viewLifecycleOwner, Observer{ leader ->
+                        if(MyApplication.prefs.getString("did","notExist") == leader)
+                            model.setAuthority(GroupViewModel.Authority.MASTER)
+                    })
                 }
             })
 
@@ -119,7 +124,7 @@ class GroupDetailFragment : Fragment() {
                     if (groupStatus == GroupStatus.PENDING) {
                         //다이얼로그
                         val bundle = Bundle()
-                        bundle.putString("message", "그룹을 인증하시겠습니까?")
+                        bundle.putString("message", "그룹에 가입하시겠습니까?")
                         val modalDialog = ModalDialog()
                         modalDialog.arguments = bundle
                         modalDialog.itemClickListener =
@@ -136,7 +141,8 @@ class GroupDetailFragment : Fragment() {
                                             }
                                         })
                                     })
-                                    Toast.makeText(mActivity, "그룹 인증이 요청되었습니다.", Toast.LENGTH_LONG).show()
+                                    Toast.makeText(mActivity, "그룹 가입이 승인되었습니다.", Toast.LENGTH_LONG).show()
+                                    model.setAuthority(GroupViewModel.Authority.MEMBER)
                                 }
                                 override fun OnNegativeClick() {
                                     modalDialog.dismiss()
